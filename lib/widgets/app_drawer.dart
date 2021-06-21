@@ -22,14 +22,19 @@ class AppDrawer extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            ListTile(
-              leading: Icon(
-                Icons.home,
-                size: 30.0,
-              ),
-              title: Text(
-                "Home",
-                style: TextStyle(fontSize: 15),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushReplacementNamed('/');
+              },
+              child: ListTile(
+                leading: Icon(
+                  Icons.home,
+                  size: 30.0,
+                ),
+                title: Text(
+                  "Home",
+                  style: TextStyle(fontSize: 15),
+                ),
               ),
             ),
             Divider(
