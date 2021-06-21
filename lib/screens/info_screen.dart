@@ -12,6 +12,24 @@ class InfoScreen extends StatefulWidget {
 
 class _InfoScreenState extends State<InfoScreen> {
   bool showDesc = false;
+  void _showDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Shirt Marvel\'s details'),
+            content: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Text(
+                      'This is a high quality cotton shirt. With marvel printed at the center, This can be customized as per your wish.This is a high quality cotton shirt. With marvel printed at the center, This can be customized as per your wish.This is a high quality cotton shirt. With marvel printed at the center, This can be customized as per your wish.This is a high quality cotton shirt. With marvel printed at the center, This can be customized as per your wish.This is a high quality cotton shirt. With marvel printed at the center, This can be customized as per your wish.This is a high quality cotton shirt. With marvel printed at the center, This can be customized as per your wish.This is a high quality cotton shirt. With marvel printed at the center, This can be customized as per your wish.This is a high quality cotton shirt. With marvel printed at the center, This can be customized as per your wish')
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,8 +129,19 @@ class _InfoScreenState extends State<InfoScreen> {
                         AnimatedContainer(
                           duration: Duration(milliseconds: 300),
                           height: showDesc ? 100 : 0,
-                          child: Text(
-                            'This is a high quality cotton shirt. With marvel printed at the center, This can be customized as per your wish.',
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                Text(
+                                  'This is a high quality cotton shirt. With marvel printed at the center, This can be customized as per your wish.',
+                                ),
+                                TextButton(
+                                    onPressed: () {
+                                      return _showDialog();
+                                    },
+                                    child: Text('More Details'))
+                              ],
+                            ),
                           ),
                         ),
                       ],
