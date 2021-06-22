@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teeshop/screens/buy_now_screen.dart';
 import 'package:teeshop/screens/info_screen.dart';
 import 'package:teeshop/widgets/app_drawer.dart';
 import 'package:teeshop/widgets/product_grid.dart';
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
       home: MyHomePage(),
       routes: {
         InfoScreen.routeName: (context) => InfoScreen(),
+        BuyNowScreen.routeName: (context) => BuyNowScreen(),
       },
     );
   }
