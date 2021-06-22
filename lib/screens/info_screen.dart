@@ -48,9 +48,11 @@ class _InfoScreenState extends State<InfoScreen> {
                   Card(
                     child: Column(
                       children: [
-                        Image.network(
-                          _productData['data']['url'],
-                          width: double.infinity,
+                        InteractiveViewer(
+                          child: Image.network(
+                            _productData['data']['url'],
+                            width: double.infinity,
+                          ),
                         ),
                         Padding(padding: EdgeInsets.all(10)),
                         Container(
@@ -154,17 +156,22 @@ class _InfoScreenState extends State<InfoScreen> {
               ),
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Container(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [Color(0xFF5f0a87), Color(0xFFa4508b)])),
-                  child: Center(
-                    child: Text(
-                      'Buy Now',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
+                child: InkWell(
+                  onTap: () {
+                    print('Buy Now');
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            colors: [Color(0xFF5f0a87), Color(0xFFa4508b)])),
+                    child: Center(
+                      child: Text(
+                        'Buy Now',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
                   ),
@@ -175,15 +182,21 @@ class _InfoScreenState extends State<InfoScreen> {
               ),
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Container(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [Color(0xFF5f0a87), Color(0xFFa4508b)])),
-                  child: Center(
-                    child: Text('Customize',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.w700)),
+                child: InkWell(
+                  onTap: () {
+                    print('Customize');
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            colors: [Color(0xFF5f0a87), Color(0xFFa4508b)])),
+                    child: Center(
+                      child: Text('Customize',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700)),
+                    ),
                   ),
                 ),
               ),
@@ -192,8 +205,10 @@ class _InfoScreenState extends State<InfoScreen> {
               ),
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: GestureDetector(
-                  onTap: () {},
+                child: InkWell(
+                  onTap: () {
+                    print('Add To Cart');
+                  },
                   child: Container(
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
