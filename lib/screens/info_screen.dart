@@ -3,7 +3,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:teeshop/widgets/app_drawer.dart';
 
 class InfoScreen extends StatefulWidget {
-  const InfoScreen({Key? key}) : super(key: key);
   static const routeName = '/info-screen';
 
   @override
@@ -12,18 +11,16 @@ class InfoScreen extends StatefulWidget {
 
 class _InfoScreenState extends State<InfoScreen> {
   bool showDesc = false;
-  void _showDialog() {
+
+  void _showDialog(data) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Shirt Marvel\'s details'),
+            title: Text(data['data']['name']),
             content: SingleChildScrollView(
               child: Column(
-                children: [
-                  Text(
-                      'This is a high quality cotton shirt. With marvel printed at the center, This can be customized as per your wish.This is a high quality cotton shirt. With marvel printed at the center, This can be customized as per your wish.This is a high quality cotton shirt. With marvel printed at the center, This can be customized as per your wish.This is a high quality cotton shirt. With marvel printed at the center, This can be customized as per your wish.This is a high quality cotton shirt. With marvel printed at the center, This can be customized as per your wish.This is a high quality cotton shirt. With marvel printed at the center, This can be customized as per your wish.This is a high quality cotton shirt. With marvel printed at the center, This can be customized as per your wish.This is a high quality cotton shirt. With marvel printed at the center, This can be customized as per your wish')
-                ],
+                children: [Text(data['data']['descLong'])],
               ),
             ),
           );
@@ -32,6 +29,9 @@ class _InfoScreenState extends State<InfoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Map<String, dynamic> _productData =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    print(_productData);
     return Scaffold(
       drawer: AppDrawer(),
       appBar: AppBar(
@@ -49,13 +49,13 @@ class _InfoScreenState extends State<InfoScreen> {
                     child: Column(
                       children: [
                         Image.network(
-                          'https://cdn.shopify.com/s/files/1/0981/8178/files/Spread-collar-casual-shirt.jpg?525',
+                          _productData['data']['url'],
                           width: double.infinity,
                         ),
                         Padding(padding: EdgeInsets.all(10)),
                         Container(
                           child: Text(
-                            'Shirt Marvel',
+                            _productData['data']['name'],
                             style: TextStyle(fontSize: 15),
                           ),
                         ),
@@ -76,7 +76,7 @@ class _InfoScreenState extends State<InfoScreen> {
                                     width: 15,
                                   ),
                                   Text(
-                                    '₹399/-',
+                                    '₹${_productData['data']['price']}/-',
                                     style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold),
@@ -133,11 +133,11 @@ class _InfoScreenState extends State<InfoScreen> {
                             child: Column(
                               children: [
                                 Text(
-                                  'This is a high quality cotton shirt. With marvel printed at the center, This can be customized as per your wish.',
+                                  _productData['data']['descShort'],
                                 ),
                                 TextButton(
                                     onPressed: () {
-                                      return _showDialog();
+                                      return _showDialog(_productData);
                                     },
                                     child: Text('More Details'))
                               ],
@@ -192,15 +192,19 @@ class _InfoScreenState extends State<InfoScreen> {
               ),
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Container(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [Color(0xFF5f0a87), Color(0xFFa4508b)])),
-                  child: Center(
-                    child: Text('Add To Cart',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.w700)),
+                child: GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            colors: [Color(0xFF5f0a87), Color(0xFFa4508b)])),
+                    child: Center(
+                      child: Text('Add To Cart',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700)),
+                    ),
                   ),
                 ),
               ),
