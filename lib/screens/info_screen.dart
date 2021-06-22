@@ -46,6 +46,7 @@ class _InfoScreenState extends State<InfoScreen> {
               Column(
                 children: [
                   Card(
+                    elevation: 8,
                     child: Column(
                       children: [
                         InteractiveViewer(
@@ -115,6 +116,7 @@ class _InfoScreenState extends State<InfoScreen> {
                   });
                 },
                 child: Card(
+                  elevation: 8,
                   child: Container(
                     padding: EdgeInsets.all(10),
                     child: Column(

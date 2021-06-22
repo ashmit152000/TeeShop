@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:teeshop/screens/info_screen.dart';
 
 class ProductGrid extends StatelessWidget {
-  List<Map<String, dynamic>> _productList = [
+  final List<Map<String, dynamic>> _productList = [
     {
       "id": "1",
       "name": "Shirt 1",
