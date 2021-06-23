@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:teeshop/screens/buy_now_screen.dart';
+import 'package:teeshop/screens/customize_screen.dart';
 import 'package:teeshop/widgets/app_drawer.dart';
 
 class InfoScreen extends StatefulWidget {
@@ -188,7 +189,9 @@ class _InfoScreenState extends State<InfoScreen> {
                 borderRadius: BorderRadius.circular(10),
                 child: InkWell(
                   onTap: () {
-                    print('Customize');
+                    Navigator.of(context).pushReplacementNamed(
+                        CustomizeScreen.routeName,
+                        arguments: _productData);
                   },
                   child: Container(
                     padding: EdgeInsets.all(10),
