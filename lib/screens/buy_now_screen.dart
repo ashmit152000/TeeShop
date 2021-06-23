@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class BuyNowScreen extends StatefulWidget {
   static const routeName = '\buy-now';
@@ -10,7 +9,8 @@ class BuyNowScreen extends StatefulWidget {
 
 class _BuyNowScreenState extends State<BuyNowScreen> {
   int quantity = 1;
-
+  String address =
+      "QTR No. S/2, \n S-Block, \n Hudco Extension, \n Near Ansal Plaza, \n 110049, \n Delhi, New Delhi";
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> _productData =
@@ -19,7 +19,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
     return SafeArea(
         child: Scaffold(
             appBar: AppBar(
-              title: Text('BUY'),
+              title: Text('BUY ${_productData['data']['name']}'),
             ),
             body: Container(
               padding: EdgeInsets.all(10),
@@ -162,6 +162,38 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                       ),
                     ),
                     SizedBox(height: 10),
+                    Card(
+                      elevation: 8,
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  'Address: ',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  address,
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: InkWell(
