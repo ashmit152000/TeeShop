@@ -52,7 +52,7 @@ class _InfoScreenState extends State<InfoScreen> {
                     child: Column(
                       children: [
                         InteractiveViewer(
-                          child: Image.network(
+                          child: Image.asset(
                             _productData['data']['url'],
                             width: double.infinity,
                           ),
@@ -189,8 +189,7 @@ class _InfoScreenState extends State<InfoScreen> {
                 borderRadius: BorderRadius.circular(10),
                 child: InkWell(
                   onTap: () {
-                    Navigator.of(context).pushReplacementNamed(
-                        CustomizeScreen.routeName,
+                    Navigator.of(context).pushNamed(CustomizeScreen.routeName,
                         arguments: _productData);
                   },
                   child: Container(

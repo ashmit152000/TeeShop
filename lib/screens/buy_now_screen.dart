@@ -35,7 +35,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                           child: Column(
                             children: [
                               InteractiveViewer(
-                                child: Image.network(
+                                child: Image.asset(
                                   _productData['data']['url'],
                                   width: double.infinity,
                                 ),
