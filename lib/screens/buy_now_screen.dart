@@ -11,6 +11,8 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
   int quantity = 1;
   String address =
       "QTR No. S/2, \n S-Block, \n Hudco Extension, \n Near Ansal Plaza, \n 110049, \n Delhi, New Delhi";
+  List<String> size = ["S", "M", "L", "XL", "XXL"];
+  String dropdownValue = "M";
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> _productData =
@@ -134,6 +136,48 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                       ],
                     ),
                     SizedBox(height: 10),
+                    Card(
+                      elevation: 8,
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  'Size: ',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: DropdownButtonFormField(
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        dropdownValue = newValue.toString();
+                                      });
+                                    },
+                                    items: size.map<DropdownMenuItem<String>>(
+                                        (String value) {
+                                      return DropdownMenuItem<String>(
+                                          value: value, child: Text(value));
+                                    }).toList(),
+                                    decoration: InputDecoration(
+                                        labelText: 'Select Size', filled: true),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Card(
                       elevation: 8,
                       child: Container(
