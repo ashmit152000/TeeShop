@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 class CustomizeScreen extends StatefulWidget {
   static const routeName = '\customize';
@@ -12,6 +15,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
   String selectedImage = 'assets/svgs/ironman.svg';
   var selectedColor = Colors.transparent;
   var iconSize = 50.0;
+  var angle = 0.0;
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> _productData =
@@ -62,12 +66,15 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                     ),
                                   ),
                                 if (pageViewIndex == 1)
-                                  SvgPicture.asset(
-                                    selectedImage,
-                                    height: iconSize.toDouble(),
-                                    colorBlendMode: BlendMode.srcATop,
-                                    allowDrawingOutsideViewBox: false,
-                                    color: selectedColor,
+                                  Transform.rotate(
+                                    angle: angle,
+                                    child: SvgPicture.asset(
+                                      selectedImage,
+                                      height: iconSize.toDouble(),
+                                      colorBlendMode: BlendMode.srcATop,
+                                      allowDrawingOutsideViewBox: false,
+                                      color: selectedColor,
+                                    ),
                                   ),
                                 if (pageViewIndex == 0)
                                   SvgPicture.asset(
@@ -194,13 +201,49 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                   },
                   child: Slider(
                       min: 20,
-                      max: 100,
+                      max: 50,
                       value: iconSize,
                       inactiveColor: Colors.grey,
                       onChanged: (newVal) {
                         setState(() {
                           iconSize = newVal;
                         });
+                      }),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            Row(
+              children: [
+                Text(
+                  'ROTATE: ',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  width: 40,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return getGrid();
+                        });
+                  },
+                  child: SleekCircularSlider(
+                      min: 0,
+                      max: 360,
+                      appearance: CircularSliderAppearance(
+                        size: 100,
+                        customWidths: CustomSliderWidths(handlerSize: 0),
+                      ),
+                      initialValue: angle,
+                      onChange: (newVal) {
+                        setState(() {
+                          angle = newVal;
+                        });
+                        print(angle);
                       }),
                 ),
               ],
@@ -227,13 +270,15 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
     Colors.lightBlue,
     Colors.lightGreen,
     Colors.red,
-    Colors.teal
+    Colors.teal,
+    Colors.black,
+    Colors.lime
   ];
 
   Widget getGrid() {
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4,
+          crossAxisCount: 3,
           childAspectRatio: 4 / 5,
           crossAxisSpacing: 2,
           mainAxisSpacing: 2),
@@ -258,6 +303,10 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
     var wallpaperCollection = [
       {"image": "assets/svgs/ironman.svg", "clicked": false},
       {"image": "assets/svgs/flash.svg", "clicked": false},
+      {"image": "assets/svgs/likeboss.svg", "clicked": false},
+      {"image": "assets/svgs/marvel.svg", "clicked": false},
+      {"image": "assets/svgs/svga.svg", "clicked": false},
+      {"image": "assets/svgs/vector2.svg", "clicked": false},
     ];
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -288,7 +337,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
               child: GridTile(
                 child: SvgPicture.asset(
                   wallpaperCollection[index]['image'].toString(),
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                 ),
               ),
             ),

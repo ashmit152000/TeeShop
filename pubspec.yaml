@@ -30,6 +30,7 @@ dependencies:
   font_awesome_flutter: ^9.1.0
   flutter_svg: ^0.22.0
   carousel_slider: ^4.0.0
+  sleek_circular_slider: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -49,6 +50,10 @@ flutter:
   assets:
     - assets/svgs/ironman.svg
     - assets/svgs/flash.svg
+    - assets/svgs/likeboss.svg
+    - assets/svgs/marvel.svg
+    - assets/svgs/svga.svg
+    - assets/svgs/vector2.svg
     - assets/images/black.png
     - assets/images/blue.png
     - assets/images/green.png

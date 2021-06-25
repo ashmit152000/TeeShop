@@ -44,8 +44,9 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text('TeeShop'),
         actions: [
           Padding(
-              padding: EdgeInsets.only(right: 10),
-              child: Icon(Icons.shopping_cart, color: Colors.white)),
+            padding: EdgeInsets.only(right: 10),
+            child: Icon(Icons.shopping_cart, color: Colors.white),
+          ),
         ],
       ),
       body: ProductGrid(),
