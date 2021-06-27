@@ -58,7 +58,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                         2.3,
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
-                                        fit: BoxFit.cover,
+                                        fit: BoxFit.contain,
                                         image: AssetImage(
                                           _productData['data']['url'],
                                         ),
@@ -79,7 +79,8 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                 if (pageViewIndex == 0)
                                   SvgPicture.asset(
                                     selectedImage,
-                                    height: 300,
+                                    height: MediaQuery.of(context).size.height /
+                                        2.5,
                                     color: selectedColor,
                                     colorBlendMode: BlendMode.srcATop,
                                     allowDrawingOutsideViewBox: false,
