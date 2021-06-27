@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,8 +12,20 @@ class CustomizeScreen extends StatefulWidget {
 class _CustomizeScreenState extends State<CustomizeScreen> {
   String selectedImage = 'assets/svgs/ironman.svg';
   var selectedColor = Colors.transparent;
+
   var iconSize = 50.0;
+
   var angle = 0.0;
+
+  var wallpaperCollection = [
+    {"image": "assets/svgs/ironman.svg", "clicked": false, "id": "1"},
+    {"image": "assets/svgs/flash.svg", "clicked": false, "id": "2"},
+    {"image": "assets/svgs/likeboss.svg", "clicked": false, "id": "3"},
+    {"image": "assets/svgs/marvel.svg", "clicked": false, "id": "4"},
+    {"image": "assets/svgs/svga.svg", "clicked": false, "id": "5"},
+    {"image": "assets/svgs/vector2.svg", "clicked": false, "id": "6"},
+  ];
+
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> _productData =
@@ -58,7 +68,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                         2.3,
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
-                                        fit: BoxFit.contain,
+                                        fit: BoxFit.cover,
                                         image: AssetImage(
                                           _productData['data']['url'],
                                         ),
@@ -193,24 +203,23 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                   width: 20,
                 ),
                 GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return getGrid();
-                        });
-                  },
-                  child: Slider(
-                      min: 20,
-                      max: 50,
-                      value: iconSize,
-                      inactiveColor: Colors.grey,
-                      onChanged: (newVal) {
-                        setState(() {
-                          iconSize = newVal;
-                        });
-                      }),
-                ),
+                    onTap: () {
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return getGrid();
+                          });
+                    },
+                    child: Slider(
+                        min: 20,
+                        max: 50,
+                        value: iconSize,
+                        inactiveColor: Colors.grey,
+                        onChanged: (newVal) {
+                          setState(() {
+                            iconSize = newVal;
+                          });
+                        })),
               ],
             ),
             SizedBox(height: 20),
@@ -301,14 +310,6 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
   }
 
   Widget wallpapers() {
-    var wallpaperCollection = [
-      {"image": "assets/svgs/ironman.svg", "clicked": false},
-      {"image": "assets/svgs/flash.svg", "clicked": false},
-      {"image": "assets/svgs/likeboss.svg", "clicked": false},
-      {"image": "assets/svgs/marvel.svg", "clicked": false},
-      {"image": "assets/svgs/svga.svg", "clicked": false},
-      {"image": "assets/svgs/vector2.svg", "clicked": false},
-    ];
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
@@ -321,6 +322,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
           onTap: () {
             setState(() {
               selectedImage = wallpaperCollection[index]["image"].toString();
+
               for (int i = 0; i < wallpaperCollection.length; i++) {
                 wallpaperCollection[i]['clicked'] = false;
               }

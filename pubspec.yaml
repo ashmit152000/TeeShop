@@ -52,7 +52,7 @@ flutter:
     - assets/svgs/flash.svg
     - assets/svgs/likeboss.svg
     - assets/svgs/marvel.svg
-    - assets/svgs/svga.svg
+
     - assets/svgs/vector2.svg
     - assets/images/black.png
     - assets/images/blue.png
