@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -77,7 +79,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                   ),
                                 if (pageViewIndex == 1)
                                   Transform.rotate(
-                                    angle: angle,
+                                    angle: (pi / 4) * angle,
                                     child: SvgPicture.asset(
                                       selectedImage,
                                       height: iconSize.toDouble(),
@@ -243,7 +245,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                   },
                   child: SleekCircularSlider(
                       min: 0,
-                      max: 360,
+                      max: 8,
                       appearance: CircularSliderAppearance(
                         size: 100,
                         customWidths: CustomSliderWidths(handlerSize: 0),
