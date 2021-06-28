@@ -14,10 +14,15 @@ class CustomizeScreen extends StatefulWidget {
 class _CustomizeScreenState extends State<CustomizeScreen> {
   String selectedImage = 'assets/svgs/ironman.svg';
   var selectedColor = Colors.transparent;
-
+  TextEditingController textPrintController = TextEditingController();
   var iconSize = 50.0;
-
+  bool _isTextPresent = false;
+  bool _isLogoPresent = true;
   var angle = 0.0;
+  var textSize = 15.0;
+  var textRotation = 0.0;
+  var text = 'TeeShop';
+  var textColor = Colors.black;
 
   var wallpaperCollection = [
     {"image": "assets/svgs/ironman.svg", "clicked": false, "id": "1"},
@@ -77,26 +82,55 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                       ),
                                     ),
                                   ),
-                                if (pageViewIndex == 1)
-                                  Transform.rotate(
-                                    angle: (pi / 4) * angle,
-                                    child: SvgPicture.asset(
-                                      selectedImage,
-                                      height: iconSize.toDouble(),
-                                      colorBlendMode: BlendMode.srcATop,
-                                      allowDrawingOutsideViewBox: false,
-                                      color: selectedColor,
-                                    ),
-                                  ),
-                                if (pageViewIndex == 0)
-                                  SvgPicture.asset(
-                                    selectedImage,
-                                    height: MediaQuery.of(context).size.height /
-                                        2.5,
-                                    color: selectedColor,
-                                    colorBlendMode: BlendMode.srcATop,
-                                    allowDrawingOutsideViewBox: false,
-                                  ),
+                                Column(
+                                  children: [
+                                    if (pageViewIndex == 1 && _isLogoPresent)
+                                      Transform.rotate(
+                                        angle: (pi / 4) * angle,
+                                        child: SvgPicture.asset(
+                                          selectedImage,
+                                          height: iconSize.toDouble(),
+                                          colorBlendMode: BlendMode.srcATop,
+                                          allowDrawingOutsideViewBox: false,
+                                          color: selectedColor,
+                                        ),
+                                      ),
+                                    if (pageViewIndex == 1 && _isTextPresent)
+                                      Transform.rotate(
+                                        angle: (pi / 4) * textRotation,
+                                        child: Text(
+                                          text.toString(),
+                                          style: TextStyle(
+                                              fontSize: textSize,
+                                              color: textColor),
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    if (pageViewIndex == 0 && _isLogoPresent)
+                                      SvgPicture.asset(
+                                        selectedImage,
+                                        height:
+                                            MediaQuery.of(context).size.height /
+                                                2.5,
+                                        color: selectedColor,
+                                        colorBlendMode: BlendMode.srcATop,
+                                        allowDrawingOutsideViewBox: false,
+                                      ),
+                                    if (pageViewIndex == 0 && _isTextPresent)
+                                      Center(
+                                        child: Text(
+                                          text.toString(),
+                                          style: TextStyle(
+                                              color: textColor,
+                                              fontSize: textSize),
+                                        ),
+                                      ),
+                                  ],
+                                )
                               ],
                             ),
                           ),
@@ -115,7 +149,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                 width: double.infinity,
                 color: Colors.black,
                 child: DefaultTabController(
-                  length: 2,
+                  length: 4,
                   child: NestedScrollView(
                     headerSliverBuilder: (context, value) {
                       return [
@@ -123,6 +157,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                           child: SliverAppBar(
                             automaticallyImplyLeading: false,
                             title: TabBar(
+                              isScrollable: true,
                               tabs: [
                                 Tab(
                                   child: Text(
@@ -132,7 +167,19 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                 ),
                                 Tab(
                                   child: Text(
-                                    'CUSTOMIZE',
+                                    'TEXT',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                                Tab(
+                                  child: Text(
+                                    'CUSTOMIZE ICON',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                                Tab(
+                                  child: Text(
+                                    'CUSTOMIZE TEXT',
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
@@ -146,7 +193,10 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                     },
                     body: TabBarView(children: [
                       wallpapers(),
+                      textPrint(),
                       Padding(padding: EdgeInsets.all(10), child: customize()),
+                      Padding(
+                          padding: EdgeInsets.all(10), child: customizeText()),
                     ]),
                   ),
                 ),
@@ -163,103 +213,208 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            Row(
+            Column(
               children: [
-                Text(
-                  'COLOR: ',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
+                Row(
+                  children: [
+                    Text(
+                      'COLOR: ',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return getGrid();
+                            });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white),
+                            color: selectedColor),
+                        height: 50,
+                        width: 50,
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(
-                  width: 20,
+                  height: 20,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return getGrid();
-                        });
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.white),
-                        color: selectedColor),
-                    height: 50,
-                    width: 50,
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      'ICON SIZE: ',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return getGrid();
+                              });
+                        },
+                        child: Slider(
+                            min: 20,
+                            max: 50,
+                            value: iconSize,
+                            inactiveColor: Colors.grey,
+                            onChanged: (newVal) {
+                              setState(() {
+                                iconSize = newVal;
+                              });
+                            })),
+                  ],
                 ),
+                SizedBox(height: 20),
+                Row(
+                  children: [
+                    Text(
+                      'ROTATE: ',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      width: 40,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return getGrid();
+                            });
+                      },
+                      child: SleekCircularSlider(
+                          min: 0,
+                          max: 8,
+                          appearance: CircularSliderAppearance(
+                            size: 100,
+                            infoProperties: InfoProperties(
+                              mainLabelStyle: TextStyle(color: Colors.black),
+                            ),
+                            customWidths: CustomSliderWidths(handlerSize: 0),
+                          ),
+                          initialValue: angle,
+                          onChange: (newVal) {
+                            setState(() {
+                              angle = newVal;
+                            });
+                            print(angle);
+                          }),
+                    ),
+                  ],
+                )
               ],
             ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget customizeText() {
+    return Container(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Column(
               children: [
-                Text(
-                  'ICON SIZE: ',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
+                Row(
+                  children: [
+                    Text(
+                      'COLOR: ',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return getGridText();
+                            });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white),
+                            color: textColor),
+                        height: 50,
+                        width: 50,
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(
-                  width: 20,
+                  height: 20,
                 ),
-                GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                          context: context,
-                          builder: (context) {
-                            return getGrid();
-                          });
-                    },
-                    child: Slider(
-                        min: 20,
-                        max: 50,
-                        value: iconSize,
+                Row(
+                  children: [
+                    Text(
+                      'TEXT SIZE: ',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Slider(
+                        min: 5,
+                        max: 20,
+                        value: textSize,
                         inactiveColor: Colors.grey,
                         onChanged: (newVal) {
                           setState(() {
-                            iconSize = newVal;
+                            textSize = newVal;
                           });
-                        })),
+                        }),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Row(
+                  children: [
+                    Text(
+                      'ROTATE: ',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      width: 40,
+                    ),
+                    SleekCircularSlider(
+                        min: 0,
+                        max: 8,
+                        appearance: CircularSliderAppearance(
+                          size: 100,
+                          infoProperties: InfoProperties(
+                            mainLabelStyle: TextStyle(color: Colors.black),
+                          ),
+                          customWidths: CustomSliderWidths(handlerSize: 0),
+                        ),
+                        initialValue: angle,
+                        onChange: (newVal) {
+                          setState(() {
+                            textRotation = newVal;
+                          });
+                          print(angle);
+                        }),
+                  ],
+                )
               ],
             ),
-            SizedBox(height: 20),
-            Row(
-              children: [
-                Text(
-                  'ROTATE: ',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  width: 40,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return getGrid();
-                        });
-                  },
-                  child: SleekCircularSlider(
-                      min: 0,
-                      max: 8,
-                      appearance: CircularSliderAppearance(
-                        size: 100,
-                        customWidths: CustomSliderWidths(handlerSize: 0),
-                      ),
-                      initialValue: angle,
-                      onChange: (newVal) {
-                        setState(() {
-                          angle = newVal;
-                        });
-                        print(angle);
-                      }),
-                ),
-              ],
-            )
           ],
         ),
       ),
@@ -272,19 +427,16 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
     Colors.blueGrey,
     Colors.brown,
     Colors.cyan,
-    Colors.cyanAccent,
     Colors.deepOrange,
-    Colors.deepOrangeAccent,
     Colors.deepPurple,
-    Colors.deepPurpleAccent,
     Colors.green,
     Colors.indigo,
     Colors.lightBlue,
     Colors.lightGreen,
     Colors.red,
     Colors.teal,
+    Colors.lime,
     Colors.black,
-    Colors.lime
   ];
 
   Widget getGrid() {
@@ -311,45 +463,125 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
     );
   }
 
-  Widget wallpapers() {
+  Widget getGridText() {
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        childAspectRatio: 1 / 1,
-        mainAxisSpacing: 5,
-        crossAxisSpacing: 5,
-      ),
+          crossAxisCount: 3,
+          childAspectRatio: 4 / 5,
+          crossAxisSpacing: 2,
+          mainAxisSpacing: 2),
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: () {
             setState(() {
-              selectedImage = wallpaperCollection[index]["image"].toString();
-
-              for (int i = 0; i < wallpaperCollection.length; i++) {
-                wallpaperCollection[i]['clicked'] = false;
-              }
-              wallpaperCollection[index]['clicked'] = true;
+              textColor = colorList[index];
+              Navigator.of(context).pop();
             });
           },
-          child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(0)),
-            child: Container(
-              decoration: BoxDecoration(
-                border: wallpaperCollection[index]['clicked'] != false
-                    ? Border.all(color: Colors.white, width: 3)
-                    : Border.all(color: Colors.transparent),
-              ),
-              child: GridTile(
-                child: SvgPicture.asset(
-                  wallpaperCollection[index]['image'].toString(),
-                  fit: BoxFit.contain,
-                ),
-              ),
-            ),
+          child: Container(
+            color: colorList[index],
           ),
         );
       },
-      itemCount: wallpaperCollection.length,
+      itemCount: colorList.length,
+    );
+  }
+
+  Widget wallpapers() {
+    return Column(children: [
+      Text(
+        'WANT ICON ? ',
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      Switch(
+          value: _isLogoPresent,
+          onChanged: (newValue) {
+            setState(() {
+              _isLogoPresent = newValue;
+            });
+          }),
+      Expanded(
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            childAspectRatio: 1 / 1,
+            mainAxisSpacing: 5,
+            crossAxisSpacing: 5,
+          ),
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  selectedImage =
+                      wallpaperCollection[index]["image"].toString();
+
+                  for (int i = 0; i < wallpaperCollection.length; i++) {
+                    wallpaperCollection[i]['clicked'] = false;
+                  }
+                  wallpaperCollection[index]['clicked'] = true;
+                });
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(0)),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: wallpaperCollection[index]['clicked'] != false
+                        ? Border.all(color: Colors.white, width: 3)
+                        : Border.all(color: Colors.transparent),
+                  ),
+                  child: GridTile(
+                    child: SvgPicture.asset(
+                      wallpaperCollection[index]['image'].toString(),
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+          itemCount: wallpaperCollection.length,
+        ),
+      ),
+    ]);
+  }
+
+  Widget textPrint() {
+    return Container(
+      padding: EdgeInsets.all(10),
+      child: SingleChildScrollView(
+        child: Column(children: [
+          Row(children: [
+            Text(
+              'WANT TEXT ? ',
+              style: TextStyle(color: Colors.white),
+            ),
+            Switch(
+                value: _isTextPresent,
+                onChanged: (newValue) {
+                  setState(() {
+                    _isTextPresent = newValue;
+                  });
+                }),
+          ]),
+          SizedBox(
+            height: 20,
+          ),
+          TextFormField(
+            style: TextStyle(color: Colors.white),
+            controller: textPrintController,
+            decoration: InputDecoration(
+                labelText: "Enter Text",
+                labelStyle: TextStyle(color: Colors.white)),
+            onChanged: (newVal) {
+              setState(() {
+                text = newVal;
+              });
+            },
+          ),
+        ]),
+      ),
     );
   }
 }
