@@ -193,13 +193,13 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                 ),
                                 Tab(
                                   child: Text(
-                                    'TEXT',
+                                    'CUSTOMIZE ICON',
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
                                 Tab(
                                   child: Text(
-                                    'CUSTOMIZE ICON',
+                                    'TEXT',
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
@@ -219,8 +219,8 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                     },
                     body: TabBarView(children: [
                       wallpapers(),
-                      textPrint(),
                       Padding(padding: EdgeInsets.all(10), child: customize()),
+                      textPrint(),
                       Padding(
                           padding: EdgeInsets.all(10), child: customizeText()),
                     ]),
