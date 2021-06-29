@@ -31,7 +31,28 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
     {"image": "assets/svgs/marvel.svg", "clicked": false, "id": "4"},
     {"image": "assets/svgs/svga.svg", "clicked": false, "id": "5"},
     {"image": "assets/svgs/vector2.svg", "clicked": false, "id": "6"},
+    {"image": "assets/svgs/bat.svg", "clicked": false, "id": "7"},
+    {"image": "assets/svgs/bee.svg", "clicked": false, "id": "8"},
+    {"image": "assets/svgs/fish.svg", "clicked": false, "id": "9"},
+    {"image": "assets/svgs/intel.svg", "clicked": false, "id": "10"},
+    {"image": "assets/svgs/lion.svg", "clicked": false, "id": "11"},
+    {"image": "assets/svgs/music.svg", "clicked": false, "id": "12"},
   ];
+
+  var fontFamilyName = [
+    "Roboto",
+    "BigShoulder",
+    "Courgette",
+    "DancingScript",
+    "Gloria",
+    "Jomhuria",
+    "Right",
+    "Sacra",
+    "Staatliches",
+    "Yellowtail",
+  ];
+
+  var fontFamilySelector;
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +123,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                           text.toString(),
                                           style: TextStyle(
                                               fontSize: textSize,
+                                              fontFamily: fontFamilySelector,
                                               color: textColor),
                                         ),
                                       ),
@@ -126,7 +148,11 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                           text.toString(),
                                           style: TextStyle(
                                               color: textColor,
-                                              fontSize: textSize),
+                                              fontFamily: fontFamilySelector,
+                                              fontSize: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  30),
                                         ),
                                       ),
                                   ],
@@ -387,6 +413,43 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                 Row(
                   children: [
                     Text(
+                      'FONT FAMILY: ',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Expanded(
+                      child: Container(
+                        child: DropdownButtonFormField<String>(
+                            dropdownColor: Colors.purple,
+                            decoration: InputDecoration(
+                              labelText: "Choose Font",
+                              labelStyle: TextStyle(color: Colors.white),
+                            ),
+                            onChanged: (newValue) {
+                              setState(() {
+                                fontFamilySelector = newValue.toString();
+                              });
+                            },
+                            items: fontFamilyName
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: TextStyle(color: Colors.white),
+                                  ));
+                            }).toList()),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Row(
+                  children: [
+                    Text(
                       'ROTATE: ',
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.bold),
@@ -580,6 +643,13 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
               });
             },
           ),
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+              'NOTE: IF THE TEXT CROSSES THE BORDERS OF THE SHIRT HERE, WE WILL MAKE IT MULTILINE IN THE ACTUAL PRINT.',
+              style:
+                  TextStyle(color: Colors.purple, fontWeight: FontWeight.bold)),
         ]),
       ),
     );

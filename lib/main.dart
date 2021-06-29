@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.purple,
         primaryColor: Colors.purple,
         accentColor: Colors.purpleAccent,
+        textTheme: TextTheme(headline6: TextStyle(color: Colors.white)),
       ),
       home: MyHomePage(),
       routes: {
