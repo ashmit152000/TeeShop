@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teeshop/screens/buy_now_custom_screen.dart';
 import 'package:teeshop/screens/buy_now_screen.dart';
 import 'package:teeshop/screens/customize_screen.dart';
 import 'package:teeshop/screens/info_screen.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         InfoScreen.routeName: (context) => InfoScreen(),
         BuyNowScreen.routeName: (context) => BuyNowScreen(),
         CustomizeScreen.routeName: (context) => CustomizeScreen(),
+        BuyNowCustom.routeName: (context) => BuyNowCustom(),
       },
     );
   }

@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
+import 'package:teeshop/screens/buy_now_custom_screen.dart';
 
 class CustomizeScreen extends StatefulWidget {
   static const routeName = '\customize';
@@ -50,7 +51,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
     "Yellowtail",
   ];
 
-  var fontFamilySelector;
+  var fontFamilySelector = "Roboto";
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +61,24 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
     return Scaffold(
       appBar: AppBar(title: Text('Customize'), actions: [
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushNamed(BuyNowCustom.routeName, arguments: {
+              "selectedImage": selectedImage,
+              "selectedColor": selectedColor,
+              "text": text,
+              "iconSize": iconSize,
+              "_isIconPresent": _isLogoPresent,
+              "_isTextPresent": _isTextPresent,
+              "angle": angle,
+              "textSize": textSize,
+              "textRotation": textRotation,
+              "textColor": textColor,
+              "price": 399,
+              "url": _productData['data']['url'],
+              "fontFamily": fontFamilySelector,
+              "name": _productData['data']['name'],
+            });
+          },
           child: Text(
             'SELECT',
             style: TextStyle(

@@ -13,15 +13,19 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
       "QTR No. S/2, \n S-Block, \n Hudco Extension, \n Near Ansal Plaza, \n 110049, \n Delhi, New Delhi";
   List<String> size = ["S", "M", "L", "XL", "XXL"];
   String dropdownValue = "M";
+  Map<String, dynamic> buyData = {};
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> _productData =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    Map<String, dynamic> buyData =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+
     int total = _productData['data']['price'] * quantity;
     return SafeArea(
         child: Scaffold(
             appBar: AppBar(
-              title: Text('BUY ${_productData['data']['name']}'),
+              title: Text('BUY'),
             ),
             body: Container(
               padding: EdgeInsets.all(10),
@@ -251,7 +255,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                           ])),
                           child: Center(
                             child: Text(
-                              'Buy Now',
+                              'CHECK OUT',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w700,
