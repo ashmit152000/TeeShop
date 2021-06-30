@@ -55,10 +55,9 @@ flutter:
     - assets/svgs/bat.svg
     - assets/svgs/bee.svg
     - assets/svgs/fish.svg
-    - assets/svgs/intel.svg
-    - assets/svgs/lion.svg
-    - assets/svgs/music.svg
-    - assets/svgs/vector2.svg
+    - assets/svgs/fingerprint.svg
+    - assets/svgs/joker.svg
+    - assets/svgs/kakashi.svg
     - assets/images/black.png
     - assets/images/blue.png
     - assets/images/green.png

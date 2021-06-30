@@ -29,14 +29,12 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
     {"image": "assets/svgs/flash.svg", "clicked": false, "id": "2"},
     {"image": "assets/svgs/likeboss.svg", "clicked": false, "id": "3"},
     {"image": "assets/svgs/marvel.svg", "clicked": false, "id": "4"},
-    {"image": "assets/svgs/svga.svg", "clicked": false, "id": "5"},
-    {"image": "assets/svgs/vector2.svg", "clicked": false, "id": "6"},
     {"image": "assets/svgs/bat.svg", "clicked": false, "id": "7"},
     {"image": "assets/svgs/bee.svg", "clicked": false, "id": "8"},
     {"image": "assets/svgs/fish.svg", "clicked": false, "id": "9"},
-    {"image": "assets/svgs/intel.svg", "clicked": false, "id": "10"},
-    {"image": "assets/svgs/lion.svg", "clicked": false, "id": "11"},
-    {"image": "assets/svgs/music.svg", "clicked": false, "id": "12"},
+    {"image": "assets/svgs/joker.svg", "clicked": false, "id": "10"},
+    {"image": "assets/svgs/kakashi.svg", "clicked": false, "id": "11"},
+    {"image": "assets/svgs/fingerprint.svg", "clicked": false, "id": "12"},
   ];
 
   var fontFamilyName = [
@@ -217,13 +215,17 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                         )
                       ];
                     },
-                    body: TabBarView(children: [
-                      wallpapers(),
-                      Padding(padding: EdgeInsets.all(10), child: customize()),
-                      textPrint(),
-                      Padding(
-                          padding: EdgeInsets.all(10), child: customizeText()),
-                    ]),
+                    body: TabBarView(
+                      children: [
+                        wallpapers(),
+                        Padding(
+                            padding: EdgeInsets.all(10), child: customize()),
+                        textPrint(),
+                        Padding(
+                            padding: EdgeInsets.all(10),
+                            child: customizeText()),
+                      ],
+                    ),
                   ),
                 ),
               )
