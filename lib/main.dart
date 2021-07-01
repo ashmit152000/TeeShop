@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:teeshop/screens/about_us.dart';
 import 'package:teeshop/screens/buy_now_custom_screen.dart';
 import 'package:teeshop/screens/buy_now_screen.dart';
 import 'package:teeshop/screens/customize_screen.dart';
 import 'package:teeshop/screens/info_screen.dart';
+import 'package:teeshop/screens/replacement.dart';
 import 'package:teeshop/widgets/app_drawer.dart';
 import 'package:teeshop/widgets/product_grid.dart';
 
@@ -20,6 +22,9 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.purple,
         accentColor: Colors.purpleAccent,
         textTheme: TextTheme(headline6: TextStyle(color: Colors.white)),
+        appBarTheme: Theme.of(context)
+            .appBarTheme
+            .copyWith(brightness: Brightness.light),
       ),
       home: MyHomePage(),
       routes: {
@@ -27,6 +32,7 @@ class MyApp extends StatelessWidget {
         BuyNowScreen.routeName: (context) => BuyNowScreen(),
         CustomizeScreen.routeName: (context) => CustomizeScreen(),
         BuyNowCustom.routeName: (context) => BuyNowCustom(),
+        AboutUs.routeName: (context) => AboutUs(),
       },
     );
   }
@@ -42,16 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: AppDrawer(),
-      appBar: AppBar(
-        title: Text('TeeShop'),
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 10),
-            child: Icon(Icons.shopping_cart, color: Colors.white),
-          ),
-        ],
-      ),
-      body: ProductGrid(),
+      body: ReplacementScreen(),
     );
   }
 }

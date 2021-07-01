@@ -55,6 +55,7 @@ flutter:
     - assets/svgs/bat.svg
     - assets/svgs/bee.svg
     - assets/svgs/fish.svg
+    - assets/svgs/jokercard.svg
     - assets/svgs/fingerprint.svg
     - assets/svgs/joker.svg
     - assets/svgs/kakashi.svg

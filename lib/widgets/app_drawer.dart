@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teeshop/screens/about_us.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -86,6 +87,37 @@ class AppDrawer extends StatelessWidget {
               ),
               title: Text(
                 "My Profile",
+                style: TextStyle(fontSize: 15),
+              ),
+            ),
+            Divider(
+              height: 10,
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushNamed(AboutUs.routeName);
+              },
+              child: ListTile(
+                leading: Icon(
+                  Icons.info,
+                  size: 30.0,
+                ),
+                title: Text(
+                  "About Us",
+                  style: TextStyle(fontSize: 15),
+                ),
+              ),
+            ),
+            Divider(
+              height: 10,
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.contact_mail,
+                size: 30.0,
+              ),
+              title: Text(
+                "Contact Us",
                 style: TextStyle(fontSize: 15),
               ),
             ),
