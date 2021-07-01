@@ -11,8 +11,9 @@ class _PolyesterScreenState extends State<PolyesterScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-      body: ProductGrid(Polyester.productList),
-    ));
+      child: Scaffold(
+        body: ProductGrid(Polyester.productList),
+      ),
+    );
   }
 }

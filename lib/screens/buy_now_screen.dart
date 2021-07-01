@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class BuyNowScreen extends StatefulWidget {
-  static const routeName = '\buy-now';
+  static const routeName = '/buy-now';
 
   @override
   _BuyNowScreenState createState() => _BuyNowScreenState();
@@ -9,11 +11,79 @@ class BuyNowScreen extends StatefulWidget {
 
 class _BuyNowScreenState extends State<BuyNowScreen> {
   int quantity = 1;
+  int total = 399;
+  late Razorpay _razorpay;
   String address =
       "QTR No. S/2, \n S-Block, \n Hudco Extension, \n Near Ansal Plaza, \n 110049, \n Delhi, New Delhi";
   List<String> size = ["S", "M", "L", "XL", "XXL"];
-  String dropdownValue = "M";
+  String dropdownValue = "";
   Map<String, dynamic> buyData = {};
+  GlobalKey<FormState> dropDownKey = GlobalKey();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _razorpay = new Razorpay();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, handlerPaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, handlerErrorFailure);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, handlerExternalWallet);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _razorpay.clear();
+  }
+
+  void _onPayment() {
+    if (dropdownValue == "") {
+      Fluttertoast.showToast(
+          msg: "Please choose your preferred size",
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.red,
+          toastLength: Toast.LENGTH_LONG);
+      return;
+    }
+    openCheckout();
+  }
+
+  void openCheckout() {
+    var options = {
+      "key": "rzp_test_hgB0mMGhnOqSzT",
+      "amount": "${total * 100}",
+      "size": "$dropdownValue",
+      "address": "$address",
+      "quantity": "$quantity",
+      "name": "TeeShop",
+      "description": "Payment for the mechandise",
+      "prefill": {
+        "contact": "9588955499",
+        "email": "ashmitteeshop@gmail.com",
+      },
+      "external": {
+        "wallets": ["paytm", "paypal"]
+      }
+    };
+
+    try {
+      _razorpay.open(options);
+    } catch (error) {}
+  }
+
+  void handlerPaymentSuccess() {
+    print('Success!!');
+  }
+
+  void handlerErrorFailure() {
+    print('Error!!');
+  }
+
+  void handlerExternalWallet() {
+    print('External Wallet');
+  }
+
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> _productData =
@@ -21,7 +91,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
     Map<String, dynamic> buyData =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
-    int total = _productData['data']['price'] * quantity;
+    total = _productData['data']['price'] * quantity;
     return SafeArea(
         child: Scaffold(
             appBar: AppBar(
@@ -159,10 +229,16 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                                 ),
                                 Expanded(
                                   child: DropdownButtonFormField(
+                                    key: dropDownKey,
                                     onChanged: (newValue) {
                                       setState(() {
                                         dropdownValue = newValue.toString();
                                       });
+                                    },
+                                    validator: (newValue) {
+                                      if (dropdownValue == "") {
+                                        return "Please choose your preferred size";
+                                      }
                                     },
                                     items: size.map<DropdownMenuItem<String>>(
                                         (String value) {
@@ -245,7 +321,9 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          return _onPayment();
+                        },
                         child: Container(
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(

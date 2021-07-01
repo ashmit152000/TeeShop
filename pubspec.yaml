@@ -31,6 +31,8 @@ dependencies:
   flutter_svg: ^0.22.0
   carousel_slider: ^4.0.0
   sleek_circular_slider: ^2.0.0
+  razorpay_flutter: ^1.2.3
+  fluttertoast: ^8.0.7
 
 dev_dependencies:
   flutter_test:

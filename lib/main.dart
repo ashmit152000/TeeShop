@@ -6,7 +6,6 @@ import 'package:teeshop/screens/customize_screen.dart';
 import 'package:teeshop/screens/info_screen.dart';
 import 'package:teeshop/screens/replacement.dart';
 import 'package:teeshop/widgets/app_drawer.dart';
-import 'package:teeshop/widgets/product_grid.dart';
 
 void main() {
   runApp(MyApp());
