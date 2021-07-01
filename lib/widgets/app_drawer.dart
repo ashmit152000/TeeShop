@@ -95,7 +95,7 @@ class AppDrawer extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.of(context).pushNamed(AboutUs.routeName);
+                Navigator.of(context).pushReplacementNamed(AboutUs.routeName);
               },
               child: ListTile(
                 leading: Icon(

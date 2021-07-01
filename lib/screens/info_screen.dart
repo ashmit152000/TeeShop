@@ -198,7 +198,7 @@ class _InfoScreenState extends State<InfoScreen> {
                         gradient: LinearGradient(
                             colors: [Color(0xFF5f0a87), Color(0xFFa4508b)])),
                     child: Center(
-                      child: Text('Customize',
+                      child: Text('Customise',
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w700)),

@@ -60,7 +60,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
     return Scaffold(
-      appBar: AppBar(title: Text('Customize'), actions: [
+      appBar: AppBar(title: Text('Customise'), actions: [
         TextButton(
           onPressed: () {
             Navigator.of(context).pushNamed(BuyNowCustom.routeName, arguments: {

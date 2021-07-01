@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:teeshop/widgets/app_drawer.dart';
 
 class AboutUs extends StatelessWidget {
   static const routeName = '/about-us';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: AppDrawer(),
       appBar: AppBar(
         title: Text('About Us'),
       ),
@@ -16,7 +18,7 @@ class AboutUs extends StatelessWidget {
               end: Alignment.bottomRight,
               colors: [Color(0xff5f0a87), Color(0xffa4508b)]),
         ),
-        padding: EdgeInsets.all(15),
+        padding: EdgeInsets.all(10),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
