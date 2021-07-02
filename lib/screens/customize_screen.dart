@@ -21,6 +21,8 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
   TextEditingController textPrintController = TextEditingController();
   var iconSize = 50.0;
   var _pickedImage;
+  var croppedFile;
+  var selectedFile;
   final _picker = ImagePicker();
   bool _isTextPresent = false;
   bool _isLogoPresent = true;
@@ -65,6 +67,29 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
       setState(() {
         _pickedImage = picked;
       });
+    }
+
+    try {
+      if (_pickedImage != null) {
+        croppedFile = await ImageCropper.cropImage(
+            sourcePath: _pickedImage.path,
+            aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+            compressQuality: 100,
+            maxWidth: 700,
+            maxHeight: 700,
+            compressFormat: ImageCompressFormat.jpg,
+            androidUiSettings: AndroidUiSettings(
+              toolbarColor: Colors.orange,
+              toolbarTitle: 'TeeShop Cropper',
+              backgroundColor: Colors.white,
+            ));
+
+        setState(() {
+          selectedFile = croppedFile;
+        });
+      }
+    } catch (error) {
+      print(error);
     }
   }
 
@@ -155,7 +180,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                       Transform.rotate(
                                         angle: (pi / 4) * angle,
                                         child: Image.file(
-                                          File(_pickedImage.path),
+                                          selectedFile,
                                           height: iconSize.toDouble(),
                                         ),
                                       ),
@@ -191,7 +216,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                         _isLogoPresent &&
                                         _pickedImage != null)
                                       Image.file(
-                                        File(_pickedImage.path),
+                                        selectedFile,
                                         height:
                                             MediaQuery.of(context).size.height /
                                                 2.5,
