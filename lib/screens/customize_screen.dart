@@ -1,8 +1,11 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 import 'package:teeshop/screens/buy_now_custom_screen.dart';
 
@@ -17,6 +20,8 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
   var selectedColor = Colors.transparent;
   TextEditingController textPrintController = TextEditingController();
   var iconSize = 50.0;
+  var _pickedImage;
+  final _picker = ImagePicker();
   bool _isTextPresent = false;
   bool _isLogoPresent = true;
   var angle = 0.0;
@@ -53,6 +58,15 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
   ];
 
   var fontFamilySelector = "Roboto";
+
+  _loadPicker(ImageSource source) async {
+    final PickedFile? picked = await _picker.getImage(source: source);
+    if (picked != null) {
+      setState(() {
+        _pickedImage = picked;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +136,9 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                   ),
                                 Column(
                                   children: [
-                                    if (pageViewIndex == 1 && _isLogoPresent)
+                                    if (pageViewIndex == 1 &&
+                                        _isLogoPresent &&
+                                        _pickedImage == null)
                                       Transform.rotate(
                                         angle: (pi / 4) * angle,
                                         child: SvgPicture.asset(
@@ -131,6 +147,16 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                           colorBlendMode: BlendMode.srcATop,
                                           allowDrawingOutsideViewBox: false,
                                           color: selectedColor,
+                                        ),
+                                      ),
+                                    if (pageViewIndex == 1 &&
+                                        _isLogoPresent &&
+                                        _pickedImage != null)
+                                      Transform.rotate(
+                                        angle: (pi / 4) * angle,
+                                        child: Image.file(
+                                          File(_pickedImage.path),
+                                          height: iconSize.toDouble(),
                                         ),
                                       ),
                                     if (pageViewIndex == 1 && _isTextPresent)
@@ -149,7 +175,9 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    if (pageViewIndex == 0 && _isLogoPresent)
+                                    if (pageViewIndex == 0 &&
+                                        _isLogoPresent &&
+                                        _pickedImage == null)
                                       SvgPicture.asset(
                                         selectedImage,
                                         height:
@@ -158,6 +186,15 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                         color: selectedColor,
                                         colorBlendMode: BlendMode.srcATop,
                                         allowDrawingOutsideViewBox: false,
+                                      ),
+                                    if (pageViewIndex == 0 &&
+                                        _isLogoPresent &&
+                                        _pickedImage != null)
+                                      Image.file(
+                                        File(_pickedImage.path),
+                                        height:
+                                            MediaQuery.of(context).size.height /
+                                                2.5,
                                       ),
                                     if (pageViewIndex == 0 && _isTextPresent)
                                       Center(
@@ -252,6 +289,12 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        label: Text('Upload Icon'),
+        onPressed: () {
+          _loadPicker(ImageSource.gallery);
+        },
+      ),
     );
   }
 
@@ -313,7 +356,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                         },
                         child: Slider(
                             min: 20,
-                            max: 50,
+                            max: 70,
                             value: iconSize,
                             inactiveColor: Colors.grey,
                             onChanged: (newVal) {

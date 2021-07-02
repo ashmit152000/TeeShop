@@ -18,7 +18,6 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
   List<String> size = ["S", "M", "L", "XL", "XXL"];
   String dropdownValue = "";
   Map<String, dynamic> buyData = {};
-  GlobalKey<FormState> dropDownKey = GlobalKey();
 
   @override
   void initState() {
@@ -229,7 +228,6 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                                 ),
                                 Expanded(
                                   child: DropdownButtonFormField(
-                                    key: dropDownKey,
                                     onChanged: (newValue) {
                                       setState(() {
                                         dropdownValue = newValue.toString();
