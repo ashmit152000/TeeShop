@@ -10,15 +10,17 @@ class BuyNowScreen extends StatefulWidget {
 }
 
 class _BuyNowScreenState extends State<BuyNowScreen> {
-  int quantity = 1;
+  dynamic quantity = 1;
   int total = 399;
+  TextEditingController qtyController = TextEditingController();
+
   late Razorpay _razorpay;
   String address =
       "QTR No. S/2, \n S-Block, \n Hudco Extension, \n Near Ansal Plaza, \n 110049, \n Delhi, New Delhi";
   List<String> size = ["S", "M", "L", "XL", "XXL"];
   String dropdownValue = "";
   Map<String, dynamic> buyData = {};
-
+  dynamic quantityText = 11;
   @override
   void initState() {
     // TODO: implement initState
@@ -89,8 +91,22 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     Map<String, dynamic> buyData =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    if (quantity > 10 && qtyController.text != '') {
+      quantityText = qtyController.text;
+    }
 
-    total = _productData['data']['price'] * quantity;
+    if (qtyController.text == '') {
+      qtyController.text = '1';
+      quantityText = '1';
+    }
+
+    if (quantity < 10) {
+      total = _productData['data']['price'] * quantity;
+    } else {
+      total =
+          _productData['data']['price'] * int.tryParse(quantityText.toString());
+    }
+
     return SafeArea(
         child: Scaffold(
             appBar: AppBar(
@@ -151,39 +167,75 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                                         SizedBox(
                                           width: 5,
                                         ),
-                                        Container(
-                                          color: Colors.purple,
-                                          child: Row(
-                                            children: [
-                                              IconButton(
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      if (quantity > 1) {
-                                                        quantity--;
-                                                      }
-                                                    });
-                                                  },
-                                                  icon: Icon(Icons.remove,
-                                                      color: Colors.white)),
-                                              Container(
-                                                padding: EdgeInsets.all(10),
-                                                color: Colors.white,
-                                                child: Center(
-                                                  child:
-                                                      Text(quantity.toString()),
+                                        if (quantity <= 10)
+                                          Container(
+                                            color: Colors.purple,
+                                            child: Row(
+                                              children: [
+                                                IconButton(
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        if (quantity > 1) {
+                                                          quantity--;
+                                                        }
+                                                      });
+                                                    },
+                                                    icon: Icon(Icons.remove,
+                                                        color: Colors.white)),
+                                                Container(
+                                                  padding: EdgeInsets.all(10),
+                                                  color: Colors.white,
+                                                  child: Center(
+                                                    child: Text(
+                                                      quantity.toString(),
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                              IconButton(
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      quantity++;
-                                                    });
-                                                  },
-                                                  icon: Icon(Icons.add,
-                                                      color: Colors.white)),
-                                            ],
+                                                IconButton(
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        quantity++;
+                                                      });
+                                                    },
+                                                    icon: Icon(Icons.add,
+                                                        color: Colors.white)),
+                                              ],
+                                            ),
                                           ),
-                                        )
+                                        if (quantity > 10)
+                                          Container(
+                                              height: 50,
+                                              width: 200,
+                                              child: TextField(
+                                                onChanged: (newValue) {
+                                                  setState(() {
+                                                    quantityText = '11';
+                                                    if (newValue
+                                                            .toString()
+                                                            .length <=
+                                                        5) {
+                                                      quantityText = newValue;
+                                                    } else {
+                                                      Fluttertoast.showToast(
+                                                          msg:
+                                                              "The maximum character count on quantity reached",
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                          gravity: ToastGravity
+                                                              .CENTER);
+                                                      qtyController.text =
+                                                          10000.toString();
+                                                    }
+                                                  });
+                                                },
+                                                controller: qtyController,
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                decoration: InputDecoration(
+                                                  hintText:
+                                                      "Enter your quantity",
+                                                ),
+                                              ))
                                       ],
                                     ),
                                   ],
@@ -192,20 +244,6 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                             ],
                           ),
                         ),
-                        // Container(
-                        //   padding: EdgeInsets.all(10),
-                        //   width: double.infinity,
-                        //   alignment: Alignment.center,
-                        //   child: Text(
-                        //     '₹399/-',
-                        //     style: TextStyle(color: Colors.white, fontSize: 20),
-                        //   ),
-                        //   decoration: BoxDecoration(
-                        //     gradient: LinearGradient(
-                        //       colors: [Color(0xFFf53844), Color(0xFF864ba2)],
-                        //     ),
-                        //   ),
-                        // ),
                       ],
                     ),
                     SizedBox(height: 10),
@@ -273,9 +311,16 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                                 SizedBox(
                                   width: 10,
                                 ),
-                                Text(
-                                  "₹" + total.toString() + "/-",
-                                  style: TextStyle(fontSize: 15),
+                                Expanded(
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Container(
+                                      child: Text(
+                                        "₹" + total.toString() + "/-",
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
