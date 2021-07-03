@@ -16,10 +16,11 @@ class ContactUs extends StatelessWidget {
             child: Column(
               children: [
                 Card(
-                  child: Column(children: [
-                    Image.asset('assets/images/3A.png'),
-                    Padding(padding: EdgeInsets.all(20)),
-                    Padding(
+                  child: Column(
+                    children: [
+                      Image.asset('assets/images/3A.png'),
+                      Padding(padding: EdgeInsets.all(20)),
+                      Padding(
                         padding: EdgeInsets.all(5),
                         child: Text(
                           'THE THREE MUSKETEERS ',
@@ -28,8 +29,10 @@ class ContactUs extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                               color: Colors.purple,
                               fontFamily: 'Jomhuria'),
-                        ))
-                  ]),
+                        ),
+                      )
+                    ],
+                  ),
                   elevation: 8,
                 ),
                 SizedBox(
