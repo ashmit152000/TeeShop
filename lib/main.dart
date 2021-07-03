@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:teeshop/screens/about_us.dart';
 import 'package:teeshop/screens/buy_now_custom_screen.dart';
 import 'package:teeshop/screens/buy_now_screen.dart';
+import 'package:teeshop/screens/contact_us.dart';
 import 'package:teeshop/screens/customize_screen.dart';
 import 'package:teeshop/screens/info_screen.dart';
 import 'package:teeshop/screens/replacement.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         CustomizeScreen.routeName: (context) => CustomizeScreen(),
         BuyNowCustom.routeName: (context) => BuyNowCustom(),
         AboutUs.routeName: (context) => AboutUs(),
+        ContactUs.routeName: (context) => ContactUs(),
       },
     );
   }

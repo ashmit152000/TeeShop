@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teeshop/screens/about_us.dart';
+import 'package:teeshop/screens/contact_us.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -111,14 +112,19 @@ class AppDrawer extends StatelessWidget {
             Divider(
               height: 10,
             ),
-            ListTile(
-              leading: Icon(
-                Icons.contact_mail,
-                size: 30.0,
-              ),
-              title: Text(
-                "Contact Us",
-                style: TextStyle(fontSize: 15),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushNamed(ContactUs.routeName);
+              },
+              child: ListTile(
+                leading: Icon(
+                  Icons.contact_mail,
+                  size: 30.0,
+                ),
+                title: Text(
+                  "Contact Us",
+                  style: TextStyle(fontSize: 15),
+                ),
               ),
             ),
             Divider(
