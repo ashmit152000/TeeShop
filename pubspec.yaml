@@ -35,6 +35,7 @@ dependencies:
   fluttertoast: ^8.0.7
   image_cropper: ^1.4.1
   image_picker: ^0.8.1+3
+  marquee: ^2.2.0
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +73,21 @@ flutter:
     - assets/images/red.png
     - assets/images/white.png
     - assets/images/yellow.png
+    - assets/images/shirts/1.jpg
+    - assets/images/shirts/2.jpg
+    - assets/images/shirts/3.jpg
+    - assets/images/shirts/4.jpg
+    - assets/images/shirts/6.jpg
+    - assets/images/shirts/7.jpg
+    - assets/images/shirts/8.jpg
+    - assets/images/shirts/10.jpg
+    - assets/images/shirts/11.jpg
+    - assets/images/shirts/12.jpg
+    - assets/images/shirts/13.jpg
+    - assets/images/shirts/14.jpg
+    - assets/images/shirts/15.jpg
+    - assets/images/shirts/16.jpg
+    - assets/images/shirts/17.jpg
 
     # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware.

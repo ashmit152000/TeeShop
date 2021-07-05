@@ -34,11 +34,18 @@ class ProductGrid extends StatelessWidget {
             ),
             footer: GridTileBar(
               backgroundColor: Colors.black87,
-              leading: Text(_productList[index]['name'],
-                  style: TextStyle(
-                    color: Colors.white,
-                  )),
               title: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                  child: Text(
+                    _productList[index]['name'],
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              trailing: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Container(
                   child: Row(
