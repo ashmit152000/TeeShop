@@ -52,20 +52,17 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
 
   void openCheckout() {
     var options = {
-      "key": "rzp_test_hgB0mMGhnOqSzT",
-      "amount": "${total * 100}",
-      "size": "$dropdownValue",
-      "address": "$address",
-      "quantity": "$quantity",
+      "key": "rzp_live_upLxYKABKr7bhM",
+      "amount": "${1 * 100}",
       "name": "TeeShop",
       "description": "Payment for the mechandise",
       "prefill": {
         "contact": "9588955499",
         "email": "ashmitteeshop@gmail.com",
+        "size": "$dropdownValue",
+        "address": "$address",
+        "quantity": "$quantity",
       },
-      "external": {
-        "wallets": ["paytm", "paypal"]
-      }
     };
 
     try {
@@ -108,290 +105,283 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
     }
 
     return SafeArea(
-        child: Scaffold(
-            appBar: AppBar(
-              title: Text('BUY'),
-            ),
-            body: Container(
-              padding: EdgeInsets.all(10),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('BUY'),
+        ),
+        body: Container(
+          padding: EdgeInsets.all(10),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Column(
                   children: [
-                    Column(
-                      children: [
-                        Card(
-                          elevation: 8,
-                          child: Column(
-                            children: [
-                              InteractiveViewer(
-                                child: Image.asset(
-                                  _productData['data']['url'],
-                                  width: double.infinity,
+                    Card(
+                      elevation: 8,
+                      child: Column(
+                        children: [
+                          InteractiveViewer(
+                            child: Image.asset(
+                              _productData['data']['url'],
+                              width: double.infinity,
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.all(10)),
+                          Container(
+                            child: Text(
+                              _productData['data']['name'],
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(bottom: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  '₹${_productData['data']['price']}/-',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
-                              ),
-                              Padding(padding: EdgeInsets.all(10)),
-                              Container(
-                                child: Text(
-                                  _productData['data']['name'],
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                  ),
+                                SizedBox(
+                                  width: 30,
                                 ),
-                              ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(bottom: 10),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                Row(
                                   children: [
                                     Text(
-                                      '₹${_productData['data']['price']}/-',
+                                      'QTY: ',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),
                                     SizedBox(
-                                      width: 30,
+                                      width: 5,
                                     ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'QTY: ',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        if (quantity <= 10)
-                                          Container(
-                                            color: Colors.purple,
-                                            child: Row(
-                                              children: [
-                                                IconButton(
-                                                    onPressed: () {
-                                                      setState(() {
-                                                        if (quantity > 1) {
-                                                          quantity--;
-                                                        }
-                                                      });
-                                                    },
-                                                    icon: Icon(Icons.remove,
-                                                        color: Colors.white)),
-                                                Container(
-                                                  padding: EdgeInsets.all(10),
-                                                  color: Colors.white,
-                                                  child: Center(
-                                                    child: Text(
-                                                      quantity.toString(),
-                                                    ),
-                                                  ),
-                                                ),
-                                                IconButton(
-                                                    onPressed: () {
-                                                      setState(() {
-                                                        quantity++;
-                                                      });
-                                                    },
-                                                    icon: Icon(Icons.add,
-                                                        color: Colors.white)),
-                                              ],
-                                            ),
-                                          ),
-                                        if (quantity > 10)
-                                          Container(
-                                              height: 50,
-                                              width: 200,
-                                              child: TextField(
-                                                onChanged: (newValue) {
+                                    if (quantity <= 10)
+                                      Container(
+                                        color: Colors.purple,
+                                        child: Row(
+                                          children: [
+                                            IconButton(
+                                                onPressed: () {
                                                   setState(() {
-                                                    quantityText = '11';
-                                                    if (newValue
-                                                            .toString()
-                                                            .length <=
-                                                        5) {
-                                                      quantityText = newValue;
-                                                    } else {
-                                                      Fluttertoast.showToast(
-                                                          msg:
-                                                              "The maximum character count on quantity reached",
-                                                          backgroundColor:
-                                                              Colors.red,
-                                                          gravity: ToastGravity
-                                                              .CENTER);
-                                                      qtyController.text =
-                                                          10000.toString();
+                                                    if (quantity > 1) {
+                                                      quantity--;
                                                     }
                                                   });
                                                 },
-                                                controller: qtyController,
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                decoration: InputDecoration(
-                                                  hintText:
-                                                      "Enter your quantity",
+                                                icon: Icon(Icons.remove,
+                                                    color: Colors.white)),
+                                            Container(
+                                              padding: EdgeInsets.all(10),
+                                              color: Colors.white,
+                                              child: Center(
+                                                child: Text(
+                                                  quantity.toString(),
                                                 ),
-                                              ))
-                                      ],
-                                    ),
+                                              ),
+                                            ),
+                                            IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    quantity++;
+                                                  });
+                                                },
+                                                icon: Icon(Icons.add,
+                                                    color: Colors.white)),
+                                          ],
+                                        ),
+                                      ),
+                                    if (quantity > 10)
+                                      Container(
+                                          height: 50,
+                                          width: 200,
+                                          child: TextField(
+                                            onChanged: (newValue) {
+                                              setState(() {
+                                                quantityText = '11';
+                                                if (newValue
+                                                        .toString()
+                                                        .length <=
+                                                    5) {
+                                                  quantityText = newValue;
+                                                } else {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          "The maximum character count on quantity reached",
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      gravity:
+                                                          ToastGravity.CENTER);
+                                                  qtyController.text =
+                                                      10000.toString();
+                                                }
+                                              });
+                                            },
+                                            controller: qtyController,
+                                            keyboardType: TextInputType.number,
+                                            decoration: InputDecoration(
+                                              hintText: "Enter your quantity",
+                                            ),
+                                          ))
                                   ],
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Card(
-                      elevation: 8,
-                      child: Container(
-                        padding: EdgeInsets.all(10),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  'Size: ',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: DropdownButtonFormField(
-                                    onChanged: (newValue) {
-                                      setState(() {
-                                        dropdownValue = newValue.toString();
-                                      });
-                                    },
-                                    validator: (newValue) {
-                                      if (dropdownValue == "") {
-                                        return "Please choose your preferred size";
-                                      }
-                                    },
-                                    items: size.map<DropdownMenuItem<String>>(
-                                        (String value) {
-                                      return DropdownMenuItem<String>(
-                                          value: value, child: Text(value));
-                                    }).toList(),
-                                    decoration: InputDecoration(
-                                        labelText: 'Select Size', filled: true),
-                                  ),
-                                )
                               ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Card(
-                      elevation: 8,
-                      child: Container(
-                        padding: EdgeInsets.all(10),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  'Total Amount: ',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Container(
-                                      child: Text(
-                                        "₹" + total.toString() + "/-",
-                                        style: TextStyle(fontSize: 15),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Card(
-                      elevation: 8,
-                      child: Container(
-                        padding: EdgeInsets.all(10),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  'Address: ',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  address,
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: InkWell(
-                        onTap: () {
-                          return _onPayment();
-                        },
-                        child: Container(
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(colors: [
-                            Color(0xFF5f0a87),
-                            Color(0xFFa4508b)
-                          ])),
-                          child: Center(
-                            child: Text(
-                              'CHECK OUT',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    ),
-                    SizedBox(
-                      height: 10,
                     ),
                   ],
                 ),
-              ),
-            )));
+                SizedBox(height: 10),
+                Card(
+                  elevation: 8,
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              'Size: ',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: DropdownButtonFormField(
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    dropdownValue = newValue.toString();
+                                  });
+                                },
+                                validator: (newValue) {
+                                  if (dropdownValue == "") {
+                                    return "Please choose your preferred size";
+                                  }
+                                },
+                                items: size.map<DropdownMenuItem<String>>(
+                                    (String value) {
+                                  return DropdownMenuItem<String>(
+                                      value: value, child: Text(value));
+                                }).toList(),
+                                decoration: InputDecoration(
+                                    labelText: 'Select Size', filled: true),
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Card(
+                  elevation: 8,
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              'Total Amount: ',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Container(
+                                  child: Text(
+                                    "₹" + total.toString() + "/-",
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Card(
+                  elevation: 8,
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              'Address: ',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              address,
+                              style: TextStyle(
+                                fontSize: 15,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: InkWell(
+                    onTap: () {
+                      return _onPayment();
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              colors: [Color(0xFF5f0a87), Color(0xFFa4508b)])),
+                      child: Center(
+                        child: Text(
+                          'CHECK OUT',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

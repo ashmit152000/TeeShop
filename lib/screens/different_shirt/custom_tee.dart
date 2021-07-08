@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
-class PoloShirt extends StatefulWidget {
-  const PoloShirt({Key? key}) : super(key: key);
+class CustomTee extends StatefulWidget {
+  const CustomTee({Key? key}) : super(key: key);
 
   @override
-  _PoloShirtState createState() => _PoloShirtState();
+  _CustomTeeState createState() => _CustomTeeState();
 }
 
-class _PoloShirtState extends State<PoloShirt> {
+class _CustomTeeState extends State<CustomTee> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
       body: Container(
         child: Center(
-          child: Text('Custom Polo'),
+          child: Text('Custom Tees'),
         ),
       ),
     ));

@@ -54,13 +54,6 @@ class ProductGrid extends StatelessWidget {
                         child: Icon(Icons.favorite_outline, color: Colors.red),
                         onTap: () {},
                       ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      GestureDetector(
-                        child: Icon(Icons.edit, color: Colors.red),
-                        onTap: () {},
-                      ),
                     ],
                   ),
                 ),

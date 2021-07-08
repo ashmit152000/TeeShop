@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:teeshop/data/polyester.dart';
+import 'package:teeshop/data/tee.dart';
 import 'package:teeshop/widgets/product_grid.dart';
 
-class PolyesterScreen extends StatefulWidget {
+class BasicTeeScreen extends StatefulWidget {
   @override
-  _PolyesterScreenState createState() => _PolyesterScreenState();
+  _BasicTeeScreenState createState() => _BasicTeeScreenState();
 }
 
-class _PolyesterScreenState extends State<PolyesterScreen> {
+class _BasicTeeScreenState extends State<BasicTeeScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/services.dart';
-import 'package:teeshop/screens/different_shirt/cotton.dart';
+import 'package:teeshop/screens/different_shirt/custom_tee.dart';
 import 'package:teeshop/screens/different_shirt/full_sleeves.dart';
-import 'package:teeshop/screens/different_shirt/hoodie.dart';
+import 'package:teeshop/screens/different_shirt/embro_polo.dart';
 import 'package:teeshop/screens/different_shirt/polo.dart';
 import 'package:teeshop/screens/different_shirt/polyester.dart';
+import 'package:teeshop/screens/different_shirt/sandose.dart';
 import 'package:teeshop/widgets/app_drawer.dart';
 
 class ReplacementScreen extends StatefulWidget {
@@ -24,7 +25,7 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
     ));
     return SafeArea(
       child: DefaultTabController(
-        length: 5,
+        length: 6,
         child: Scaffold(
           drawer: AppDrawer(),
           appBar: AppBar(
@@ -40,30 +41,34 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
               isScrollable: true,
               tabs: [
                 Tab(
-                  child: Text('Polyester Shirts'),
+                  child: Text('Basic White Tees'),
                 ),
                 Tab(
-                  child: Text('Cotton Shirts'),
+                  child: Text('Custom Tees'),
+                ),
+                Tab(
+                  child: Text('Sandose'),
                 ),
                 Tab(
                   child: Text('Full Sleeves'),
                 ),
                 Tab(
-                  child: Text('Polo Shirt'),
+                  child: Text('Custom Polos'),
                 ),
                 Tab(
-                  child: Text('Hoodies'),
+                  child: Text('Embroidered Polos'),
                 ),
               ],
             ),
           ),
           body: TabBarView(
             children: [
-              PolyesterScreen(),
-              CottonShirt(),
+              BasicTeeScreen(),
+              CustomTee(),
+              Sandose(),
               FullSleeves(),
               PoloShirt(),
-              Hoodie(),
+              EmbroPolo(),
             ],
           ),
         ),
