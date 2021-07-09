@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "720559309512",
+    "project_id": "teeshop-67467",
+    "storage_bucket": "teeshop-67467.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:720559309512:android:422d5b12ce47d1bbbb9bfd",
+        "android_client_info": {
+          "package_name": "com.aaa.teeshop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "720559309512-3o99mrap9das14l8o9r99ng5odlpdf8r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRAxqoAu4YbHxF8hdO8Kgvb0XbvZABRXI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "720559309512-3o99mrap9das14l8o9r99ng5odlpdf8r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

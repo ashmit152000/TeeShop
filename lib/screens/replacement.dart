@@ -1,6 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:teeshop/screens/different_shirt/custom_tee.dart';
 import 'package:teeshop/screens/different_shirt/full_sleeves.dart';
 import 'package:teeshop/screens/different_shirt/embro_polo.dart';
@@ -10,19 +10,22 @@ import 'package:teeshop/screens/different_shirt/sandose.dart';
 import 'package:teeshop/widgets/app_drawer.dart';
 
 class ReplacementScreen extends StatefulWidget {
-  const ReplacementScreen({Key? key}) : super(key: key);
-
+  static const routeName = '/replacement';
   @override
   _ReplacementScreenState createState() => _ReplacementScreenState();
 }
 
 class _ReplacementScreenState extends State<ReplacementScreen> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    User? user = FirebaseAuth.instance.currentUser;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.purple,
-      statusBarBrightness: Brightness.light,
-    ));
+    User? user = FirebaseAuth.instance.currentUser;
     return SafeArea(
       child: DefaultTabController(
         length: 6,

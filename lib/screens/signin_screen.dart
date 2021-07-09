@@ -1,0 +1,342 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:teeshop/providers/auth.dart';
+
+enum AuthMode { Signup, Signin }
+
+class SignInScreen extends StatefulWidget {
+  static const routeName = '/signin';
+  @override
+  _SignInScreenState createState() => _SignInScreenState();
+}
+
+class _SignInScreenState extends State<SignInScreen>
+    with TickerProviderStateMixin {
+  var authMode = AuthMode.Signin;
+  late AnimationController animation;
+  late Animation<double> _fadeInFadeOut;
+  late Animation<Offset> _slideTransition;
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+  TextEditingController cPassword = TextEditingController();
+  Map<String, String> authData = {"email": "", "password": ""};
+  late String emailId;
+  late String passwordId;
+  late String cPasswordId;
+  late GlobalKey<FormState> gKey = GlobalKey();
+  bool _isLoading = false;
+  @override
+  void initState() {
+    super.initState();
+    animation =
+        AnimationController(vsync: this, duration: Duration(seconds: 1));
+    _fadeInFadeOut = Tween<double>(begin: 0.0, end: 1).animate(animation);
+    _slideTransition = Tween<Offset>(
+      begin: Offset(-1, 0),
+      end: Offset.zero,
+    ).animate(animation);
+  }
+
+  void auth() async {
+    bool _valid = gKey.currentState!.validate();
+    if (!_valid) {
+      return;
+    }
+    gKey.currentState!.save();
+    print(authData['email'].toString());
+    print(authData['password'].toString());
+    setState(() {
+      _isLoading = true;
+    });
+    if (authMode == AuthMode.Signin) {
+      try {
+        await Provider.of<Auth>(context, listen: false).signIn(
+            authData['email'].toString(), authData["password"].toString());
+
+        setState(() {
+          _isLoading = false;
+        });
+      } catch (error) {
+        print(error);
+      }
+    } else {
+      try {
+        await Provider.of<Auth>(context, listen: false).signup(
+            authData['email'].toString(), authData["password"].toString());
+
+        setState(() {
+          _isLoading = false;
+        });
+      } catch (error) {
+        print(error);
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    animation.dispose();
+  }
+
+  void toggleAuth() {
+    if (authMode == AuthMode.Signin) {
+      setState(() {
+        authMode = AuthMode.Signup;
+      });
+      animation.forward();
+    } else {
+      setState(() {
+        authMode = AuthMode.Signin;
+      });
+      animation.reverse();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Color(0xff21254A),
+        resizeToAvoidBottomInset: false,
+        body: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              children: [
+                Container(
+                  width: double.infinity,
+                  height: 200,
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: AssetImage('assets/images/1.png'),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 40,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      Center(
+                        child: Column(
+                          children: [
+                            Text(
+                              'WELCOME TO',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                            Text(
+                              '🙏 TEESHOP 🙏',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 40,
+                      ),
+                      Form(
+                        key: gKey,
+                        child: Column(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(color: Colors.grey),
+                                ),
+                              ),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    child: TextFormField(
+                                      controller: email,
+                                      textInputAction: TextInputAction.next,
+                                      style: TextStyle(color: Colors.white),
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: 'Email',
+                                        hintStyle:
+                                            TextStyle(color: Colors.grey),
+                                      ),
+                                      validator: (value) {
+                                        if (value.toString() == '') {
+                                          return "Please fill in your email id";
+                                        }
+                                        if (!value.toString().contains('@')) {
+                                          return 'Please enter a valid email id';
+                                        }
+                                      },
+                                      onSaved: (value) {
+                                        authData['email'] = value.toString();
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 40,
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(color: Colors.grey),
+                                ),
+                              ),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    child: TextFormField(
+                                      controller: password,
+                                      textInputAction: TextInputAction.next,
+                                      obscureText: true,
+                                      obscuringCharacter: '*',
+                                      style: TextStyle(color: Colors.white),
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: 'Password',
+                                        hintStyle:
+                                            TextStyle(color: Colors.grey),
+                                      ),
+                                      validator: (value) {
+                                        if (value.toString() == '') {
+                                          return "Please fill in a password";
+                                        }
+                                        if (value.toString().length < 6) {
+                                          return "Password should be 6 characters long";
+                                        }
+                                      },
+                                      onSaved: (value) {
+                                        authData['password'] = value.toString();
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 40,
+                            ),
+                            authMode == AuthMode.Signup
+                                ? SlideTransition(
+                                    position: _slideTransition,
+                                    child: FadeTransition(
+                                      opacity: _fadeInFadeOut,
+                                      child: Container(
+                                        padding: EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          border: Border(
+                                            bottom:
+                                                BorderSide(color: Colors.grey),
+                                          ),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              child: TextFormField(
+                                                textInputAction:
+                                                    TextInputAction.done,
+                                                obscureText: true,
+                                                obscuringCharacter: '*',
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                                decoration: InputDecoration(
+                                                  border: InputBorder.none,
+                                                  hintText: 'Confirm Password',
+                                                  hintStyle: TextStyle(
+                                                      color: Colors.grey),
+                                                ),
+                                                validator: (value) {
+                                                  if (value != password.text) {
+                                                    return "Password doesn't match";
+                                                  }
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : Container(),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                print(authMode);
+                                return toggleAuth();
+                              },
+                              child: Text(
+                                authMode == AuthMode.Signin
+                                    ? 'Don\'t have an account ? Sign up'
+                                    : 'Already have an account ? Sign in',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                return auth();
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width / 2,
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(colors: [
+                                    Color(0xFF5f0a87),
+                                    Color(0xFF703ED1)
+                                  ]),
+                                ),
+                                child: Center(
+                                  child: _isLoading != true
+                                      ? Text(
+                                          authMode == AuthMode.Signin
+                                              ? 'SIGN IN'
+                                              : 'SIGN UP',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        )
+                                      : CircularProgressIndicator(
+                                          color: Colors.white,
+                                        ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+              crossAxisAlignment: CrossAxisAlignment.start,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
