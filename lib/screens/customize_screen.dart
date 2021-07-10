@@ -31,7 +31,8 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
   var textRotation = 0.0;
   var text = 'TeeShop';
   var textColor = Colors.black;
-
+  var top = 0.0;
+  var left = 0.0;
   var wallpaperCollection = [
     {"image": "assets/svgs/ironman.svg", "clicked": false, "id": "1"},
     {"image": "assets/svgs/flash.svg", "clicked": false, "id": "2"},
@@ -139,106 +140,113 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                       (BuildContext context, int itemIndex, int pageViewIndex) {
                     return Card(
                       elevation: 8,
-                      child: Column(
+                      child: Stack(
                         children: [
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                if (pageViewIndex == 1)
-                                  Container(
-                                    height: MediaQuery.of(context).size.height /
-                                        2.3,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: AssetImage(
-                                          _productData['data']['url'],
-                                        ),
-                                      ),
-                                    ),
+                          if (pageViewIndex == 1)
+                            Container(
+                              height: MediaQuery.of(context).size.height / 2.3,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage(
+                                    _productData['data']['url'],
                                   ),
-                                Column(
-                                  children: [
-                                    if (pageViewIndex == 1 &&
-                                        _isLogoPresent &&
-                                        _pickedImage == null)
-                                      Transform.rotate(
-                                        angle: (pi / 4) * angle,
-                                        child: SvgPicture.asset(
-                                          selectedImage,
-                                          height: iconSize.toDouble(),
-                                          colorBlendMode: BlendMode.srcATop,
-                                          allowDrawingOutsideViewBox: false,
-                                          color: selectedColor,
-                                        ),
-                                      ),
-                                    if (pageViewIndex == 1 &&
-                                        _isLogoPresent &&
-                                        _pickedImage != null)
-                                      Transform.rotate(
-                                        angle: (pi / 4) * angle,
-                                        child: Image.file(
-                                          selectedFile,
-                                          height: iconSize.toDouble(),
-                                        ),
-                                      ),
-                                    if (pageViewIndex == 1 && _isTextPresent)
-                                      Transform.rotate(
-                                        angle: (pi / 4) * textRotation,
-                                        child: Text(
-                                          text.toString(),
-                                          style: TextStyle(
-                                              fontSize: textSize,
-                                              fontFamily: fontFamilySelector,
-                                              color: textColor),
-                                        ),
-                                      ),
-                                  ],
                                 ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    if (pageViewIndex == 0 &&
-                                        _isLogoPresent &&
-                                        _pickedImage == null)
-                                      SvgPicture.asset(
-                                        selectedImage,
-                                        height:
-                                            MediaQuery.of(context).size.height /
-                                                2.5,
-                                        color: selectedColor,
-                                        colorBlendMode: BlendMode.srcATop,
-                                        allowDrawingOutsideViewBox: false,
-                                      ),
-                                    if (pageViewIndex == 0 &&
-                                        _isLogoPresent &&
-                                        _pickedImage != null)
-                                      Image.file(
-                                        selectedFile,
-                                        height:
-                                            MediaQuery.of(context).size.height /
-                                                2.5,
-                                      ),
-                                    if (pageViewIndex == 0 && _isTextPresent)
-                                      Center(
-                                        child: Text(
-                                          text.toString(),
-                                          style: TextStyle(
-                                              color: textColor,
-                                              fontFamily: fontFamilySelector,
-                                              fontSize: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  30),
-                                        ),
-                                      ),
-                                  ],
-                                )
-                              ],
+                              ),
                             ),
+                          Column(
+                            children: [
+                              if (pageViewIndex == 1 &&
+                                  _isLogoPresent &&
+                                  _pickedImage != null)
+                                Transform.rotate(
+                                  angle: (pi / 4) * angle,
+                                  child: Image.file(
+                                    selectedFile,
+                                    height: iconSize.toDouble(),
+                                  ),
+                                ),
+                              if (pageViewIndex == 1 && _isTextPresent)
+                                Transform.rotate(
+                                  angle: (pi / 4) * textRotation,
+                                  child: Text(
+                                    text.toString(),
+                                    style: TextStyle(
+                                        fontSize: textSize,
+                                        fontFamily: fontFamilySelector,
+                                        color: textColor),
+                                  ),
+                                ),
+                            ],
                           ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              if (pageViewIndex == 0 &&
+                                  _isLogoPresent &&
+                                  _pickedImage == null)
+                                SvgPicture.asset(
+                                  selectedImage,
+                                  height:
+                                      MediaQuery.of(context).size.height / 2.5,
+                                  color: selectedColor,
+                                  colorBlendMode: BlendMode.srcATop,
+                                  allowDrawingOutsideViewBox: false,
+                                ),
+                              if (pageViewIndex == 0 &&
+                                  _isLogoPresent &&
+                                  _pickedImage != null)
+                                Image.file(
+                                  selectedFile,
+                                  height:
+                                      MediaQuery.of(context).size.height / 2.5,
+                                ),
+                              if (pageViewIndex == 0 && _isTextPresent)
+                                Center(
+                                  child: Text(
+                                    text.toString(),
+                                    style: TextStyle(
+                                        color: textColor,
+                                        fontFamily: fontFamilySelector,
+                                        fontSize:
+                                            MediaQuery.of(context).size.width /
+                                                30),
+                                  ),
+                                ),
+                            ],
+                          ),
+                          if (pageViewIndex == 1 &&
+                              _isLogoPresent &&
+                              _pickedImage == null)
+                            AnimatedPositioned(
+                              duration: Duration(milliseconds: 1),
+                              top: top,
+                              left: left,
+                              child: GestureDetector(
+                                onVerticalDragStart: (details) {
+                                  setState(() {
+                                    top = top;
+                                    left = left;
+                                  });
+                                },
+                                onVerticalDragUpdate: (DragUpdateDetails dd) {
+                                  setState(() {
+                                    top = dd.localPosition.dy;
+                                    left = dd.localPosition.dx;
+                                  });
+                                },
+                                child: Transform.rotate(
+                                  angle: (pi / 4) * angle,
+                                  child: SvgPicture.asset(
+                                    selectedImage,
+                                    height: iconSize.toDouble(),
+                                    colorBlendMode: BlendMode.srcATop,
+                                    allowDrawingOutsideViewBox: false,
+                                    color: selectedColor,
+                                  ),
+                                ),
+                              ),
+                            ),
                         ],
                       ),
                     );
