@@ -1,3 +1,4 @@
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -5,11 +6,13 @@ import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
 import 'package:teeshop/providers/auth.dart';
+import 'package:teeshop/providers/favourites.dart';
 import 'package:teeshop/screens/about_us.dart';
 import 'package:teeshop/screens/buy_now_custom_screen.dart';
 import 'package:teeshop/screens/buy_now_screen.dart';
 import 'package:teeshop/screens/contact_us.dart';
 import 'package:teeshop/screens/customize_screen.dart';
+import 'package:teeshop/screens/favouritesscreen.dart';
 import 'package:teeshop/screens/info_screen.dart';
 import 'package:teeshop/screens/replacement.dart';
 import 'package:teeshop/screens/signin_screen.dart';
@@ -49,10 +52,14 @@ class MyApp extends StatelessWidget {
           ContactUs.routeName: (context) => ContactUs(),
           ReplacementScreen.routeName: (context) => ReplacementScreen(),
           SignInScreen.routeName: (context) => SignInScreen(),
+          FavouritesScreen.routeName: (context) => FavouritesScreen(),
         },
       ),
       providers: [
         ChangeNotifierProvider<Auth>(create: (context) => Auth()),
+        ChangeNotifierProvider<Favourites>(
+          create: (context) => Favourites(),
+        ),
       ],
     );
   }
@@ -70,17 +77,44 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+          context: context,
+          builder: (context) => new AlertDialog(
+            title: new Text(
+              'Do you want to exit ?',
+              style: TextStyle(color: Colors.purple),
+            ),
+            content: new Text('We were enjoying your time with us.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: new Text('No'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: new Text('Yes'),
+              ),
+            ],
+          ),
+        )) ??
+        false;
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.purple,
       statusBarBrightness: Brightness.light,
     ));
-    return Scaffold(
-      drawer: AppDrawer(),
-      body: Provider.of<Auth>(context).getToken()
-          ? ReplacementScreen()
-          : SignInScreen(),
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        drawer: AppDrawer(),
+        body: Provider.of<Auth>(context).getToken()
+            ? ReplacementScreen()
+            : SignInScreen(),
+      ),
     );
   }
 }

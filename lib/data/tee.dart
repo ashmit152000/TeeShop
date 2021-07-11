@@ -1,5 +1,5 @@
 class Polyester {
-  static const List<Map<String, dynamic>> productList = [
+  static List<Map<String, dynamic>> productList = [
     {
       "id": "1",
       "name": "Customisable T-Shirt",
@@ -9,6 +9,8 @@ class Polyester {
       "descShort": "This is a product",
       "descLong":
           "This is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a product",
+      "customisable": true,
+      "fav": false,
     },
     {
       "id": "2",
@@ -19,6 +21,8 @@ class Polyester {
       "descShort": "This is a product",
       "descLong":
           "This is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a product",
+      "customisable": false,
+      "fav": false,
     },
     {
       "id": "3",
@@ -29,6 +33,8 @@ class Polyester {
       "descShort": "This is a product",
       "descLong":
           "This is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a product",
+      "customisable": false,
+      "fav": false,
     },
     {
       "id": "4",
@@ -39,6 +45,8 @@ class Polyester {
       "descShort": "This is a product",
       "descLong":
           "This is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a product",
+      "customisable": false,
+      "fav": false,
     },
     {
       "id": "5",
@@ -49,6 +57,7 @@ class Polyester {
       "descShort": "This is a product",
       "descLong":
           "This is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a product",
+      "fav": false,
     },
     {
       "id": "6",
@@ -59,6 +68,8 @@ class Polyester {
       "descShort": "This is a product",
       "descLong":
           "This is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a product",
+      "customisable": false,
+      "fav": false,
     },
     {
       "id": "7",
@@ -69,6 +80,8 @@ class Polyester {
       "descShort": "This is a product",
       "descLong":
           "This is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a product",
+      "customisable": false,
+      "fav": false,
     },
     {
       "id": "8",
@@ -79,6 +92,8 @@ class Polyester {
       "descShort": "This is a product",
       "descLong":
           "This is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a product",
+      "customisable": false,
+      "fav": false,
     },
     {
       "id": "8",
@@ -89,6 +104,8 @@ class Polyester {
       "descShort": "This is a product",
       "descLong":
           "This is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a product",
+      "customisable": false,
+      "fav": false,
     },
     {
       "id": "8",
@@ -99,6 +116,8 @@ class Polyester {
       "descShort": "This is a product",
       "descLong":
           "This is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a product",
+      "customisable": false,
+      "fav": false,
     },
     {
       "id": "8",
@@ -109,6 +128,8 @@ class Polyester {
       "descShort": "This is a product",
       "descLong":
           "This is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a product",
+      "customisable": false,
+      "fav": false,
     },
     {
       "id": "8",
@@ -119,6 +140,8 @@ class Polyester {
       "descShort": "This is a product",
       "descLong":
           "This is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a product",
+      "customisable": false,
+      "fav": false,
     },
     {
       "id": "8",
@@ -129,6 +152,8 @@ class Polyester {
       "descShort": "This is a product",
       "descLong":
           "This is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a product",
+      "customisable": false,
+      "fav": false,
     },
     {
       "id": "8",
@@ -139,6 +164,8 @@ class Polyester {
       "descShort": "This is a product",
       "descLong":
           "This is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a product",
+      "customisable": false,
+      "fav": false,
     },
     {
       "id": "8",
@@ -149,6 +176,8 @@ class Polyester {
       "descShort": "This is a product",
       "descLong":
           "This is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a product",
+      "customisable": false,
+      "fav": false,
     },
     {
       "id": "8",
@@ -159,6 +188,8 @@ class Polyester {
       "descShort": "This is a product",
       "descLong":
           "This is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a productThis is a product",
+      "customisable": false,
+      "fav": false,
     },
   ];
 }

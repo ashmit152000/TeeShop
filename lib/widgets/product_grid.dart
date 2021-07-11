@@ -1,9 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:teeshop/data/tee.dart';
+import 'package:teeshop/providers/favourites.dart';
 import 'package:teeshop/screens/info_screen.dart';
 
-class ProductGrid extends StatelessWidget {
+class ProductGrid extends StatefulWidget {
   List<Map<String, dynamic>> _productList;
+
   ProductGrid(this._productList);
+
+  @override
+  _ProductGridState createState() => _ProductGridState();
+}
+
+class _ProductGridState extends State<ProductGrid> {
+  var _productListOne = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _productListOne = List.from(widget._productList);
+  }
+
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
@@ -18,7 +36,7 @@ class ProductGrid extends StatelessWidget {
           onTap: () {
             print("Pressed $index");
             Navigator.of(context).pushReplacementNamed(InfoScreen.routeName,
-                arguments: {"data": _productList[index]});
+                arguments: {"data": _productListOne[index]});
           },
           child: GridTile(
             child: ClipRRect(
@@ -26,7 +44,7 @@ class ProductGrid extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage(_productList[index]['url']),
+                    image: AssetImage(_productListOne[index]['url']),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -38,7 +56,7 @@ class ProductGrid extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 child: Container(
                   child: Text(
-                    _productList[index]['name'],
+                    _productListOne[index]['name'],
                     style: TextStyle(
                       color: Colors.white,
                     ),
@@ -50,9 +68,40 @@ class ProductGrid extends StatelessWidget {
                 child: Container(
                   child: Row(
                     children: [
-                      GestureDetector(
-                        child: Icon(Icons.favorite_outline, color: Colors.red),
-                        onTap: () {},
+                      IconButton(
+                        onPressed: () async {
+                          print('Clicked');
+                          var isFav = _productListOne[index]['fav'];
+                          setState(() {
+                            _productListOne[index].update(
+                                'fav', (existingValue) => !existingValue);
+                          });
+
+                          try {
+                            await Provider.of<Favourites>(context,
+                                    listen: false)
+                                .addFavourites(
+                                    merch_cost: widget._productList[index]
+                                        ['price'],
+                                    merch_name: widget._productList[index]
+                                        ['name'],
+                                    merch_id: int.parse(
+                                        widget._productList[index]['id']),
+                                    merch_url: widget._productList[index]
+                                        ['url']);
+                          } catch (error) {
+                            setState(() {
+                              _productListOne[index]['fav'] = isFav;
+                            });
+                            print(error.toString());
+                          }
+                        },
+                        icon: Icon(
+                          _productListOne[index]['fav']
+                              ? Icons.favorite
+                              : Icons.favorite_outline,
+                          color: Colors.red,
+                        ),
                       ),
                     ],
                   ),
@@ -62,7 +111,7 @@ class ProductGrid extends StatelessWidget {
           ),
         );
       },
-      itemCount: _productList.length,
+      itemCount: _productListOne.length,
     );
   }
 }
