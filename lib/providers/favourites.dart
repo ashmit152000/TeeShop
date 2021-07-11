@@ -30,7 +30,5 @@ class Favourites with ChangeNotifier {
     }
   }
 
-  void removeFavourites({
-    
-  }) {}
+  void removeFavourites() {}
 }
