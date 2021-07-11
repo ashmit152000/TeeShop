@@ -33,6 +33,8 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
   var textColor = Colors.black;
   var top = 0.0;
   var left = 0.0;
+  var topText = 0.0;
+  var leftText = 0.0;
   var wallpaperCollection = [
     {"image": "assets/svgs/ironman.svg", "clicked": false, "id": "1"},
     {"image": "assets/svgs/flash.svg", "clicked": false, "id": "2"},
@@ -74,20 +76,31 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
       if (_pickedImage != null) {
         croppedFile = await ImageCropper.cropImage(
             sourcePath: _pickedImage.path,
-            aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+            aspectRatioPresets: [
+              CropAspectRatioPreset.square,
+              CropAspectRatioPreset.ratio3x2,
+              CropAspectRatioPreset.original,
+              CropAspectRatioPreset.ratio4x3,
+              CropAspectRatioPreset.ratio16x9,
+              CropAspectRatioPreset.ratio5x3,
+              CropAspectRatioPreset.ratio5x4,
+              CropAspectRatioPreset.ratio7x5,
+            ],
             compressQuality: 100,
-            maxWidth: 700,
-            maxHeight: 700,
+            maxWidth: 200,
+            maxHeight: 200,
             compressFormat: ImageCompressFormat.jpg,
             androidUiSettings: AndroidUiSettings(
-              toolbarColor: Colors.orange,
+              toolbarColor: Colors.purple,
               toolbarTitle: 'TeeShop Cropper',
               backgroundColor: Colors.white,
             ));
-
+        print(croppedFile.toString());
         setState(() {
           selectedFile = croppedFile;
         });
+      } else {
+        _pickedImage = null;
       }
     } catch (error) {
       print(error);
@@ -135,89 +148,27 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
               Padding(
                 padding: EdgeInsets.all(15),
                 child: CarouselSlider.builder(
-                  itemCount: 2,
+                  itemCount: 1,
                   itemBuilder:
                       (BuildContext context, int itemIndex, int pageViewIndex) {
                     return Card(
                       elevation: 8,
                       child: Stack(
                         children: [
-                          if (pageViewIndex == 1)
-                            Container(
-                              height: MediaQuery.of(context).size.height / 2.3,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage(
-                                    _productData['data']['url'],
-                                  ),
+                          Container(
+                            height: MediaQuery.of(context).size.height / 2.3,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: AssetImage(
+                                  _productData['data']['url'],
                                 ),
                               ),
                             ),
-                          Column(
-                            children: [
-                              if (pageViewIndex == 1 &&
-                                  _isLogoPresent &&
-                                  _pickedImage != null)
-                                Transform.rotate(
-                                  angle: (pi / 4) * angle,
-                                  child: Image.file(
-                                    selectedFile,
-                                    height: iconSize.toDouble(),
-                                  ),
-                                ),
-                              if (pageViewIndex == 1 && _isTextPresent)
-                                Transform.rotate(
-                                  angle: (pi / 4) * textRotation,
-                                  child: Text(
-                                    text.toString(),
-                                    style: TextStyle(
-                                        fontSize: textSize,
-                                        fontFamily: fontFamilySelector,
-                                        color: textColor),
-                                  ),
-                                ),
-                            ],
                           ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              if (pageViewIndex == 0 &&
-                                  _isLogoPresent &&
-                                  _pickedImage == null)
-                                SvgPicture.asset(
-                                  selectedImage,
-                                  height:
-                                      MediaQuery.of(context).size.height / 2.5,
-                                  color: selectedColor,
-                                  colorBlendMode: BlendMode.srcATop,
-                                  allowDrawingOutsideViewBox: false,
-                                ),
-                              if (pageViewIndex == 0 &&
-                                  _isLogoPresent &&
-                                  _pickedImage != null)
-                                Image.file(
-                                  selectedFile,
-                                  height:
-                                      MediaQuery.of(context).size.height / 2.5,
-                                ),
-                              if (pageViewIndex == 0 && _isTextPresent)
-                                Center(
-                                  child: Text(
-                                    text.toString(),
-                                    style: TextStyle(
-                                        color: textColor,
-                                        fontFamily: fontFamilySelector,
-                                        fontSize:
-                                            MediaQuery.of(context).size.width /
-                                                30),
-                                  ),
-                                ),
-                            ],
-                          ),
-                          if (pageViewIndex == 1 &&
-                              _isLogoPresent &&
-                              _pickedImage == null)
+                          if (_isLogoPresent &&
+                              _pickedImage == null &&
+                              selectedFile == null)
                             AnimatedPositioned(
                               duration: Duration(milliseconds: 1),
                               top: top,
@@ -243,6 +194,53 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                     colorBlendMode: BlendMode.srcATop,
                                     allowDrawingOutsideViewBox: false,
                                     color: selectedColor,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          if (_isLogoPresent &&
+                              _pickedImage != null &&
+                              selectedFile != null)
+                            AnimatedPositioned(
+                              top: top,
+                              left: left,
+                              duration: Duration(milliseconds: 1),
+                              child: GestureDetector(
+                                onVerticalDragUpdate: (dd) {
+                                  setState(() {
+                                    top = dd.localPosition.dy;
+                                    left = dd.localPosition.dx;
+                                  });
+                                },
+                                child: Transform.rotate(
+                                  angle: (pi / 4) * angle,
+                                  child: Image.file(
+                                    selectedFile,
+                                    height: iconSize.toDouble(),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          if (_isTextPresent)
+                            AnimatedPositioned(
+                              top: topText,
+                              left: leftText,
+                              duration: Duration(milliseconds: 1),
+                              child: GestureDetector(
+                                onVerticalDragUpdate: (dd) {
+                                  setState(() {
+                                    topText = dd.localPosition.dy;
+                                    leftText = dd.localPosition.dx;
+                                  });
+                                },
+                                child: Transform.rotate(
+                                  angle: (pi / 4) * textRotation,
+                                  child: Text(
+                                    text.toString(),
+                                    style: TextStyle(
+                                        fontSize: textSize,
+                                        fontFamily: fontFamilySelector,
+                                        color: textColor),
                                   ),
                                 ),
                               ),
@@ -660,6 +658,8 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
           onChanged: (newValue) {
             setState(() {
               _isLogoPresent = newValue;
+              top = 0.0;
+              left = 0.0;
             });
           }),
       Expanded(
@@ -682,6 +682,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                   }
                   wallpaperCollection[index]['clicked'] = true;
                 });
+                _pickedImage = null;
               },
               child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(0)),
@@ -722,6 +723,8 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                 onChanged: (newValue) {
                   setState(() {
                     _isTextPresent = newValue;
+                    topText = 0.0;
+                    leftText = 0.0;
                   });
                 }),
           ]),
