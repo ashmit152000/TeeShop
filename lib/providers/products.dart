@@ -32,7 +32,7 @@ class Product with ChangeNotifier {
         });
   }
 
-  Future<List<dynamic>> products(BuildContext context) async {
+  Future<Map<String, dynamic>> products(BuildContext context) async {
     var url = Uri.parse('https://teeshopindia.in/products/${user_id}');
     var response = await http.get(
       url,
@@ -43,6 +43,6 @@ class Product with ChangeNotifier {
       _showErrorDialog(context, responseData['message'].toString());
     }
 
-    return responseData['products'];
+    return responseData;
   }
 }

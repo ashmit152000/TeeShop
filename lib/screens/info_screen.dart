@@ -22,7 +22,10 @@ class _InfoScreenState extends State<InfoScreen> {
             title: Text(data['data']['name']),
             content: SingleChildScrollView(
               child: Column(
-                children: [Text(data['data']['descLong'])],
+                children: [
+                  if (data['data']['descLong'] != null)
+                    Text(data['data']['descLong'])
+                ],
               ),
             ),
           );
@@ -78,7 +81,7 @@ class _InfoScreenState extends State<InfoScreen> {
                       child: Column(
                         children: [
                           InteractiveViewer(
-                            child: Image.asset(
+                            child: Image.network(
                               _productData['data']['url'],
                               width: double.infinity,
                             ),
@@ -211,7 +214,7 @@ class _InfoScreenState extends State<InfoScreen> {
                 SizedBox(
                   height: 10,
                 ),
-                if (_productData['data']['customisable'])
+                if (_productData['data']['customizable'])
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: InkWell(

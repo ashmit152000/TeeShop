@@ -12,6 +12,7 @@ class ProductGrid extends StatefulWidget {
 
 class _ProductGridState extends State<ProductGrid> {
   var _productListOne = [];
+  var _userData = {};
   var favList;
   var isFav;
   var _isLoading = false;
@@ -28,7 +29,8 @@ class _ProductGridState extends State<ProductGrid> {
         .products(context)
         .then((value) {
       setState(() {
-        _productListOne = List.from(value);
+        _productListOne = List.from(value["products"]);
+        _userData = value["user"];
         _isLoading = false;
       });
     });
@@ -41,7 +43,8 @@ class _ProductGridState extends State<ProductGrid> {
         .products(context)
         .then((value) {
       setState(() {
-        _productListOne = List.from(value);
+        _productListOne = List.from(value["products"]);
+        _userData = value["user"];
         _isLoading = false;
       });
     });
@@ -62,9 +65,11 @@ class _ProductGridState extends State<ProductGrid> {
               return GestureDetector(
                 onTap: () {
                   print("Pressed $index");
-                  Navigator.of(context).pushReplacementNamed(
-                      InfoScreen.routeName,
-                      arguments: {"data": _productListOne[index]});
+                  Navigator.of(context)
+                      .pushReplacementNamed(InfoScreen.routeName, arguments: {
+                    "data": _productListOne[index],
+                    "user": _userData
+                  });
                 },
                 child: GridTile(
                   child: ClipRRect(
@@ -123,7 +128,7 @@ class _ProductGridState extends State<ProductGrid> {
                                     print(error.toString());
                                   }
                                 }
-            
+
                                 await getData();
                               },
                               icon: Icon(

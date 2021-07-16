@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:teeshop/providers/orders.dart';
 
 class BuyNowScreen extends StatefulWidget {
   static const routeName = '/buy-now';
@@ -13,7 +15,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
   dynamic quantity = 1;
   int total = 399;
   TextEditingController qtyController = TextEditingController();
-
+  var productData;
   late Razorpay _razorpay;
   String address =
       "QTR No. S/2, \n S-Block, \n Hudco Extension, \n Near Ansal Plaza, \n 110049, \n Delhi, New Delhi";
@@ -27,7 +29,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
     // TODO: implement initState
     super.initState();
     _razorpay = new Razorpay();
-    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, handlerPaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, paySuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, handlerErrorFailure);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, handlerExternalWallet);
   }
@@ -39,7 +41,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
     _razorpay.clear();
   }
 
-  void _onPayment() {
+  void _onPayment(user, product) {
     if (dropdownValue == "") {
       Fluttertoast.showToast(
           msg: "Please choose your preferred size",
@@ -48,18 +50,17 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
           toastLength: Toast.LENGTH_LONG);
       return;
     }
-    openCheckout();
+    openCheckout(user, product);
   }
 
-  void openCheckout() {
+  void openCheckout(userData, productData) {
     var options = {
       "key": "rzp_live_upLxYKABKr7bhM",
-      "amount": "${total * 100}",
+      "amount": "${1 * 100}",
       "name": "TeeShop",
       "description": "Payment for the mechandise",
       "prefill": {
-        "contact": "9588955499",
-        // "email": user != null ? user!.email : "",
+        "email": userData,
         "size": "$dropdownValue",
         "address": "$address",
         "quantity": "$quantity",
@@ -71,8 +72,17 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
     } catch (error) {}
   }
 
-  void handlerPaymentSuccess() {
-    print('Success!!');
+  void paySuccess(PaymentSuccessResponse r) async {
+    // Fluttertoast.showToast(msg: quantity.toString());
+    // Fluttertoast.showToast(msg: dropdownValue.toString());
+    try {
+      await Provider.of<Order>(context, listen: false)
+          .addOrder(context, productData['id'], quantity, dropdownValue);
+      Fluttertoast.showToast(
+          msg: "Order placed successfully!", backgroundColor: Colors.green);
+    } catch (error) {
+      print(error);
+    }
   }
 
   void handlerErrorFailure() {
@@ -89,6 +99,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     Map<String, dynamic> buyData =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    productData = _productData['data'];
     if (quantity > 10 && qtyController.text != '') {
       quantityText = qtyController.text;
     }
@@ -124,7 +135,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                       child: Column(
                         children: [
                           InteractiveViewer(
-                            child: Image.asset(
+                            child: Image.network(
                               _productData['data']['url'],
                               width: double.infinity,
                             ),
@@ -356,7 +367,8 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                   borderRadius: BorderRadius.circular(10),
                   child: InkWell(
                     onTap: () {
-                      return _onPayment();
+                      return _onPayment(
+                          _productData['user']['email'], _productData['data']);
                     },
                     child: Container(
                       padding: EdgeInsets.all(10),
