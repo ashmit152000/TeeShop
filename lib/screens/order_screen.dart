@@ -55,6 +55,8 @@ class _OrderScreenState extends State<OrderScreen> {
     super.didChangeDependencies();
   }
 
+  bool showDesc = false;
+
   Widget getList() {
     return ListView.separated(
       itemBuilder: (context, index) {
@@ -62,26 +64,69 @@ class _OrderScreenState extends State<OrderScreen> {
             .format(DateTime.parse(orders[index]["created_at"]));
         return Container(
           padding: EdgeInsets.all(10),
-          child: ListTile(
-            leading: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          child: GestureDetector(
+            onTap: () {
+              setState(() {
+                orders[index]['showDesc'] = !orders[index]['showDesc'];
+              });
+              print(showDesc);
+            },
+            child: Column(
               children: [
-                Text(
-                  products[index]["name"],
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                ListTile(
+                  leading: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        products[index]["name"],
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(date),
+                    ],
+                  ),
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text('Amount:'),
+                      Text(
+                          '₹${orders[index]['quantity'] * products[index]['price']}')
+                    ],
+                  ),
+                  trailing: Icon(orders[index]['showDesc']
+                      ? Icons.expand_less
+                      : Icons.expand_more),
                 ),
-                Text(date),
-              ],
-            ),
-            trailing: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  "QTY: " + orders[index]['quantity'].toString(),
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text(
-                    'Amount:  ₹${orders[index]['quantity'] * products[index]['price']}')
+                if (orders[index]['showDesc']) Divider(),
+                AnimatedContainer(
+                  duration: Duration(milliseconds: 300),
+                  height: orders[index]["showDesc"] ? 200 : 0,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Image.network(
+                          products[index]['url'],
+                          height: 100,
+                          width: 100,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text("Size: " + orders[index]["size"]),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text('Quantity: ' +
+                            orders[index]['quantity'].toString()),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text('Description Short: ' +
+                            products[index]['descShort'].toString())
+                      ],
+                    ),
+                  ),
+                )
               ],
             ),
           ),
