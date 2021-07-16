@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:teeshop/data/http_exception.dart';
 
 class Auth with ChangeNotifier {
-  var _token;
   var _userId;
 
   int get userData {
@@ -30,7 +29,8 @@ class Auth with ChangeNotifier {
         _showErrorDialog(context, responseData['message'].toString());
         return;
       }
-      _userId = responseData['user']['id'];
+      _userId = int.parse(responseData['user']['id'].toString());
+      print(_userId.runtimeType);
       notifyListeners();
     } catch (error) {
       throw HttpException(error.toString());
@@ -76,7 +76,8 @@ class Auth with ChangeNotifier {
         _showErrorDialog(context, responseData['message'].toString());
         return;
       }
-      _userId = responseData['user']['id'];
+      _userId = int.parse(responseData['user']['id'].toString());
+      print(_userId.runtimeType);
       notifyListeners();
     } catch (error) {
       // throw HttpException(error.toString());

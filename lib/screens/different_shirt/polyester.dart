@@ -12,7 +12,7 @@ class _BasicTeeScreenState extends State<BasicTeeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: ProductGrid(Polyester.productList),
+        body: ProductGrid(),
       ),
     );
   }

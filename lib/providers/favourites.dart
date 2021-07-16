@@ -1,11 +1,12 @@
 import 'dart:convert';
-
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:teeshop/data/http_exception.dart';
 import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 class Favourites extends ChangeNotifier {
-  int user_id = 0;
+  var user_id;
 
   void update(userId) {
     user_id = userId;
@@ -32,37 +33,47 @@ class Favourites extends ChangeNotifier {
         });
   }
 
-  Future<void> addFavourites(
-    BuildContext context, {
-    int product_id = 0,
-  }) async {
-    var url = Uri.parse('https://teeshopindia.in/favourite');
-    var response = await http.post(
-      url,
-      headers: {"Accept": "application/json"},
-      body: {'user_id': user_id, 'product_id': product_id},
-    );
-    final responseData = json.decode(response.body);
-    print(responseData);
-    if (responseData['status'] == '401') {
-      _showErrorDialog(context, responseData['errors'].toString());
+  Future<void> addFavourites(BuildContext context, int product_id) async {
+    try {
+      var dio = Dio();
+      var url = 'https://teeshopindia.in/favourite';
+      Map<String, dynamic> bodyModel = {
+        "user_id": user_id,
+        "product_id": product_id
+      };
+      final response = await dio.post(url,
+          data: bodyModel,
+          options: Options(
+              contentType: Headers.jsonContentType,
+              responseType: ResponseType.json));
+      print(response.data);
+      if (response.data['status'] == '401') {
+        _showErrorDialog(context, response.data['errors'].toString());
+      }
+    } catch (error) {
+      print(error);
     }
   }
 
-  void removeFavourites(
-    BuildContext context, {
-    int id = 0,
-  }) async {
-    var url = Uri.parse('https://teeshopindia.in/favourite');
-    var response = await http.delete(
-      url,
-      headers: {"Accept": "application/json"},
-      body: {'id': id},
-    );
-    final responseData = json.decode(response.body);
-    print(responseData);
-    if (responseData['status'] == '401') {
-      _showErrorDialog(context, responseData['errors'].toString());
+  Future<void> removeFavourites(BuildContext context, int product_id) async {
+    try {
+      var url = 'https://teeshopindia.in/favourite';
+      var dio = Dio();
+      Map<String, dynamic> bodyModel = {
+        "user_id": user_id,
+        "product_id": product_id
+      };
+      var response = await dio.delete(url,
+          options: Options(
+              contentType: Headers.jsonContentType,
+              responseType: ResponseType.json),
+          data: bodyModel);
+      print(response.data);
+      if (response.data['status'] == '401') {
+        _showErrorDialog(context, response.data['message'].toString());
+      }
+    } catch (error) {
+      print(error);
     }
   }
 }

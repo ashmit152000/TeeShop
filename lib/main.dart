@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:teeshop/providers/auth.dart';
 import 'package:teeshop/providers/favourites.dart';
+import 'package:teeshop/providers/products.dart';
 import 'package:teeshop/screens/about_us.dart';
 import 'package:teeshop/screens/buy_now_custom_screen.dart';
 import 'package:teeshop/screens/buy_now_screen.dart';
@@ -53,6 +54,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<Auth>(create: (context) => Auth()),
         ChangeNotifierProxyProvider<Auth, Favourites>(
           create: (context) => Favourites(),
+          update: (context, auth, previousResponse) =>
+              previousResponse!..update(auth.userData),
+        ),
+        ChangeNotifierProxyProvider<Auth, Product>(
+          create: (context) => Product(),
           update: (context, auth, previousResponse) =>
               previousResponse!..update(auth.userData),
         ),
