@@ -112,12 +112,23 @@ class _OrderScreenState extends State<OrderScreen> {
                         SizedBox(
                           height: 10,
                         ),
-                        Text("Size: " + orders[index]["size"]),
+                        Row(children: [
+                          Text(
+                            "Size: ",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text(orders[index]["size"])
+                        ]),
                         SizedBox(
                           height: 10,
                         ),
-                        Text('Quantity: ' +
-                            orders[index]['quantity'].toString()),
+                        Row(children: [
+                          Text(
+                            "Quantity: ",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text(orders[index]["quantity"].toString())
+                        ]),
                         SizedBox(
                           height: 10,
                         ),
