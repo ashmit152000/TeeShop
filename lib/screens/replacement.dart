@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:teeshop/screens/different_shirt/custom_tee.dart';
 import 'package:teeshop/screens/different_shirt/full_sleeves.dart';
 import 'package:teeshop/screens/different_shirt/embro_polo.dart';

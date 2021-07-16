@@ -1,4 +1,3 @@
-import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -11,8 +10,9 @@ import 'package:teeshop/screens/buy_now_custom_screen.dart';
 import 'package:teeshop/screens/buy_now_screen.dart';
 import 'package:teeshop/screens/contact_us.dart';
 import 'package:teeshop/screens/customize_screen.dart';
-import 'package:teeshop/screens/favouritesscreen.dart';
+
 import 'package:teeshop/screens/info_screen.dart';
+import 'package:teeshop/screens/order_screen.dart';
 import 'package:teeshop/screens/replacement.dart';
 import 'package:teeshop/screens/signin_screen.dart';
 import 'package:teeshop/widgets/app_drawer.dart';
@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
           ContactUs.routeName: (context) => ContactUs(),
           ReplacementScreen.routeName: (context) => ReplacementScreen(),
           SignInScreen.routeName: (context) => SignInScreen(),
-          FavouritesScreen.routeName: (context) => FavouritesScreen(),
+          OrderScreen.routeName: (context) => OrderScreen(),
         },
       ),
       providers: [

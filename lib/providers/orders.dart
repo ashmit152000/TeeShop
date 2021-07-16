@@ -59,4 +59,26 @@ class Order with ChangeNotifier {
       print(error);
     }
   }
+
+  Future<dynamic> fetchOrders(BuildContext context) async {
+    var url = 'https://teeshopindia.in/orders/$user_id';
+
+    try {
+      var dio = Dio();
+      var response = await dio.get(
+        url,
+      );
+
+      print(response.data);
+      if (response.data['status'] == '401') {
+        _showErrorDialog(
+            context, response.data['message'].toString(), "Error :(");
+        return;
+      }
+
+      return response.data;
+    } catch (error) {
+      print(error);
+    }
+  }
 }

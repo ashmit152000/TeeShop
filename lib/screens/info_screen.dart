@@ -63,164 +63,136 @@ class _InfoScreenState extends State<InfoScreen> {
     print(_productData);
     return WillPopScope(
       onWillPop: _onWillPop,
-      child: Scaffold(
-        drawer: AppDrawer(),
-        appBar: AppBar(
-          title: Text('TeeShop'),
-        ),
-        body: Container(
-          padding: EdgeInsets.all(10),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Column(
-                  children: [
-                    Card(
-                      elevation: 8,
-                      child: Column(
-                        children: [
-                          InteractiveViewer(
-                            child: Image.network(
-                              _productData['data']['url'],
-                              width: double.infinity,
+      child: SafeArea(
+        child: Scaffold(
+          drawer: AppDrawer(),
+          appBar: AppBar(
+            title: Text('TeeShop'),
+          ),
+          body: Container(
+            padding: EdgeInsets.all(10),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Column(
+                    children: [
+                      Card(
+                        elevation: 8,
+                        child: Column(
+                          children: [
+                            InteractiveViewer(
+                              child: Image.network(
+                                _productData['data']['url'],
+                                width: double.infinity,
+                              ),
                             ),
-                          ),
-                          Padding(padding: EdgeInsets.all(10)),
-                          Container(
-                            child: Text(
-                              _productData['data']['name'],
-                              style: TextStyle(fontSize: 15),
+                            Padding(padding: EdgeInsets.all(10)),
+                            Container(
+                              child: Text(
+                                _productData['data']['name'],
+                                style: TextStyle(fontSize: 15),
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(bottom: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Row(
-                                  children: [
-                                    Icon(
-                                      FontAwesomeIcons.tags,
-                                    ),
-                                    SizedBox(
-                                      width: 15,
-                                    ),
-                                    Text(
-                                      '₹${_productData['data']['price']}/-',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    )
-                                  ],
-                                ),
-                              ],
+                            SizedBox(
+                              height: 5,
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    // Container(
-                    //   padding: EdgeInsets.all(10),
-                    //   width: double.infinity,
-                    //   alignment: Alignment.center,
-                    //   child: Text(
-                    //     '₹399/-',
-                    //     style: TextStyle(color: Colors.white, fontSize: 20),
-                    //   ),
-                    //   decoration: BoxDecoration(
-                    //     gradient: LinearGradient(
-                    //       colors: [Color(0xFFf53844), Color(0xFF864ba2)],
-                    //     ),
-                    //   ),
-                    // ),
-                  ],
-                ),
-                SizedBox(height: 10),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      showDesc = !showDesc;
-                    });
-                  },
-                  child: Card(
-                    elevation: 8,
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Text('Description'),
-                              Icon(showDesc
-                                  ? Icons.expand_less
-                                  : Icons.expand_more),
-                            ],
-                          ),
-                          showDesc ? Divider() : Container(),
-                          AnimatedContainer(
-                            duration: Duration(milliseconds: 300),
-                            height: showDesc ? 100 : 0,
-                            child: SingleChildScrollView(
-                              child: Column(
+                            Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    _productData['data']['descShort'],
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        FontAwesomeIcons.tags,
+                                      ),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
+                                      Text(
+                                        '₹${_productData['data']['price']}/-',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ],
                                   ),
-                                  TextButton(
-                                      onPressed: () {
-                                        return _showDialog(_productData);
-                                      },
-                                      child: Text('More Details'))
                                 ],
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
+                      // Container(
+                      //   padding: EdgeInsets.all(10),
+                      //   width: double.infinity,
+                      //   alignment: Alignment.center,
+                      //   child: Text(
+                      //     '₹399/-',
+                      //     style: TextStyle(color: Colors.white, fontSize: 20),
+                      //   ),
+                      //   decoration: BoxDecoration(
+                      //     gradient: LinearGradient(
+                      //       colors: [Color(0xFFf53844), Color(0xFF864ba2)],
+                      //     ),
+                      //   ),
+                      // ),
+                    ],
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: InkWell(
+                  SizedBox(height: 10),
+                  GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pushNamed(BuyNowScreen.routeName,
-                          arguments: _productData);
+                      setState(() {
+                        showDesc = !showDesc;
+                      });
                     },
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              colors: [Color(0xFF5f0a87), Color(0xFFa4508b)])),
-                      child: Center(
-                        child: Text(
-                          'Buy Now',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                          ),
+                    child: Card(
+                      elevation: 8,
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Text('Description'),
+                                Icon(showDesc
+                                    ? Icons.expand_less
+                                    : Icons.expand_more),
+                              ],
+                            ),
+                            showDesc ? Divider() : Container(),
+                            AnimatedContainer(
+                              duration: Duration(milliseconds: 300),
+                              height: showDesc ? 100 : 0,
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      _productData['data']['descShort'],
+                                    ),
+                                    TextButton(
+                                        onPressed: () {
+                                          return _showDialog(_productData);
+                                        },
+                                        child: Text('More Details'))
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                if (_productData['data']['customizable'])
+                  SizedBox(
+                    height: 10,
+                  ),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: InkWell(
                       onTap: () {
-                        Navigator.of(context).pushNamed(
-                            CustomizeScreen.routeName,
+                        Navigator.of(context).pushNamed(BuyNowScreen.routeName,
                             arguments: _productData);
                       },
                       child: Container(
@@ -231,7 +203,63 @@ class _InfoScreenState extends State<InfoScreen> {
                           Color(0xFFa4508b)
                         ])),
                         child: Center(
-                          child: Text('Customise',
+                          child: Text(
+                            'Buy Now',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  if (_productData['data']['customizable'])
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(
+                              CustomizeScreen.routeName,
+                              arguments: _productData);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(colors: [
+                            Color(0xFF5f0a87),
+                            Color(0xFFa4508b)
+                          ])),
+                          child: Center(
+                            child: Text('Customise',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700)),
+                          ),
+                        ),
+                      ),
+                    ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: InkWell(
+                      onTap: () {
+                        print('Add To Cart');
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(colors: [
+                          Color(0xFF5f0a87),
+                          Color(0xFFa4508b)
+                        ])),
+                        child: Center(
+                          child: Text('Add To Cart',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w700)),
@@ -239,30 +267,8 @@ class _InfoScreenState extends State<InfoScreen> {
                       ),
                     ),
                   ),
-                SizedBox(
-                  height: 10,
-                ),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: InkWell(
-                    onTap: () {
-                      print('Add To Cart');
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              colors: [Color(0xFF5f0a87), Color(0xFFa4508b)])),
-                      child: Center(
-                        child: Text('Add To Cart',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700)),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
