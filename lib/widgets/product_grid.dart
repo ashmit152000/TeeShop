@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:teeshop/data/tee.dart';
 import 'package:teeshop/providers/favourites.dart';
 import 'package:teeshop/screens/info_screen.dart';
 
@@ -15,7 +14,8 @@ class ProductGrid extends StatefulWidget {
 
 class _ProductGridState extends State<ProductGrid> {
   var _productListOne = [];
-
+  var favList;
+  var isFav;
   @override
   void initState() {
     super.initState();
@@ -32,6 +32,11 @@ class _ProductGridState extends State<ProductGrid> {
           crossAxisSpacing: 10,
           mainAxisSpacing: 10),
       itemBuilder: (context, index) {
+        // Provider.of<Favourites>(context, listen: false)
+        //     .getFav(_productListOne[index]['id'])
+        //     .then((value) {
+        //   isFav = value;
+        // });
         return GestureDetector(
           onTap: () {
             print("Pressed $index");
@@ -70,34 +75,20 @@ class _ProductGridState extends State<ProductGrid> {
                     children: [
                       IconButton(
                         onPressed: () async {
-                          print('Clicked');
-                          var isFav = _productListOne[index]['fav'];
-                          setState(() {
-                            _productListOne[index].update(
-                                'fav', (existingValue) => !existingValue);
-                          });
-
                           try {
                             await Provider.of<Favourites>(context,
                                     listen: false)
-                                .addFavourites(
-                                    merch_cost: widget._productList[index]
-                                        ['price'],
-                                    merch_name: widget._productList[index]
-                                        ['name'],
-                                    merch_id: int.parse(
-                                        widget._productList[index]['id']),
-                                    merch_url: widget._productList[index]
-                                        ['url']);
+                                .addFavourites(context,
+                                    product_id: _productListOne[index]['id']);
                           } catch (error) {
                             setState(() {
-                              _productListOne[index]['fav'] = isFav;
+                              _productListOne[index]['fav'] = false;
                             });
                             print(error.toString());
                           }
                         },
                         icon: Icon(
-                          _productListOne[index]['fav']
+                          isFav == true
                               ? Icons.favorite
                               : Icons.favorite_outline,
                           color: Colors.red,

@@ -1,9 +1,6 @@
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:provider/provider.dart';
 import 'package:teeshop/providers/auth.dart';
 import 'package:teeshop/providers/favourites.dart';
@@ -16,20 +13,17 @@ import 'package:teeshop/screens/favouritesscreen.dart';
 import 'package:teeshop/screens/info_screen.dart';
 import 'package:teeshop/screens/replacement.dart';
 import 'package:teeshop/screens/signin_screen.dart';
-
 import 'package:teeshop/widgets/app_drawer.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    User? user = FirebaseAuth.instance.currentUser;
-
     return MultiProvider(
       child: MaterialApp(
         title: 'TeeShop',
@@ -57,8 +51,10 @@ class MyApp extends StatelessWidget {
       ),
       providers: [
         ChangeNotifierProvider<Auth>(create: (context) => Auth()),
-        ChangeNotifierProvider<Favourites>(
+        ChangeNotifierProxyProvider<Auth, Favourites>(
           create: (context) => Favourites(),
+          update: (context, auth, previousResponse) =>
+              previousResponse!..update(auth.userData),
         ),
       ],
     );

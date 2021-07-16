@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -22,7 +21,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
   String dropdownValue = "";
   Map<String, dynamic> buyData = {};
   dynamic quantityText = 11;
-  User? user = FirebaseAuth.instance.currentUser;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -60,7 +59,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
       "description": "Payment for the mechandise",
       "prefill": {
         "contact": "9588955499",
-        "email": user != null ? user!.email : "",
+        // "email": user != null ? user!.email : "",
         "size": "$dropdownValue",
         "address": "$address",
         "quantity": "$quantity",

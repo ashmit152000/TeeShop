@@ -1,6 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:teeshop/data/http_exception.dart';
 import 'package:teeshop/providers/auth.dart';
 
 enum AuthMode { Signup, Signin }
@@ -26,6 +26,25 @@ class _SignInScreenState extends State<SignInScreen>
   late String cPasswordId;
   late GlobalKey<FormState> gKey = GlobalKey();
   bool _isLoading = false;
+  void _showErrorDialog(String message) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('An error occured'),
+            content: Text(message),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -51,26 +70,29 @@ class _SignInScreenState extends State<SignInScreen>
     });
     if (authMode == AuthMode.Signin) {
       try {
-        await Provider.of<Auth>(context, listen: false).signIn(
-            authData['email'].toString(), authData["password"].toString());
-
-        setState(() {
-          _isLoading = false;
-        });
+        await Provider.of<Auth>(context, listen: false).login(
+            authData['email'].toString(),
+            authData["password"].toString(),
+            context);
       } catch (error) {
         print(error);
       }
+      setState(() {
+        _isLoading = false;
+      });
     } else {
       try {
-        await Provider.of<Auth>(context, listen: false).signup(
-            authData['email'].toString(), authData["password"].toString());
-
-        setState(() {
-          _isLoading = false;
-        });
-      } catch (error) {
-        print(error);
+        await Provider.of<Auth>(context, listen: false).signUp(
+            authData['email'].toString(),
+            authData["password"].toString(),
+            context);
+      } on HttpException catch (error) {
+        _showErrorDialog(error.toString());
       }
+
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -84,11 +106,15 @@ class _SignInScreenState extends State<SignInScreen>
   void toggleAuth() {
     if (authMode == AuthMode.Signin) {
       setState(() {
+        email.clear();
+        password.clear();
         authMode = AuthMode.Signup;
       });
       animation.forward();
     } else {
       setState(() {
+        email.clear();
+        password.clear();
         authMode = AuthMode.Signin;
       });
       animation.reverse();

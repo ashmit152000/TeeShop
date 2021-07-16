@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +9,6 @@ import 'package:teeshop/screens/favouritesscreen.dart';
 class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    User? user = FirebaseAuth.instance.currentUser;
     return Drawer(
       child: Container(
         child: ListView(
@@ -100,33 +98,33 @@ class AppDrawer extends StatelessWidget {
               ),
               title: GestureDetector(
                 onTap: () {
-                  if (!user!.emailVerified) {
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: Text(
-                          'Verify email',
-                          style: TextStyle(color: Colors.purple),
-                        ),
-                        content: Text(
-                            'Your email is not verified. Please verify it'),
-                        actions: [
-                          TextButton(
-                            onPressed: () async {
-                              await user.sendEmailVerification();
-                              Fluttertoast.showToast(
-                                  msg:
-                                      'Verification link sent to your registered email ${user.email}');
-                              await Provider.of<Auth>(context, listen: false)
-                                  .logout();
-                              Navigator.of(context).pop();
-                            },
-                            child: Text('SEND VERIFICATION'),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
+                  // if (!user!.emailVerified) {
+                  //   showDialog(
+                  //     context: context,
+                  //     builder: (context) => AlertDialog(
+                  //       title: Text(
+                  //         'Verify email',
+                  //         style: TextStyle(color: Colors.purple),
+                  //       ),
+                  //       content: Text(
+                  //           'Your email is not verified. Please verify it'),
+                  //       actions: [
+                  //         TextButton(
+                  //           onPressed: () async {
+                  //             // await user.sendEmailVerification();
+                  //             // Fluttertoast.showToast(
+                  //             //     msg:
+                  //             //         'Verification link sent to your registered email ${user.email}');
+                  //             // await Provider.of<Auth>(context, listen: false)
+                  //             //     .logout();
+                  //             Navigator.of(context).pop();
+                  //           },
+                  //           child: Text('SEND VERIFICATION'),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   );
+                  // }
                 },
                 child: Row(
                   children: [
@@ -137,11 +135,11 @@ class AppDrawer extends StatelessWidget {
                     SizedBox(
                       width: 10,
                     ),
-                    if (!user!.emailVerified)
-                      Icon(
-                        Icons.warning,
-                        color: Colors.red,
-                      )
+                    // if (!user!.emailVerified)
+                    Icon(
+                      Icons.warning,
+                      color: Colors.red,
+                    )
                   ],
                 ),
               ),

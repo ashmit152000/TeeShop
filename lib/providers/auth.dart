@@ -1,79 +1,110 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:teeshop/data/http_exception.dart';
 
-class Auth extends ChangeNotifier {
-  String _token = '';
-  String _userId = '';
-  bool isVerified = false;
+class Auth with ChangeNotifier {
+  var _token;
+  var _userId;
 
-  bool getToken() {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    if (_userId != '') {
-      return true;
-    } else {
-      return false;
-    }
+  int get userData {
+    return _userId;
   }
 
-  Future<void> verifyMail() async {
-    User? user = FirebaseAuth.instance.currentUser;
-
-    if (user != null && !user.emailVerified) {
-      await user.sendEmailVerification();
-    }
-    if (user != null && user.emailVerified) {
-      isVerified = true;
-    }
-    notifyListeners();
-  }
-
-  bool isVerifiedMail() {
-    if (isVerified == true) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  Future<void> signIn(@required String email, @required String password) async {
+  Future<void> login(
+      String email, String password, BuildContext context) async {
+    var url = Uri.parse('https://teeshopindia.in/login');
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-      print('Sign in here');
-      print(userCredential);
-      _userId = userCredential.user!.uid.toString();
-      notifyListeners();
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+      var response = await http.post(
+        url,
+        headers: {"Accept": "application/json"},
+        body: {
+          'email': email,
+          'password': password,
+        },
+      );
+      final responseData = json.decode(response.body);
+
+      if (responseData['status'] == 401) {
+        _showErrorDialog(context, responseData['message'].toString());
+        return;
       }
+      _userId = responseData['user']['id'];
+      notifyListeners();
+    } catch (error) {
+      throw HttpException(error.toString());
     }
   }
 
-  Future<void> signup(@required String email, @required String password) async {
-    try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
+  void _showErrorDialog(context, message) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'Error!!',
+              style: TextStyle(color: Colors.purple),
+            ),
+            content: Text(message),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'))
+            ],
+          );
+        });
+  }
 
-      _userId = userCredential.user!.uid;
-      notifyListeners();
-      print(userCredential);
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+  Future<void> signUp(
+      String email, String password, BuildContext context) async {
+    var url = Uri.parse('https://teeshopindia.in/users');
+    try {
+      var response = await http.post(
+        url,
+        headers: {"Accept": "application/json"},
+        body: {
+          'email': email,
+          'password': password,
+        },
+      );
+      final responseData = json.decode(response.body);
+      print(responseData);
+      if (responseData['status'] == 500) {
+        _showErrorDialog(context, responseData['message'].toString());
+        return;
       }
-    } catch (e) {
-      print(e);
+      _userId = responseData['user']['id'];
+      notifyListeners();
+    } catch (error) {
+      // throw HttpException(error.toString());
+      print(error);
     }
   }
 
   Future<void> logout() async {
-    await FirebaseAuth.instance.signOut();
-    _userId = '';
-    notifyListeners();
+    var url = Uri.parse('https://teeshopindia.in/logout');
+    try {
+      var response = await http.delete(url);
+      final responseData = json.decode(response.body);
+      print(responseData);
+      if (responseData['status'] == 401) {
+        throw HttpException(responseData['message']);
+      }
+      _userId = null;
+      notifyListeners();
+    } catch (error) {
+      throw HttpException(error.toString());
+    }
+  }
+
+  bool getToken() {
+    if (_userId != null) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

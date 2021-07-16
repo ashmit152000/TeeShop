@@ -1,7 +1,7 @@
 class Polyester {
   static List<Map<String, dynamic>> productList = [
     {
-      "id": "1",
+      "id": 1,
       "name": "Customisable T-Shirt",
       "url": "assets/images/black.png",
       "available_sizes": ["S", "M", "L", "XL", "XXL"],
@@ -13,7 +13,7 @@ class Polyester {
       "fav": false,
     },
     {
-      "id": "2",
+      "id": 2,
       "name": "Shirt 2",
       "url": "assets/images/shirts/1.jpg",
       "available_sizes": ["S", "M", "L", "XL", "XXL"],
@@ -25,7 +25,7 @@ class Polyester {
       "fav": false,
     },
     {
-      "id": "3",
+      "id": 3,
       "name": "Shirt 3",
       "url": "assets/images/shirts/2.jpg",
       "available_sizes": ["S", "M", "L", "XL", "XXL"],
@@ -37,7 +37,7 @@ class Polyester {
       "fav": false,
     },
     {
-      "id": "4",
+      "id": 4,
       "name": "Shirt 4",
       "url": "assets/images/shirts/3.jpg",
       "available_sizes": ["S", "M", "L", "XL", "XXL"],
@@ -49,7 +49,7 @@ class Polyester {
       "fav": false,
     },
     {
-      "id": "5",
+      "id": 5,
       "name": "Shirt 5",
       "url": "assets/images/shirts/4.jpg",
       "available_sizes": ["S", "M", "L", "XL", "XXL"],
@@ -60,7 +60,7 @@ class Polyester {
       "fav": false,
     },
     {
-      "id": "6",
+      "id": 6,
       "name": "Shirt 6",
       "url": "assets/images/shirts/6.jpg",
       "available_sizes": ["S", "M", "L", "XL", "XXL"],
@@ -72,7 +72,7 @@ class Polyester {
       "fav": false,
     },
     {
-      "id": "7",
+      "id": 7,
       "name": "Shirt 7",
       "url": "assets/images/shirts/7.jpg",
       "available_sizes": ["S", "M", "L", "XL", "XXL"],
@@ -84,7 +84,7 @@ class Polyester {
       "fav": false,
     },
     {
-      "id": "8",
+      "id": 8,
       "name": "Shirt 8",
       "url": "assets/images/shirts/8.jpg",
       "available_sizes": ["S", "M", "L", "XL", "XXL"],
@@ -96,8 +96,8 @@ class Polyester {
       "fav": false,
     },
     {
-      "id": "8",
-      "name": "Shirt 8",
+      "id": 9,
+      "name": "Shirt 9",
       "url": "assets/images/shirts/10.jpg",
       "available_sizes": ["S", "M", "L", "XL", "XXL"],
       "price": 399,
@@ -108,8 +108,8 @@ class Polyester {
       "fav": false,
     },
     {
-      "id": "8",
-      "name": "Shirt 8",
+      "id": 10,
+      "name": "Shirt 10",
       "url": "assets/images/shirts/11.jpg",
       "available_sizes": ["S", "M", "L", "XL", "XXL"],
       "price": 399,
@@ -120,8 +120,8 @@ class Polyester {
       "fav": false,
     },
     {
-      "id": "8",
-      "name": "Shirt 8",
+      "id": 11,
+      "name": "Shirt 11",
       "url": "assets/images/shirts/12.jpg",
       "available_sizes": ["S", "M", "L", "XL", "XXL"],
       "price": 399,
@@ -132,8 +132,8 @@ class Polyester {
       "fav": false,
     },
     {
-      "id": "8",
-      "name": "Shirt 8",
+      "id": 12,
+      "name": "Shirt 12",
       "url": "assets/images/shirts/13.jpg",
       "available_sizes": ["S", "M", "L", "XL", "XXL"],
       "price": 399,
@@ -144,8 +144,8 @@ class Polyester {
       "fav": false,
     },
     {
-      "id": "8",
-      "name": "Shirt 8",
+      "id": 13,
+      "name": "Shirt 13",
       "url": "assets/images/shirts/14.jpg",
       "available_sizes": ["S", "M", "L", "XL", "XXL"],
       "price": 399,
@@ -156,8 +156,8 @@ class Polyester {
       "fav": false,
     },
     {
-      "id": "8",
-      "name": "Shirt 8",
+      "id": 14,
+      "name": "Shirt 14",
       "url": "assets/images/shirts/15.jpg",
       "available_sizes": ["S", "M", "L", "XL", "XXL"],
       "price": 399,
@@ -168,8 +168,8 @@ class Polyester {
       "fav": false,
     },
     {
-      "id": "8",
-      "name": "Shirt 8",
+      "id": 15,
+      "name": "Shirt 15",
       "url": "assets/images/shirts/16.jpg",
       "available_sizes": ["S", "M", "L", "XL", "XXL"],
       "price": 399,
@@ -180,8 +180,8 @@ class Polyester {
       "fav": false,
     },
     {
-      "id": "8",
-      "name": "Shirt 8",
+      "id": 16,
+      "name": "Shirt 16",
       "url": "assets/images/shirts/17.jpg",
       "available_sizes": ["S", "M", "L", "XL", "XXL"],
       "price": 399,
