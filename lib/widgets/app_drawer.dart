@@ -6,9 +6,15 @@ import 'package:teeshop/screens/about_us.dart';
 import 'package:teeshop/screens/contact_us.dart';
 import 'package:teeshop/screens/order_screen.dart';
 
-class AppDrawer extends StatelessWidget {
+class AppDrawer extends StatefulWidget {
+  @override
+  _AppDrawerState createState() => _AppDrawerState();
+}
+
+class _AppDrawerState extends State<AppDrawer> {
   @override
   Widget build(BuildContext context) {
+    bool _isLoading = false;
     return Drawer(
       child: Container(
         child: ListView(
@@ -172,7 +178,38 @@ class AppDrawer extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () async {
-                await Provider.of<Auth>(context, listen: false).logout();
+                showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          title: Text(
+                            'Do you want to exit ?',
+                            style: TextStyle(color: Colors.purple),
+                          ),
+                          content: Text(
+                              "We were enjoying your time with us. Come back soon"),
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('NO')),
+                            TextButton(
+                                onPressed: () async {
+                                  setState(() {
+                                    _isLoading = true;
+                                  });
+                                  Navigator.of(context).pop();
+                                  await Provider.of<Auth>(context,
+                                          listen: false)
+                                      .logout();
+
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                },
+                                child: Text('YES')),
+                          ],
+                        ));
               },
               child: ListTile(
                 leading: Icon(
@@ -180,7 +217,7 @@ class AppDrawer extends StatelessWidget {
                   size: 30.0,
                 ),
                 title: Text(
-                  "Logout",
+                  _isLoading ? "Logging out..." : "Logout",
                   style: TextStyle(fontSize: 15),
                 ),
               ),

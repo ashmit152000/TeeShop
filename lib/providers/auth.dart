@@ -5,9 +5,9 @@ import 'package:http/http.dart' as http;
 import 'package:teeshop/data/http_exception.dart';
 
 class Auth with ChangeNotifier {
-  var _userId;
+  int? _userId;
 
-  int get userData {
+  int? get userData {
     return _userId;
   }
 
@@ -30,7 +30,7 @@ class Auth with ChangeNotifier {
         return;
       }
       _userId = int.parse(responseData['user']['id'].toString());
-      print(_userId.runtimeType);
+
       notifyListeners();
     } catch (error) {
       throw HttpException(error.toString());
