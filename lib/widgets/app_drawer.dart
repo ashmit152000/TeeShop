@@ -149,7 +149,7 @@ class _AppDrawerState extends State<AppDrawer> {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.of(context).pushReplacementNamed(AboutUs.routeName);
+                Navigator.of(context).pushNamed(AboutUs.routeName);
               },
               child: ListTile(
                 leading: Icon(

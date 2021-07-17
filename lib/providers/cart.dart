@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 class Cart with ChangeNotifier {
   var user_id;
 
-  void _showErrorDialog(context, message) {
+  void _showErrorDialog(context, message, title) {
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             title: Text(
-              'Error!!',
+              title,
               style: TextStyle(color: Colors.purple),
             ),
             content: Text(message),
@@ -44,11 +44,15 @@ class Cart with ChangeNotifier {
               responseType: ResponseType.json));
       print(response.data);
       if (response.data['status'] == 401) {
-        _showErrorDialog(context, response.data['errors'].toString());
+        _showErrorDialog(
+            context, response.data['errors'].toString(), 'Error!!');
       }
 
       if (response.data["status"] == 201) {
-        _showErrorDialog(context, response.data['message'].toString());
+        _showErrorDialog(context, response.data['message'].toString(), "Alert");
+      }
+      if (response.data["status"] == 200) {
+        _showErrorDialog(context, "Added to cart", "Done :)");
       }
     } catch (error) {
       print(error);
@@ -63,11 +67,12 @@ class Cart with ChangeNotifier {
       final response = await dio.get(url);
       print(response.data);
       if (response.data['status'] == 401) {
-        _showErrorDialog(context, response.data['errors'].toString());
+        _showErrorDialog(
+            context, response.data['errors'].toString(), "Error!!");
       }
 
       if (response.data["status"] == 201) {
-        _showErrorDialog(context, response.data['message'].toString());
+        _showErrorDialog(context, response.data['message'].toString(), "Info");
       }
 
       return response.data;
