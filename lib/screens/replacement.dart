@@ -1,4 +1,7 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:teeshop/providers/products.dart';
 
 import 'package:teeshop/screens/different_shirt/custom_tee.dart';
 import 'package:teeshop/screens/different_shirt/full_sleeves.dart';
@@ -15,64 +18,93 @@ class ReplacementScreen extends StatefulWidget {
 }
 
 class _ReplacementScreenState extends State<ReplacementScreen> {
+  var _productListOne = [];
+  var _userData = {};
+  var favList;
+  var isFav;
+  var _isLoading = false;
+  var _cartCount = 0;
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    setState(() {
+      _isLoading = true;
+    });
+
+    Provider.of<Product>(context, listen: false)
+        .products(context)
+        .then((value) {
+      setState(() {
+        _productListOne = List.from(value["products"]);
+        _userData = value["user"];
+        _cartCount = value["cartCount"];
+        _isLoading = false;
+      });
+    });
+
+    super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: DefaultTabController(
-        length: 6,
-        child: Scaffold(
-          drawer: AppDrawer(),
-          appBar: AppBar(
-            title: Text('TeeShop'),
-            actions: [
-              Padding(
-                padding: EdgeInsets.only(right: 10),
-                child: Icon(Icons.shopping_cart, color: Colors.white),
+      child: _isLoading != true
+          ? DefaultTabController(
+              length: 6,
+              child: Scaffold(
+                drawer: AppDrawer(),
+                appBar: AppBar(
+                  title: Text('TeeShop'),
+                  actions: [
+                    Padding(
+                      padding: EdgeInsets.only(right: 15),
+                      child: Badge(
+                          badgeContent:
+                              Text(_cartCount > 0 ? "$_cartCount" : "0"),
+                          child:
+                              Icon(Icons.shopping_cart, color: Colors.white)),
+                    ),
+                  ],
+                  bottom: TabBar(
+                    indicatorColor: Colors.white,
+                    isScrollable: true,
+                    tabs: [
+                      Tab(
+                        child: Text('Basic White Tees'),
+                      ),
+                      Tab(
+                        child: Text('Custom Tees'),
+                      ),
+                      Tab(
+                        child: Text('Sandose'),
+                      ),
+                      Tab(
+                        child: Text('Full Sleeves'),
+                      ),
+                      Tab(
+                        child: Text('Custom Polos'),
+                      ),
+                      Tab(
+                        child: Text('Embroidered Polos'),
+                      ),
+                    ],
+                  ),
+                ),
+                body: TabBarView(
+                  children: [
+                    BasicTeeScreen(_productListOne, _userData),
+                    CustomTee(),
+                    Sandose(),
+                    FullSleeves(),
+                    PoloShirt(),
+                    EmbroPolo(),
+                  ],
+                ),
               ),
-            ],
-            bottom: TabBar(
-              indicatorColor: Colors.white,
-              isScrollable: true,
-              tabs: [
-                Tab(
-                  child: Text('Basic White Tees'),
-                ),
-                Tab(
-                  child: Text('Custom Tees'),
-                ),
-                Tab(
-                  child: Text('Sandose'),
-                ),
-                Tab(
-                  child: Text('Full Sleeves'),
-                ),
-                Tab(
-                  child: Text('Custom Polos'),
-                ),
-                Tab(
-                  child: Text('Embroidered Polos'),
-                ),
-              ],
+            )
+          : Center(
+              child: CircularProgressIndicator(),
             ),
-          ),
-          body: TabBarView(
-            children: [
-              BasicTeeScreen(),
-              CustomTee(),
-              Sandose(),
-              FullSleeves(),
-              PoloShirt(),
-              EmbroPolo(),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

@@ -39,7 +39,7 @@ class Product with ChangeNotifier {
     );
     final responseData = json.decode(response.body);
     print(responseData);
-    if (responseData['status'] == '401') {
+    if (responseData['status'] == 401) {
       _showErrorDialog(context, responseData['message'].toString());
     }
 

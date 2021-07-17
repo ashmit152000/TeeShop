@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:teeshop/providers/auth.dart';
+import 'package:teeshop/providers/cart.dart';
 import 'package:teeshop/providers/favourites.dart';
 import 'package:teeshop/providers/orders.dart';
 import 'package:teeshop/providers/products.dart';
@@ -12,6 +13,7 @@ import 'package:teeshop/screens/contact_us.dart';
 import 'package:teeshop/screens/customize_screen.dart';
 
 import 'package:teeshop/screens/info_screen.dart';
+import 'package:teeshop/screens/order_cart_screen.dart';
 import 'package:teeshop/screens/order_screen.dart';
 import 'package:teeshop/screens/replacement.dart';
 import 'package:teeshop/screens/signin_screen.dart';
@@ -33,7 +35,9 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.purple,
           primaryColor: Colors.purple,
           accentColor: Colors.purpleAccent,
-          textTheme: TextTheme(headline6: TextStyle(color: Colors.white)),
+          textTheme: TextTheme(
+            headline6: TextStyle(color: Colors.white),
+          ),
           appBarTheme: Theme.of(context)
               .appBarTheme
               .copyWith(brightness: Brightness.light),
@@ -49,6 +53,7 @@ class MyApp extends StatelessWidget {
           ReplacementScreen.routeName: (context) => ReplacementScreen(),
           SignInScreen.routeName: (context) => SignInScreen(),
           OrderScreen.routeName: (context) => OrderScreen(),
+          OrderCartScreen.routeName: (context) => OrderCartScreen(),
         },
       ),
       providers: [
@@ -65,6 +70,11 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProxyProvider<Auth, Order>(
           create: (context) => Order(),
+          update: (context, auth, previousResponse) =>
+              previousResponse!..update(auth.userData),
+        ),
+        ChangeNotifierProxyProvider<Auth, Cart>(
+          create: (context) => Cart(),
           update: (context, auth, previousResponse) =>
               previousResponse!..update(auth.userData),
         ),

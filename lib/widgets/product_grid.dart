@@ -6,6 +6,9 @@ import 'package:teeshop/screens/info_screen.dart';
 import 'package:teeshop/screens/replacement.dart';
 
 class ProductGrid extends StatefulWidget {
+  var _productListOne = [];
+  var _userData = {};
+  ProductGrid(this._productListOne, this._userData);
   @override
   _ProductGridState createState() => _ProductGridState();
 }
@@ -14,37 +17,16 @@ class _ProductGridState extends State<ProductGrid> {
   var _productListOne = [];
   var _userData = {};
   var favList;
-  var isFav;
+
   var _isLoading = false;
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    _isLoading = true;
-    Provider.of<Product>(context, listen: false)
-        .products(context)
-        .then((value) {
-      setState(() {
-        _productListOne = List.from(value["products"]);
-        _userData = value["user"];
-        _isLoading = false;
-      });
-    });
-
-    super.didChangeDependencies();
-  }
 
   Future<void> getData() async {
     Provider.of<Product>(context, listen: false)
         .products(context)
         .then((value) {
       setState(() {
-        _productListOne = List.from(value["products"]);
-        _userData = value["user"];
+        widget._productListOne = List.from(value["products"]);
+        widget._userData = value["user"];
         _isLoading = false;
       });
     });
@@ -67,8 +49,8 @@ class _ProductGridState extends State<ProductGrid> {
                   print("Pressed $index");
                   Navigator.of(context)
                       .pushReplacementNamed(InfoScreen.routeName, arguments: {
-                    "data": _productListOne[index],
-                    "user": _userData
+                    "data": widget._productListOne[index],
+                    "user": widget._userData
                   });
                 },
                 child: GridTile(
@@ -77,7 +59,8 @@ class _ProductGridState extends State<ProductGrid> {
                     child: Container(
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: NetworkImage(_productListOne[index]['url']),
+                          image: NetworkImage(
+                              widget._productListOne[index]['url']),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -89,7 +72,7 @@ class _ProductGridState extends State<ProductGrid> {
                       scrollDirection: Axis.horizontal,
                       child: Container(
                         child: Text(
-                          _productListOne[index]['name'],
+                          widget._productListOne[index]['name'],
                           style: TextStyle(
                             color: Colors.white,
                           ),
@@ -103,15 +86,19 @@ class _ProductGridState extends State<ProductGrid> {
                           children: [
                             IconButton(
                               onPressed: () async {
-                                if (_productListOne[index]['fav'] == false) {
+                                if (widget._productListOne[index]['fav'] ==
+                                    false) {
                                   try {
                                     await Provider.of<Favourites>(context,
                                             listen: false)
-                                        .addFavourites(context,
-                                            _productListOne[index]['id']);
+                                        .addFavourites(
+                                            context,
+                                            widget._productListOne[index]
+                                                ['id']);
                                   } catch (error) {
                                     setState(() {
-                                      _productListOne[index]['fav'] = false;
+                                      widget._productListOne[index]['fav'] =
+                                          false;
                                     });
                                     print(error.toString());
                                   }
@@ -119,11 +106,14 @@ class _ProductGridState extends State<ProductGrid> {
                                   try {
                                     await Provider.of<Favourites>(context,
                                             listen: false)
-                                        .removeFavourites(context,
-                                            _productListOne[index]['id']);
+                                        .removeFavourites(
+                                            context,
+                                            widget._productListOne[index]
+                                                ['id']);
                                   } catch (error) {
                                     setState(() {
-                                      _productListOne[index]['fav'] = false;
+                                      widget._productListOne[index]['fav'] =
+                                          false;
                                     });
                                     print(error.toString());
                                   }
@@ -132,7 +122,7 @@ class _ProductGridState extends State<ProductGrid> {
                                 await getData();
                               },
                               icon: Icon(
-                                _productListOne[index]['fav']
+                                widget._productListOne[index]['fav']
                                     ? Icons.favorite
                                     : Icons.favorite_outline,
                                 color: Colors.red,
@@ -146,7 +136,7 @@ class _ProductGridState extends State<ProductGrid> {
                 ),
               );
             },
-            itemCount: _productListOne.length,
+            itemCount: widget._productListOne.length,
           );
   }
 }

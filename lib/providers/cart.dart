@@ -1,16 +1,8 @@
-import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:teeshop/data/http_exception.dart';
-import 'package:http/http.dart' as http;
-import 'package:dio/dio.dart';
 
-class Favourites extends ChangeNotifier {
+class Cart with ChangeNotifier {
   var user_id;
-
-  void update(userId) {
-    user_id = userId;
-  }
 
   void _showErrorDialog(context, message) {
     showDialog(
@@ -33,10 +25,14 @@ class Favourites extends ChangeNotifier {
         });
   }
 
-  Future<void> addFavourites(BuildContext context, int product_id) async {
+  void update(userId) {
+    user_id = userId;
+  }
+
+  Future<void> addCart(BuildContext context, product_id) async {
     try {
       var dio = Dio();
-      var url = 'https://teeshopindia.in/favourite';
+      var url = 'https://teeshopindia.in/cart';
       Map<String, dynamic> bodyModel = {
         "user_id": user_id,
         "product_id": product_id
@@ -50,28 +46,31 @@ class Favourites extends ChangeNotifier {
       if (response.data['status'] == 401) {
         _showErrorDialog(context, response.data['errors'].toString());
       }
+
+      if (response.data["status"] == 201) {
+        _showErrorDialog(context, response.data['message'].toString());
+      }
     } catch (error) {
       print(error);
     }
   }
 
-  Future<void> removeFavourites(BuildContext context, int product_id) async {
+  Future<dynamic> getCart(BuildContext context) async {
     try {
-      var url = 'https://teeshopindia.in/favourite';
       var dio = Dio();
-      Map<String, dynamic> bodyModel = {
-        "user_id": user_id,
-        "product_id": product_id
-      };
-      var response = await dio.delete(url,
-          options: Options(
-              contentType: Headers.jsonContentType,
-              responseType: ResponseType.json),
-          data: bodyModel);
+      var url = 'https://teeshopindia.in/carts/$user_id';
+
+      final response = await dio.get(url);
       print(response.data);
       if (response.data['status'] == 401) {
+        _showErrorDialog(context, response.data['errors'].toString());
+      }
+
+      if (response.data["status"] == 201) {
         _showErrorDialog(context, response.data['message'].toString());
       }
+
+      return response.data;
     } catch (error) {
       print(error);
     }

@@ -51,7 +51,7 @@ class Order with ChangeNotifier {
       );
 
       print(response.data);
-      if (response.data['status'] == '401') {
+      if (response.data['status'] == 401) {
         _showErrorDialog(
             context, response.data['message'].toString(), "Error :(");
       }
@@ -70,7 +70,7 @@ class Order with ChangeNotifier {
       );
 
       print(response.data);
-      if (response.data['status'] == '401') {
+      if (response.data['status'] == 401) {
         _showErrorDialog(
             context, response.data['message'].toString(), "Error :(");
         return;

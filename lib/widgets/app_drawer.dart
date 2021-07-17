@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:teeshop/providers/auth.dart';
 import 'package:teeshop/screens/about_us.dart';
 import 'package:teeshop/screens/contact_us.dart';
+import 'package:teeshop/screens/order_cart_screen.dart';
 import 'package:teeshop/screens/order_screen.dart';
 
 class AppDrawer extends StatefulWidget {
@@ -52,14 +53,20 @@ class _AppDrawerState extends State<AppDrawer> {
             Divider(
               height: 10,
             ),
-            ListTile(
-              leading: Icon(
-                Icons.shopping_cart,
-                size: 30.0,
-              ),
-              title: Text(
-                "Wishlist",
-                style: TextStyle(fontSize: 15),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context)
+                    .pushReplacementNamed(OrderCartScreen.routeName);
+              },
+              child: ListTile(
+                leading: Icon(
+                  Icons.shopping_cart,
+                  size: 30.0,
+                ),
+                title: Text(
+                  "Wishlist",
+                  style: TextStyle(fontSize: 15),
+                ),
               ),
             ),
             Divider(

@@ -15,6 +15,7 @@ class _OrderScreenState extends State<OrderScreen> {
   var orders = [];
   var products = [];
   var _isLoading = false;
+  var ordersPresent;
   Future<bool> _onWillPop() async {
     return (await showDialog(
           context: context,
@@ -47,8 +48,10 @@ class _OrderScreenState extends State<OrderScreen> {
     });
     Provider.of<Order>(context).fetchOrders(context).then((value) {
       setState(() {
-        orders = List.from(value["orders"]);
-        products = List.from(value["products"]);
+        ordersPresent = value["orders"] != null ? true : false;
+        orders = value["orders"] != null ? List.from(value["orders"]) : [];
+        products =
+            value["products"] != null ? List.from(value["products"]) : [];
         _isLoading = false;
       });
     });
@@ -58,96 +61,109 @@ class _OrderScreenState extends State<OrderScreen> {
   bool showDesc = false;
 
   Widget getList() {
-    return ListView.separated(
-      itemBuilder: (context, index) {
-        var date = DateFormat('dd MMMM yyyy')
-            .format(DateTime.parse(orders[index]["created_at"]));
-        return Container(
-          padding: EdgeInsets.all(10),
-          child: GestureDetector(
-            onTap: () {
-              setState(() {
-                orders[index]['showDesc'] = !orders[index]['showDesc'];
-              });
-              print(showDesc);
-            },
-            child: Column(
-              children: [
-                ListTile(
-                  leading: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+    return orders.isNotEmpty
+        ? ListView.separated(
+            itemBuilder: (context, index) {
+              var date = DateFormat('dd MMMM yyyy')
+                  .format(DateTime.parse(orders[index]["created_at"]));
+              return Container(
+                padding: EdgeInsets.all(10),
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      orders[index]['showDesc'] = !orders[index]['showDesc'];
+                    });
+                    print(showDesc);
+                  },
+                  child: Column(
                     children: [
-                      Text(
-                        products[index]["name"],
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ListTile(
+                        leading: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              products[index]["name"],
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(date),
+                          ],
+                        ),
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text('Amount:'),
+                            Text(
+                                '₹${orders[index]['quantity'] * products[index]['price']}')
+                          ],
+                        ),
+                        trailing: Icon(orders[index]['showDesc']
+                            ? Icons.expand_less
+                            : Icons.expand_more),
                       ),
-                      Text(date),
+                      if (orders[index]['showDesc']) Divider(),
+                      AnimatedContainer(
+                        duration: Duration(milliseconds: 300),
+                        height: orders[index]["showDesc"] ? 200 : 0,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Image.network(
+                                products[index]['url'],
+                                height: 100,
+                                width: 100,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(children: [
+                                Text(
+                                  "Size: ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text(orders[index]["size"])
+                              ]),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(children: [
+                                Text(
+                                  "Quantity: ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text(orders[index]["quantity"].toString())
+                              ]),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text('Description Short: ' +
+                                  products[index]['descShort'].toString())
+                            ],
+                          ),
+                        ),
+                      )
                     ],
                   ),
-                  title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text('Amount:'),
-                      Text(
-                          '₹${orders[index]['quantity'] * products[index]['price']}')
-                    ],
-                  ),
-                  trailing: Icon(orders[index]['showDesc']
-                      ? Icons.expand_less
-                      : Icons.expand_more),
                 ),
-                if (orders[index]['showDesc']) Divider(),
-                AnimatedContainer(
-                  duration: Duration(milliseconds: 300),
-                  height: orders[index]["showDesc"] ? 200 : 0,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Image.network(
-                          products[index]['url'],
-                          height: 100,
-                          width: 100,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(children: [
-                          Text(
-                            "Size: ",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(orders[index]["size"])
-                        ]),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(children: [
-                          Text(
-                            "Quantity: ",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(orders[index]["quantity"].toString())
-                        ]),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text('Description Short: ' +
-                            products[index]['descShort'].toString())
-                      ],
-                    ),
-                  ),
-                )
-              ],
+              );
+            },
+            separatorBuilder: (context, index) {
+              return Divider();
+            },
+            itemCount: products.length,
+          )
+        : Center(
+            child: Card(
+              elevation: 8,
+              child: Container(
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  'No orders yet!!',
+                  style: TextStyle(color: Colors.purple, fontSize: 20),
+                ),
+              ),
             ),
-          ),
-        );
-      },
-      separatorBuilder: (context, index) {
-        return Divider();
-      },
-      itemCount: products.length,
-    );
+          );
   }
 
   @override

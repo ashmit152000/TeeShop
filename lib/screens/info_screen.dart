@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:teeshop/providers/cart.dart';
 import 'package:teeshop/screens/buy_now_screen.dart';
 import 'package:teeshop/screens/customize_screen.dart';
 import 'package:teeshop/widgets/app_drawer.dart';
@@ -13,6 +15,7 @@ class InfoScreen extends StatefulWidget {
 
 class _InfoScreenState extends State<InfoScreen> {
   bool showDesc = false;
+  var _isLoading = false;
 
   void _showDialog(data) {
     showDialog(
@@ -248,8 +251,15 @@ class _InfoScreenState extends State<InfoScreen> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: InkWell(
-                      onTap: () {
-                        print('Add To Cart');
+                      onTap: () async {
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        await Provider.of<Cart>(context, listen: false)
+                            .addCart(context, _productData['data']['id']);
+                        setState(() {
+                          _isLoading = false;
+                        });
                       },
                       child: Container(
                         padding: EdgeInsets.all(10),
@@ -259,10 +269,12 @@ class _InfoScreenState extends State<InfoScreen> {
                           Color(0xFFa4508b)
                         ])),
                         child: Center(
-                          child: Text('Add To Cart',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700)),
+                          child: _isLoading
+                              ? CircularProgressIndicator(color: Colors.white)
+                              : Text('Add To Cart',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w700)),
                         ),
                       ),
                     ),
