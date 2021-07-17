@@ -17,6 +17,7 @@ class _SignInScreenState extends State<SignInScreen>
   late AnimationController animation;
   late Animation<double> _fadeInFadeOut;
   late Animation<Offset> _slideTransition;
+  bool _isLoadingCheck = true;
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController cPassword = TextEditingController();
@@ -47,6 +48,11 @@ class _SignInScreenState extends State<SignInScreen>
 
   @override
   void initState() {
+    Provider.of<Auth>(context, listen: false).token(context).then((value) {
+      setState(() {
+        _isLoadingCheck = false;
+      });
+    });
     super.initState();
     animation =
         AnimationController(vsync: this, duration: Duration(seconds: 1));
@@ -55,6 +61,13 @@ class _SignInScreenState extends State<SignInScreen>
       begin: Offset(-1, 0),
       end: Offset.zero,
     ).animate(animation);
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+
+    super.didChangeDependencies();
   }
 
   void auth() async {
@@ -70,10 +83,9 @@ class _SignInScreenState extends State<SignInScreen>
     });
     if (authMode == AuthMode.Signin) {
       try {
-        await Provider.of<Auth>(context, listen: false).login(
-            authData['email'].toString(),
-            authData["password"].toString(),
-            context);
+        await Provider.of<Auth>(context, listen: false).login(context,
+            email: authData['email'].toString(),
+            password: authData["password"].toString());
       } catch (error) {
         print(error);
       }
@@ -127,91 +139,57 @@ class _SignInScreenState extends State<SignInScreen>
       child: Scaffold(
         backgroundColor: Color(0xff21254A),
         resizeToAvoidBottomInset: false,
-        body: SingleChildScrollView(
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            child: Column(
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: 200,
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: AssetImage('assets/images/1.png'),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
+        body: _isLoadingCheck
+            ? Center(
+                child: AlertDialog(
+                  title: Text(
+                    'Loading...',
+                    style: TextStyle(color: Colors.purple),
                   ),
                 ),
-                SizedBox(
-                  height: 40,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+              )
+            : SingleChildScrollView(
+                child: Container(
+                  height: MediaQuery.of(context).size.height,
                   child: Column(
                     children: [
-                      Center(
-                        child: Column(
+                      Container(
+                        width: double.infinity,
+                        height: 200,
+                        child: Stack(
                           children: [
-                            Text(
-                              'WELCOME TO',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                            Text(
-                              '🙏 TEESHOP 🙏',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            ),
+                            Positioned(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: AssetImage('assets/images/1.png'),
+                                  ),
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ),
                       SizedBox(
                         height: 40,
                       ),
-                      Form(
-                        key: gKey,
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
                         child: Column(
                           children: [
-                            Container(
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(color: Colors.grey),
-                                ),
-                              ),
+                            Center(
                               child: Column(
                                 children: [
-                                  Container(
-                                    child: TextFormField(
-                                      controller: email,
-                                      textInputAction: TextInputAction.next,
-                                      style: TextStyle(color: Colors.white),
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: 'Email',
-                                        hintStyle:
-                                            TextStyle(color: Colors.grey),
-                                      ),
-                                      validator: (value) {
-                                        if (value.toString() == '') {
-                                          return "Please fill in your email id";
-                                        }
-                                        if (!value.toString().contains('@')) {
-                                          return 'Please enter a valid email id';
-                                        }
-                                      },
-                                      onSaved: (value) {
-                                        authData['email'] = value.toString();
-                                      },
-                                    ),
+                                  Text(
+                                    'WELCOME TO',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20),
+                                  ),
+                                  Text(
+                                    '🙏 TEESHOP 🙏',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20),
                                   ),
                                 ],
                               ),
@@ -219,149 +197,205 @@ class _SignInScreenState extends State<SignInScreen>
                             SizedBox(
                               height: 40,
                             ),
-                            Container(
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(color: Colors.grey),
-                                ),
-                              ),
+                            Form(
+                              key: gKey,
                               child: Column(
                                 children: [
                                   Container(
-                                    child: TextFormField(
-                                      controller: password,
-                                      textInputAction: TextInputAction.next,
-                                      obscureText: true,
-                                      obscuringCharacter: '*',
-                                      style: TextStyle(color: Colors.white),
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: 'Password',
-                                        hintStyle:
-                                            TextStyle(color: Colors.grey),
+                                    padding: EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        bottom: BorderSide(color: Colors.grey),
                                       ),
-                                      validator: (value) {
-                                        if (value.toString() == '') {
-                                          return "Please fill in a password";
-                                        }
-                                        if (value.toString().length < 6) {
-                                          return "Password should be 6 characters long";
-                                        }
-                                      },
-                                      onSaved: (value) {
-                                        authData['password'] = value.toString();
-                                      },
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 40,
-                            ),
-                            authMode == AuthMode.Signup
-                                ? SlideTransition(
-                                    position: _slideTransition,
-                                    child: FadeTransition(
-                                      opacity: _fadeInFadeOut,
-                                      child: Container(
-                                        padding: EdgeInsets.all(8),
-                                        decoration: BoxDecoration(
-                                          border: Border(
-                                            bottom:
-                                                BorderSide(color: Colors.grey),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          child: TextFormField(
+                                            controller: email,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintText: 'Email',
+                                              hintStyle:
+                                                  TextStyle(color: Colors.grey),
+                                            ),
+                                            validator: (value) {
+                                              if (value.toString() == '') {
+                                                return "Please fill in your email id";
+                                              }
+                                              if (!value
+                                                  .toString()
+                                                  .contains('@')) {
+                                                return 'Please enter a valid email id';
+                                              }
+                                            },
+                                            onSaved: (value) {
+                                              authData['email'] =
+                                                  value.toString();
+                                            },
                                           ),
                                         ),
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              child: TextFormField(
-                                                textInputAction:
-                                                    TextInputAction.done,
-                                                obscureText: true,
-                                                obscuringCharacter: '*',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                                decoration: InputDecoration(
-                                                  border: InputBorder.none,
-                                                  hintText: 'Confirm Password',
-                                                  hintStyle: TextStyle(
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 40,
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        bottom: BorderSide(color: Colors.grey),
+                                      ),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          child: TextFormField(
+                                            controller: password,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            obscureText: true,
+                                            obscuringCharacter: '*',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintText: 'Password',
+                                              hintStyle:
+                                                  TextStyle(color: Colors.grey),
+                                            ),
+                                            validator: (value) {
+                                              if (value.toString() == '') {
+                                                return "Please fill in a password";
+                                              }
+                                              if (value.toString().length < 6) {
+                                                return "Password should be 6 characters long";
+                                              }
+                                            },
+                                            onSaved: (value) {
+                                              authData['password'] =
+                                                  value.toString();
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 40,
+                                  ),
+                                  authMode == AuthMode.Signup
+                                      ? SlideTransition(
+                                          position: _slideTransition,
+                                          child: FadeTransition(
+                                            opacity: _fadeInFadeOut,
+                                            child: Container(
+                                              padding: EdgeInsets.all(8),
+                                              decoration: BoxDecoration(
+                                                border: Border(
+                                                  bottom: BorderSide(
                                                       color: Colors.grey),
                                                 ),
-                                                validator: (value) {
-                                                  if (value != password.text) {
-                                                    return "Password doesn't match";
-                                                  }
-                                                },
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    child: TextFormField(
+                                                      textInputAction:
+                                                          TextInputAction.done,
+                                                      obscureText: true,
+                                                      obscuringCharacter: '*',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                      decoration:
+                                                          InputDecoration(
+                                                        border:
+                                                            InputBorder.none,
+                                                        hintText:
+                                                            'Confirm Password',
+                                                        hintStyle: TextStyle(
+                                                            color: Colors.grey),
+                                                      ),
+                                                      validator: (value) {
+                                                        if (value !=
+                                                            password.text) {
+                                                          return "Password doesn't match";
+                                                        }
+                                                      },
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                : Container(),
-                            SizedBox(
-                              height: 30,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                print(authMode);
-                                return toggleAuth();
-                              },
-                              child: Text(
-                                authMode == AuthMode.Signin
-                                    ? 'Don\'t have an account ? Sign up'
-                                    : 'Already have an account ? Sign in',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                return auth();
-                              },
-                              child: Container(
-                                width: MediaQuery.of(context).size.width / 2,
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(colors: [
-                                    Color(0xFF5f0a87),
-                                    Color(0xFF703ED1)
-                                  ]),
-                                ),
-                                child: Center(
-                                  child: _isLoading != true
-                                      ? Text(
-                                          authMode == AuthMode.Signin
-                                              ? 'SIGN IN'
-                                              : 'SIGN UP',
-                                          style: TextStyle(
-                                            color: Colors.white,
                                           ),
                                         )
-                                      : CircularProgressIndicator(
-                                          color: Colors.white,
-                                        ),
-                                ),
+                                      : Container(),
+                                  SizedBox(
+                                    height: 30,
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      print(authMode);
+                                      return toggleAuth();
+                                    },
+                                    child: Text(
+                                      authMode == AuthMode.Signin
+                                          ? 'Don\'t have an account ? Sign up'
+                                          : 'Already have an account ? Sign in',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      return auth();
+                                    },
+                                    child: Container(
+                                      width:
+                                          MediaQuery.of(context).size.width / 2,
+                                      padding: EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(colors: [
+                                          Color(0xFF5f0a87),
+                                          Color(0xFF703ED1)
+                                        ]),
+                                      ),
+                                      child: Center(
+                                        child: _isLoading != true
+                                            ? Text(
+                                                authMode == AuthMode.Signin
+                                                    ? 'SIGN IN'
+                                                    : 'SIGN UP',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              )
+                                            : CircularProgressIndicator(
+                                                color: Colors.white,
+                                              ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
                       ),
                     ],
+                    crossAxisAlignment: CrossAxisAlignment.start,
                   ),
                 ),
-              ],
-              crossAxisAlignment: CrossAxisAlignment.start,
-            ),
-          ),
-        ),
+              ),
       ),
     );
   }
