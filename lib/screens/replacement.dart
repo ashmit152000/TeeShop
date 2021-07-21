@@ -10,6 +10,7 @@ import 'package:teeshop/screens/different_shirt/embro_polo.dart';
 import 'package:teeshop/screens/different_shirt/polo.dart';
 import 'package:teeshop/screens/different_shirt/polyester.dart';
 import 'package:teeshop/screens/different_shirt/sandose.dart';
+import 'package:teeshop/screens/order_cart_screen.dart';
 import 'package:teeshop/widgets/app_drawer.dart';
 
 class ReplacementScreen extends StatefulWidget {
@@ -59,11 +60,17 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
                   actions: [
                     Padding(
                       padding: EdgeInsets.only(right: 10),
-                      child: Badge(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(OrderCartScreen.routeName);
+                        },
+                        child: Badge(
                           badgeContent:
                               Text(_cartCount > 0 ? "$_cartCount" : "0"),
-                          child:
-                              Icon(Icons.shopping_cart, color: Colors.white)),
+                          child: Icon(Icons.shopping_cart, color: Colors.white),
+                        ),
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.only(right: 0),
