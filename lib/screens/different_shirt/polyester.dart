@@ -13,9 +13,11 @@ class BasicTeeScreen extends StatefulWidget {
 class _BasicTeeScreenState extends State<BasicTeeScreen> {
   @override
   Widget build(BuildContext context) {
+    var productList = List.from(widget._productsList
+        .where((element) => element['product_type'] == 'basic'));
     return SafeArea(
       child: Scaffold(
-        body: ProductGrid(widget._productsList, widget.userData),
+        body: ProductGrid(productList, widget.userData),
       ),
     );
   }

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class PoloShirt extends StatefulWidget {
-  const PoloShirt({Key? key}) : super(key: key);
+  var _productsList = [];
+  var userData = {};
+
+  PoloShirt(this._productsList, this.userData);
 
   @override
   _PoloShirtState createState() => _PoloShirtState();

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class FullSleeves extends StatefulWidget {
-  const FullSleeves({Key? key}) : super(key: key);
+  var _productsList = [];
+  var userData = {};
+
+  FullSleeves(this._productsList, this.userData);
 
   @override
   _FullSleevesState createState() => _FullSleevesState();

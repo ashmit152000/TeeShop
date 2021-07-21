@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class EmbroPolo extends StatefulWidget {
-  const EmbroPolo({Key? key}) : super(key: key);
+  var _productsList = [];
+  var userData = {};
+
+  EmbroPolo(this._productsList, this.userData);
 
   @override
   _EmbroPoloState createState() => _EmbroPoloState();
