@@ -1,6 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:teeshop/providers/auth.dart';
 import 'package:teeshop/providers/products.dart';
 
 import 'package:teeshop/screens/different_shirt/custom_tee.dart';
@@ -52,18 +53,62 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
           ? DefaultTabController(
               length: 6,
               child: Scaffold(
-                drawer: AppDrawer(),
+                drawer: AppDrawer(userData: _userData),
                 appBar: AppBar(
                   title: Text('TeeShop'),
                   actions: [
                     Padding(
-                      padding: EdgeInsets.only(right: 15),
+                      padding: EdgeInsets.only(right: 10),
                       child: Badge(
                           badgeContent:
                               Text(_cartCount > 0 ? "$_cartCount" : "0"),
                           child:
                               Icon(Icons.shopping_cart, color: Colors.white)),
                     ),
+                    Padding(
+                      padding: EdgeInsets.only(right: 0),
+                      child: IconButton(
+                        icon: Icon(Icons.logout),
+                        onPressed: () async {
+                          showDialog(
+                              context: context,
+                              builder: (ctx) {
+                                return AlertDialog(
+                                  title: Text(
+                                    'Do you want to logout ?',
+                                    style: TextStyle(color: Colors.purple),
+                                  ),
+                                  content: Text(
+                                      'We were enjoying your time with us. Join us soon'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('No'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () async {
+                                        setState(() {
+                                          _isLoading = true;
+                                        });
+                                        Navigator.of(context).pop();
+                                        await Provider.of<Auth>(context,
+                                                listen: false)
+                                            .logout();
+
+                                        setState(() {
+                                          _isLoading = false;
+                                        });
+                                      },
+                                      child: Text('Yes'),
+                                    ),
+                                  ],
+                                );
+                              });
+                        },
+                      ),
+                    )
                   ],
                   bottom: TabBar(
                     indicatorColor: Colors.white,

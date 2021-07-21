@@ -47,23 +47,22 @@ class _ProductGridState extends State<ProductGrid> {
               return GestureDetector(
                 onTap: () {
                   print("Pressed $index");
-                  Navigator.of(context)
-                      .pushReplacementNamed(InfoScreen.routeName, arguments: {
-                    "data": widget._productListOne[index],
-                    "user": widget._userData
-                  });
+                  Navigator.of(context).pushNamed(InfoScreen.routeName,
+                      arguments: {
+                        "data": widget._productListOne[index],
+                        "user": widget._userData
+                      });
                 },
                 child: GridTile(
                   child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(15)),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(
-                              widget._productListOne[index]['url']),
-                          fit: BoxFit.cover,
-                        ),
+                    child: FadeInImage(
+                      placeholder:
+                          AssetImage('assets/images/product-placeholder.png'),
+                      image: NetworkImage(
+                        widget._productListOne[index]['url'],
                       ),
+                      fit: BoxFit.cover,
                     ),
                   ),
                   footer: GridTileBar(

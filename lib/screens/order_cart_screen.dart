@@ -99,48 +99,22 @@ class _OrderCartScreenState extends State<OrderCartScreen> {
           );
   }
 
-  Future<bool> _onWillPop() async {
-    return (await showDialog(
-          context: context,
-          builder: (context) => new AlertDialog(
-            title: new Text(
-              'Do you want to exit ?',
-              style: TextStyle(color: Colors.purple),
-            ),
-            content: new Text('We were enjoying your time wit us.'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: new Text('No'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: new Text('Yes'),
-              ),
-            ],
-          ),
-        )) ??
-        false;
-  }
+  // Is java a pure object oriented language ? If yes, how. If no, then why ?
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: _onWillPop,
-      child: SafeArea(
-        child: Scaffold(
-          drawer: AppDrawer(),
-          appBar: AppBar(
-            title: Text('Cart'),
-          ),
-          body: Container(
-            child: _isLoading != true
-                ? cartGrid()
-                : Center(
-                    child: CircularProgressIndicator(),
-                  ),
-            padding: EdgeInsets.all(10),
-          ),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Cart'),
+        ),
+        body: Container(
+          child: _isLoading != true
+              ? cartGrid()
+              : Center(
+                  child: CircularProgressIndicator(),
+                ),
+          padding: EdgeInsets.all(10),
         ),
       ),
     );

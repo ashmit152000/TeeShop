@@ -16,29 +16,29 @@ class _OrderScreenState extends State<OrderScreen> {
   var products = [];
   var _isLoading = false;
   var ordersPresent;
-  Future<bool> _onWillPop() async {
-    return (await showDialog(
-          context: context,
-          builder: (context) => new AlertDialog(
-            title: new Text(
-              'Do you want to exit ?',
-              style: TextStyle(color: Colors.purple),
-            ),
-            content: new Text('We were enjoying your time wit us.'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: new Text('No'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: new Text('Yes'),
-              ),
-            ],
-          ),
-        )) ??
-        false;
-  }
+  // Future<bool> _onWillPop() async {
+  //   return (await showDialog(
+  //         context: context,
+  //         builder: (context) => new AlertDialog(
+  //           title: new Text(
+  //             'Do you want to exit ?',
+  //             style: TextStyle(color: Colors.purple),
+  //           ),
+  //           content: new Text('We were enjoying your time wit us.'),
+  //           actions: <Widget>[
+  //             TextButton(
+  //               onPressed: () => Navigator.of(context).pop(false),
+  //               child: new Text('No'),
+  //             ),
+  //             TextButton(
+  //               onPressed: () => Navigator.of(context).pop(true),
+  //               child: new Text('Yes'),
+  //             ),
+  //           ],
+  //         ),
+  //       )) ??
+  //       false;
+  // }
 
   @override
   void didChangeDependencies() {
@@ -168,18 +168,13 @@ class _OrderScreenState extends State<OrderScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: _onWillPop,
-      child: SafeArea(
-        child: Scaffold(
-          drawer: AppDrawer(),
-          appBar: AppBar(
-            title: Text('Orders'),
-          ),
-          body: _isLoading
-              ? Center(child: CircularProgressIndicator())
-              : getList(),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Orders'),
         ),
+        body:
+            _isLoading ? Center(child: CircularProgressIndicator()) : getList(),
       ),
     );
   }

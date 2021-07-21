@@ -131,10 +131,22 @@ class Auth with ChangeNotifier {
       if (responseData['status'] == 401) {
         throw HttpException(responseData['message']);
       }
+
       _userId = null;
       _token = null;
       await setAuthToken('');
       notifyListeners();
+    } catch (error) {
+      throw HttpException(error.toString());
+    }
+  }
+
+  Future<void> sendVerification() async {
+    var url = Uri.parse('https://teeshopindia.in/user/confirm/$_userId');
+    try {
+      var response = await http.post(url);
+      final responseData = json.decode(response.body);
+      print(responseData);
     } catch (error) {
       throw HttpException(error.toString());
     }

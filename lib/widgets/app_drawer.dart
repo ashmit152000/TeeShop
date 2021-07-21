@@ -8,6 +8,8 @@ import 'package:teeshop/screens/order_cart_screen.dart';
 import 'package:teeshop/screens/order_screen.dart';
 
 class AppDrawer extends StatefulWidget {
+  var userData;
+  AppDrawer({this.userData});
   @override
   _AppDrawerState createState() => _AppDrawerState();
 }
@@ -55,8 +57,7 @@ class _AppDrawerState extends State<AppDrawer> {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.of(context)
-                    .pushReplacementNamed(OrderCartScreen.routeName);
+                Navigator.of(context).pushNamed(OrderCartScreen.routeName);
               },
               child: ListTile(
                 leading: Icon(
@@ -74,8 +75,7 @@ class _AppDrawerState extends State<AppDrawer> {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.of(context)
-                    .pushReplacementNamed(OrderScreen.routeName);
+                Navigator.of(context).pushNamed(OrderScreen.routeName);
               },
               child: ListTile(
                 leading: Icon(
@@ -98,33 +98,32 @@ class _AppDrawerState extends State<AppDrawer> {
               ),
               title: GestureDetector(
                 onTap: () {
-                  // if (!user!.emailVerified) {
-                  //   showDialog(
-                  //     context: context,
-                  //     builder: (context) => AlertDialog(
-                  //       title: Text(
-                  //         'Verify email',
-                  //         style: TextStyle(color: Colors.purple),
-                  //       ),
-                  //       content: Text(
-                  //           'Your email is not verified. Please verify it'),
-                  //       actions: [
-                  //         TextButton(
-                  //           onPressed: () async {
-                  //             // await user.sendEmailVerification();
-                  //             // Fluttertoast.showToast(
-                  //             //     msg:
-                  //             //         'Verification link sent to your registered email ${user.email}');
-                  //             // await Provider.of<Auth>(context, listen: false)
-                  //             //     .logout();
-                  //             Navigator.of(context).pop();
-                  //           },
-                  //           child: Text('SEND VERIFICATION'),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   );
-                  // }
+                  if (widget.userData['confirmed'] != true) {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text(
+                          'Verify email',
+                          style: TextStyle(color: Colors.purple),
+                        ),
+                        content: Text(
+                            'Your email is not verified. Please verify it'),
+                        actions: [
+                          TextButton(
+                            onPressed: () async {
+                              await Provider.of<Auth>(context, listen: false)
+                                  .sendVerification();
+                              Navigator.of(context).pop();
+                              Fluttertoast.showToast(
+                                  msg: 'Verification link sent to your email');
+                              setState(() {});
+                            },
+                            child: Text('SEND VERIFICATION'),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
                 },
                 child: Row(
                   children: [
@@ -135,11 +134,11 @@ class _AppDrawerState extends State<AppDrawer> {
                     SizedBox(
                       width: 10,
                     ),
-                    // if (!user!.emailVerified)
-                    Icon(
-                      Icons.warning,
-                      color: Colors.red,
-                    )
+                    if (widget.userData['confirmed'] != true)
+                      Icon(
+                        Icons.warning,
+                        color: Colors.red,
+                      )
                   ],
                 ),
               ),
@@ -176,55 +175,6 @@ class _AppDrawerState extends State<AppDrawer> {
                 ),
                 title: Text(
                   "Contact Us",
-                  style: TextStyle(fontSize: 15),
-                ),
-              ),
-            ),
-            Divider(
-              height: 10,
-            ),
-            GestureDetector(
-              onTap: () async {
-                showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                          title: Text(
-                            'Do you want to exit ?',
-                            style: TextStyle(color: Colors.purple),
-                          ),
-                          content: Text(
-                              "We were enjoying your time with us. Come back soon"),
-                          actions: [
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text('NO')),
-                            TextButton(
-                                onPressed: () async {
-                                  setState(() {
-                                    _isLoading = true;
-                                  });
-                                  Navigator.of(context).pop();
-                                  await Provider.of<Auth>(context,
-                                          listen: false)
-                                      .logout();
-
-                                  setState(() {
-                                    _isLoading = false;
-                                  });
-                                },
-                                child: Text('YES')),
-                          ],
-                        ));
-              },
-              child: ListTile(
-                leading: Icon(
-                  Icons.logout,
-                  size: 30.0,
-                ),
-                title: Text(
-                  _isLoading ? "Logging out..." : "Logout",
                   style: TextStyle(fontSize: 15),
                 ),
               ),
