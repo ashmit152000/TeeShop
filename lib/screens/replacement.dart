@@ -122,19 +122,19 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
                     isScrollable: true,
                     tabs: [
                       Tab(
-                        child: Text('Basic White Tees'),
-                      ),
-                      Tab(
-                        child: Text('Custom Tees'),
+                        child: Text('Custom Merchs'),
                       ),
                       Tab(
                         child: Text('Sandose'),
                       ),
                       Tab(
+                        child: Text('Tees'),
+                      ),
+                      Tab(
                         child: Text('Full Sleeves'),
                       ),
                       Tab(
-                        child: Text('Custom Polos'),
+                        child: Text('Polos'),
                       ),
                       Tab(
                         child: Text('Embroidered Polos'),
@@ -144,9 +144,9 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
                 ),
                 body: TabBarView(
                   children: [
-                    BasicTeeScreen(_productListOne, _userData),
                     CustomTee(),
                     Sandose(_productListOne, _userData),
+                    BasicTeeScreen(_productListOne, _userData),
                     FullSleeves(_productListOne, _userData),
                     PoloShirt(_productListOne, _userData),
                     EmbroPolo(_productListOne, _userData),

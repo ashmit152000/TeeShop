@@ -32,6 +32,10 @@ class Product with ChangeNotifier {
         });
   }
 
+  Future<void> refresh() async {
+    notifyListeners();
+  }
+
   Future<Map<String, dynamic>> products(BuildContext context) async {
     var url = Uri.parse('https://teeshopindia.in/products/${user_id}');
     var response = await http.get(
