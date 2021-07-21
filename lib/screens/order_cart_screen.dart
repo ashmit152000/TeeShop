@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:teeshop/providers/cart.dart';
 import 'package:teeshop/screens/info_screen.dart';
@@ -24,7 +25,7 @@ class _OrderCartScreenState extends State<OrderCartScreen> {
     });
     Provider.of<Cart>(context).getCart(context).then((value) {
       setState(() {
-        _userData = value["user "] != null ? value["user"] : {};
+        _userData = value["user"] != null ? value["user"] : {};
         cart = value["cart"] != null ? List.from(value["cart"]) : [];
         products =
             value["products"] != null ? List.from(value["products"]) : [];
@@ -53,13 +54,11 @@ class _OrderCartScreenState extends State<OrderCartScreen> {
                 child: GridTile(
                   child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(15)),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(products[index]['url']),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                    child: FadeInImage(
+                      placeholder:
+                          AssetImage('assets/images/product-placeholder.png'),
+                      image: NetworkImage(products[index]['url']),
+                      fit: BoxFit.cover,
                     ),
                   ),
                   footer: GridTileBar(
@@ -77,7 +76,15 @@ class _OrderCartScreenState extends State<OrderCartScreen> {
                     ),
                     trailing: IconButton(
                       icon: Icon(Icons.delete, color: Colors.red),
-                      onPressed: () {},
+                      onPressed: () async {
+                        print(cart[index]['id']);
+                        await Provider.of<Cart>(context, listen: false)
+                            .removeCard(context, cart[index]['id']);
+                        Fluttertoast.showToast(
+                            msg: 'Product removed from cart');
+
+                        // setState(() {});
+                      },
                     ),
                   ),
                 ),

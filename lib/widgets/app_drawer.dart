@@ -39,6 +39,7 @@ class _AppDrawerState extends State<AppDrawer> {
             ),
             GestureDetector(
               onTap: () {
+                Navigator.of(context).pop();
                 Navigator.of(context).pushReplacementNamed('/');
               },
               child: ListTile(
@@ -57,6 +58,7 @@ class _AppDrawerState extends State<AppDrawer> {
             ),
             GestureDetector(
               onTap: () {
+                Navigator.of(context).pop();
                 Navigator.of(context).pushNamed(OrderCartScreen.routeName);
               },
               child: ListTile(
@@ -75,6 +77,7 @@ class _AppDrawerState extends State<AppDrawer> {
             ),
             GestureDetector(
               onTap: () {
+                Navigator.of(context).pop();
                 Navigator.of(context).pushNamed(OrderScreen.routeName);
               },
               child: ListTile(
@@ -148,6 +151,7 @@ class _AppDrawerState extends State<AppDrawer> {
             ),
             GestureDetector(
               onTap: () {
+                Navigator.of(context).pop();
                 Navigator.of(context).pushNamed(AboutUs.routeName);
               },
               child: ListTile(
@@ -166,6 +170,7 @@ class _AppDrawerState extends State<AppDrawer> {
             ),
             GestureDetector(
               onTap: () {
+                Navigator.of(context).pop();
                 Navigator.of(context).pushNamed(ContactUs.routeName);
               },
               child: ListTile(
