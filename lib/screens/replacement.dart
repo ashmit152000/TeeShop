@@ -52,7 +52,7 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
     return SafeArea(
       child: _isLoading != true
           ? DefaultTabController(
-              length: 6,
+              length: 5,
               child: Scaffold(
                 drawer: AppDrawer(userData: _userData),
                 appBar: AppBar(
@@ -124,9 +124,7 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
                       Tab(
                         child: Text('Custom Merchs'),
                       ),
-                      Tab(
-                        child: Text('Sandose'),
-                      ),
+
                       Tab(
                         child: Text('Tees'),
                       ),
@@ -134,10 +132,13 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
                         child: Text('Full Sleeves'),
                       ),
                       Tab(
-                        child: Text('Polos'),
+                        child: Text('Polo Tees'),
                       ),
+                      // Tab(
+                      //   child: Text('Embroidered Polos'),
+                      // ),
                       Tab(
-                        child: Text('Embroidered Polos'),
+                        child: Text('Sandose'),
                       ),
                     ],
                   ),
@@ -145,11 +146,12 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
                 body: TabBarView(
                   children: [
                     CustomTee(),
-                    Sandose(_productListOne, _userData),
+
                     BasicTeeScreen(_productListOne, _userData),
                     FullSleeves(_productListOne, _userData),
                     PoloShirt(_productListOne, _userData),
-                    EmbroPolo(_productListOne, _userData),
+                    Sandose(_productListOne, _userData),
+                    // EmbroPolo(_productListOne, _userData),
                   ],
                 ),
               ),
