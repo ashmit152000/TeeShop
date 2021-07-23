@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:teeshop/providers/favourites.dart';
+
 import 'package:teeshop/providers/products.dart';
 import 'package:teeshop/screens/info_screen.dart';
 import 'package:teeshop/screens/replacement.dart';
@@ -81,59 +81,6 @@ class _ProductGridState extends State<ProductGrid> {
                             style: TextStyle(
                               color: Colors.white,
                             ),
-                          ),
-                        ),
-                      ),
-                      trailing: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Container(
-                          child: Row(
-                            children: [
-                              IconButton(
-                                onPressed: () async {
-                                  if (widget._productListOne[index]['fav'] ==
-                                      false) {
-                                    try {
-                                      await Provider.of<Favourites>(context,
-                                              listen: false)
-                                          .addFavourites(
-                                              context,
-                                              widget._productListOne[index]
-                                                  ['id']);
-                                    } catch (error) {
-                                      setState(() {
-                                        widget._productListOne[index]['fav'] =
-                                            false;
-                                      });
-                                      print(error.toString());
-                                    }
-                                  } else {
-                                    try {
-                                      await Provider.of<Favourites>(context,
-                                              listen: false)
-                                          .removeFavourites(
-                                              context,
-                                              widget._productListOne[index]
-                                                  ['id']);
-                                    } catch (error) {
-                                      setState(() {
-                                        widget._productListOne[index]['fav'] =
-                                            false;
-                                      });
-                                      print(error.toString());
-                                    }
-                                  }
-
-                                  await getData();
-                                },
-                                icon: Icon(
-                                  widget._productListOne[index]['fav']
-                                      ? Icons.favorite
-                                      : Icons.favorite_outline,
-                                  color: Colors.red,
-                                ),
-                              ),
-                            ],
                           ),
                         ),
                       ),

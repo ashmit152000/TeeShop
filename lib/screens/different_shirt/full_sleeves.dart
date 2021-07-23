@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teeshop/widgets/product_grid.dart';
 
 class FullSleeves extends StatefulWidget {
   var _productsList = [];
@@ -13,11 +14,13 @@ class FullSleeves extends StatefulWidget {
 class _FullSleevesState extends State<FullSleeves> {
   @override
   Widget build(BuildContext context) {
+    var productList = List.from(widget._productsList
+        .where((element) => element['product_type'] == 'full'));
     return SafeArea(
         child: Scaffold(
       body: Container(
         child: Center(
-          child: Text('Full Sleeves'),
+          child: ProductGrid(productList, widget.userData),
         ),
       ),
     ));

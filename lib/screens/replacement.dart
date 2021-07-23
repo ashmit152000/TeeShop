@@ -47,118 +47,147 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
     super.didChangeDependencies();
   }
 
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+          context: context,
+          builder: (context) => new AlertDialog(
+            title: new Text(
+              'Do you want to exit ?',
+              style: TextStyle(color: Colors.purple),
+            ),
+            content: new Text('We were enjoying your time with us.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: new Text('No'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: new Text('Yes'),
+              ),
+            ],
+          ),
+        )) ??
+        false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: _isLoading != true
-          ? DefaultTabController(
-              length: 5,
-              child: Scaffold(
-                drawer: AppDrawer(userData: _userData),
-                appBar: AppBar(
-                  title: Text('TeeShop'),
-                  actions: [
-                    Padding(
-                      padding: EdgeInsets.only(right: 10),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(OrderCartScreen.routeName);
-                        },
-                        child: Badge(
-                          badgeContent:
-                              Text(_cartCount > 0 ? "$_cartCount" : "0"),
-                          child: Icon(Icons.shopping_cart, color: Colors.white),
+    return WillPopScope(
+      onWillPop: this._onWillPop,
+      child: SafeArea(
+        child: _isLoading != true
+            ? DefaultTabController(
+                length: 5,
+                child: Scaffold(
+                  drawer: AppDrawer(userData: _userData),
+                  drawerEnableOpenDragGesture: false,
+                  appBar: AppBar(
+                    title: Text('TeeShop'),
+                    actions: [
+                      Padding(
+                        padding: EdgeInsets.only(right: 10),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushNamed(OrderCartScreen.routeName);
+                          },
+                          child: Badge(
+                            badgeContent:
+                                Text(_cartCount > 0 ? "$_cartCount" : "0"),
+                            child:
+                                Icon(Icons.shopping_cart, color: Colors.white),
+                          ),
                         ),
                       ),
+                      Padding(
+                        padding: EdgeInsets.only(right: 0),
+                        child: IconButton(
+                          icon: Icon(Icons.logout),
+                          onPressed: () async {
+                            showDialog(
+                                context: context,
+                                builder: (ctx) {
+                                  return AlertDialog(
+                                    title: Text(
+                                      'Do you want to logout ?',
+                                      style: TextStyle(color: Colors.purple),
+                                    ),
+                                    content: Text(
+                                        'We were enjoying your time with us. Join us soon'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('No'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () async {
+                                          setState(() {
+                                            _isLoading = true;
+                                          });
+                                          Navigator.of(context).pop();
+                                          await Provider.of<Auth>(context,
+                                                  listen: false)
+                                              .logout();
+
+                                          setState(() {
+                                            _isLoading = false;
+                                          });
+                                        },
+                                        child: Text('Yes'),
+                                      ),
+                                    ],
+                                  );
+                                });
+                          },
+                        ),
+                      )
+                    ],
+                    bottom: TabBar(
+                      indicatorColor: Colors.white,
+                      isScrollable: true,
+                      tabs: [
+                        Tab(
+                          child: Text('Custom Merchs'),
+                        ),
+
+                        Tab(
+                          child: Text('Tees'),
+                        ),
+                        Tab(
+                          child: Text('Full Sleeves'),
+                        ),
+                        Tab(
+                          child: Text('Polo Tees'),
+                        ),
+                        // Tab(
+                        //   child: Text('Embroidered Polos'),
+                        // ),
+                        Tab(
+                          child: Text('Sandose'),
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(right: 0),
-                      child: IconButton(
-                        icon: Icon(Icons.logout),
-                        onPressed: () async {
-                          showDialog(
-                              context: context,
-                              builder: (ctx) {
-                                return AlertDialog(
-                                  title: Text(
-                                    'Do you want to logout ?',
-                                    style: TextStyle(color: Colors.purple),
-                                  ),
-                                  content: Text(
-                                      'We were enjoying your time with us. Join us soon'),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text('No'),
-                                    ),
-                                    TextButton(
-                                      onPressed: () async {
-                                        setState(() {
-                                          _isLoading = true;
-                                        });
-                                        Navigator.of(context).pop();
-                                        await Provider.of<Auth>(context,
-                                                listen: false)
-                                            .logout();
+                  ),
+                  body: TabBarView(
+                    children: [
+                      CustomTee(),
 
-                                        setState(() {
-                                          _isLoading = false;
-                                        });
-                                      },
-                                      child: Text('Yes'),
-                                    ),
-                                  ],
-                                );
-                              });
-                        },
-                      ),
-                    )
-                  ],
-                  bottom: TabBar(
-                    indicatorColor: Colors.white,
-                    isScrollable: true,
-                    tabs: [
-                      Tab(
-                        child: Text('Custom Merchs'),
-                      ),
-
-                      Tab(
-                        child: Text('Tees'),
-                      ),
-                      Tab(
-                        child: Text('Full Sleeves'),
-                      ),
-                      Tab(
-                        child: Text('Polo Tees'),
-                      ),
-                      // Tab(
-                      //   child: Text('Embroidered Polos'),
-                      // ),
-                      Tab(
-                        child: Text('Sandose'),
-                      ),
+                      BasicTeeScreen(_productListOne, _userData),
+                      FullSleeves(_productListOne, _userData),
+                      PoloShirt(_productListOne, _userData),
+                      Sandose(_productListOne, _userData),
+                      // EmbroPolo(_productListOne, _userData),
                     ],
                   ),
                 ),
-                body: TabBarView(
-                  children: [
-                    CustomTee(),
-
-                    BasicTeeScreen(_productListOne, _userData),
-                    FullSleeves(_productListOne, _userData),
-                    PoloShirt(_productListOne, _userData),
-                    Sandose(_productListOne, _userData),
-                    // EmbroPolo(_productListOne, _userData),
-                  ],
-                ),
+              )
+            : Center(
+                child: CircularProgressIndicator(),
               ),
-            )
-          : Center(
-              child: CircularProgressIndicator(),
-            ),
+      ),
     );
   }
 }

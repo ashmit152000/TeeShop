@@ -122,6 +122,8 @@ class Auth with ChangeNotifier {
     }
   }
 
+  // Future<void> updateUser() {}
+
   Future<void> logout() async {
     var url = Uri.parse('https://teeshopindia.in/logout');
     try {

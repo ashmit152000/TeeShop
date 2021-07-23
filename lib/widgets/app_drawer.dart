@@ -6,6 +6,7 @@ import 'package:teeshop/screens/about_us.dart';
 import 'package:teeshop/screens/contact_us.dart';
 import 'package:teeshop/screens/order_cart_screen.dart';
 import 'package:teeshop/screens/order_screen.dart';
+import 'package:teeshop/screens/your_profile_screen.dart';
 
 class AppDrawer extends StatefulWidget {
   var userData;
@@ -101,32 +102,8 @@ class _AppDrawerState extends State<AppDrawer> {
               ),
               title: GestureDetector(
                 onTap: () {
-                  if (widget.userData['confirmed'] != true) {
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: Text(
-                          'Verify email',
-                          style: TextStyle(color: Colors.purple),
-                        ),
-                        content: Text(
-                            'Your email is not verified. Please verify it'),
-                        actions: [
-                          TextButton(
-                            onPressed: () async {
-                              await Provider.of<Auth>(context, listen: false)
-                                  .sendVerification();
-                              Navigator.of(context).pop();
-                              Fluttertoast.showToast(
-                                  msg: 'Verification link sent to your email');
-                              setState(() {});
-                            },
-                            child: Text('SEND VERIFICATION'),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
+                  Navigator.of(context).pushNamed(YourProfileScreen.routeName,
+                      arguments: widget.userData);
                 },
                 child: Row(
                   children: [
