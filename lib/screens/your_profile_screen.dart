@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import 'package:teeshop/providers/auth.dart';
+import 'package:teeshop/widgets/app_drawer.dart';
 
 class YourProfileScreen extends StatefulWidget {
   static const routeName = '/your-profile';
@@ -11,8 +15,33 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController fullNameController = TextEditingController();
   TextEditingController phonenumberController = TextEditingController();
+  TextEditingController fullNamePopController = TextEditingController();
+  TextEditingController addressPopController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  var _isLoading = false;
+  var userData;
 
-  void updateAccount() {
+  @override
+  void didChangeDependencies() {
+    setState(() {
+      _isLoading = true;
+    });
+    Provider.of<Auth>(context).getUser(context).then((value) {
+      setState(() {
+        userData = value['user'];
+        emailController.text = value['user']['email'];
+        fullNameController.text = value['user']['full_name'];
+        fullNamePopController.text = value['user']['full_name'];
+        addressPopController.text = value['user']['address'];
+        addressController.text = value['user']['address'];
+        _isLoading = false;
+      });
+    });
+    super.didChangeDependencies();
+  }
+
+  void updateAccount(BuildContext context) {
+    // addressPopController.text =
     showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
@@ -43,8 +72,9 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                   Container(
                     child: TextFormField(
                       keyboardType: TextInputType.number,
-                      controller: phonenumberController,
+                      controller: addressController,
                       enabled: false,
+                      maxLines: 5,
                       decoration: InputDecoration(
                           hintText: 'Address', labelText: 'Address'),
                     ),
@@ -70,37 +100,57 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                         CrossAxisAlignment.stretch,
                                     children: [
                                       TextFormField(
-                                        keyboardType:
-                                            TextInputType.emailAddress,
+                                        controller: fullNamePopController,
                                         enabled: true,
                                         decoration: InputDecoration(
                                             hintText: 'Full Name',
                                             labelText: 'Full Name'),
                                         onChanged: (value) {
-                                          if (value.isNotEmpty) {
-                                            emailController.text = value;
-                                          } else {
-                                            emailController.text = email;
+                                          if (value.isEmpty) {
+                                            value = userData['full_name'];
                                           }
                                         },
                                       ),
                                       TextFormField(
-                                        keyboardType:
-                                            TextInputType.emailAddress,
+                                        controller: addressPopController,
+                                        maxLines: 5,
+                                        keyboardType: TextInputType.multiline,
                                         enabled: true,
                                         decoration: InputDecoration(
                                             hintText: 'Address',
                                             labelText: 'Address'),
                                         onChanged: (value) {
-                                          if (value.isNotEmpty) {
-                                            emailController.text = value;
-                                          } else {
-                                            emailController.text = email;
+                                          if (value.isEmpty) {
+                                            value = userData['address'];
                                           }
                                         },
                                       ),
                                       ElevatedButton(
-                                          onPressed: () {},
+                                          onPressed: () async {
+                                            Navigator.of(context).pop();
+                                            Provider.of<Auth>(context,
+                                                    listen: false)
+                                                .editUser(context,
+                                                    id: userData['id'],
+                                                    fullName:
+                                                        fullNamePopController
+                                                            .text,
+                                                    address:
+                                                        addressPopController
+                                                            .text)
+                                                .then((value) {
+                                              addressController.text =
+                                                  value['user']['address'];
+
+                                              fullNameController.text =
+                                                  value['user']['full_name'];
+                                            });
+
+                                            // emailController.text =
+                                            //     response['user']['email'];
+                                            // fullNameController.text =
+                                            //     response['user']['full_name'];
+                                          },
                                           child: Text('Update'))
                                     ],
                                   ),
@@ -268,183 +318,200 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var userData =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    print(userData);
-    fullNameController.text = userData['full_name'] != null
-        ? userData['full_name'].toString()
-        : 'Ashmit Pathak';
-    emailController.text =
-        userData['email'] != null ? userData['email'].toString() : '';
-
-    phonenumberController.text = '+919588955499';
-
     return SafeArea(
       child: Scaffold(
+        drawer: AppDrawer(
+          userData: userData,
+        ),
         appBar: AppBar(
           title: Text('My Profile'),
         ),
-        body: SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 40,
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      child: Flexible(
-                        flex: 10,
-                        child: TextFormField(
-                          enabled: false,
-                          controller: fullNameController,
-                          decoration: InputDecoration(
-                              hintText: 'Fullname', labelText: 'Full Name'),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      child: Flexible(
-                        flex: 10,
-                        child: TextFormField(
-                          enabled: false,
-                          controller: emailController,
-                          decoration: InputDecoration(
-                              hintText: 'Email', labelText: 'Email'),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: SizedBox(
-                        width: 10,
-                      ),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      child: userData['confirmed'] == true
-                          ? Icon(
-                              Icons.verified,
-                              color: Colors.green,
-                            )
-                          : Icon(
-                              Icons.dangerous,
-                              color: Colors.red,
-                            ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      child: Flexible(
-                        flex: 10,
-                        child: TextFormField(
-                          enabled: false,
-                          keyboardType: TextInputType.number,
-                          controller: phonenumberController,
-                          decoration: InputDecoration(
-                              hintText: 'Phone number',
-                              labelText: 'Phone number'),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: SizedBox(
-                        width: 10,
-                      ),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      child: userData['confirmed'] == true
-                          ? Icon(
-                              Icons.verified,
-                              color: Colors.green,
-                            )
-                          : Icon(
-                              Icons.dangerous,
-                              color: Colors.red,
-                            ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 40,
-                ),
-                Center(
+        body: _isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : SingleChildScrollView(
+                child: Container(
+                  padding: EdgeInsets.all(10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          // showBottomSheetMethod();
-                          updateAccount();
-                        },
-                        child: Card(
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            color: Colors.purple,
-                            child: Text(
-                              'Update Account',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
+                      SizedBox(
+                        height: 40,
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          // showBottomSheetMethod();
-                          showMe(context, 'email');
-                        },
-                        child: Card(
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            color: Colors.purple,
-                            child: Text(
-                              'Click to update/verify Email',
-                              style: TextStyle(color: Colors.white),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            child: Flexible(
+                              flex: 10,
+                              child: TextFormField(
+                                enabled: false,
+                                controller: fullNameController,
+                                decoration: InputDecoration(
+                                    hintText: 'Fullname',
+                                    labelText: 'Full Name'),
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          // showBottomSheetMethod();
-                          showMe(context, 'phone');
-                        },
-                        child: Card(
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            color: Colors.purple,
-                            child: Text(
-                              'Click to update/verify Phone number',
-                              style: TextStyle(color: Colors.white),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            child: Flexible(
+                              flex: 10,
+                              child: TextFormField(
+                                maxLines: 5,
+                                enabled: false,
+                                controller: addressController,
+                                decoration: InputDecoration(
+                                    hintText: 'Address', labelText: 'Address'),
+                              ),
                             ),
                           ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            child: Flexible(
+                              flex: 10,
+                              child: TextFormField(
+                                enabled: false,
+                                controller: emailController,
+                                decoration: InputDecoration(
+                                    hintText: 'Email', labelText: 'Email'),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              width: 10,
+                            ),
+                          ),
+                          Flexible(
+                            flex: 1,
+                            child: userData['confirmed'] == true
+                                ? Icon(
+                                    Icons.verified,
+                                    color: Colors.green,
+                                  )
+                                : Icon(
+                                    Icons.dangerous,
+                                    color: Colors.red,
+                                  ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            child: Flexible(
+                              flex: 10,
+                              child: TextFormField(
+                                enabled: false,
+                                keyboardType: TextInputType.number,
+                                controller: phonenumberController,
+                                decoration: InputDecoration(
+                                    hintText: 'Phone number',
+                                    labelText: 'Phone number'),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              width: 10,
+                            ),
+                          ),
+                          Flexible(
+                            flex: 1,
+                            child: userData['confirmed'] == true
+                                ? Icon(
+                                    Icons.verified,
+                                    color: Colors.green,
+                                  )
+                                : Icon(
+                                    Icons.dangerous,
+                                    color: Colors.red,
+                                  ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 40,
+                      ),
+                      Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                // showBottomSheetMethod();
+                                updateAccount(context);
+                              },
+                              child: Card(
+                                child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  color: Colors.purple,
+                                  child: Text(
+                                    'Update Account',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                // showBottomSheetMethod();
+                                showMe(context, 'email');
+                              },
+                              child: Card(
+                                child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  color: Colors.purple,
+                                  child: Text(
+                                    'Click to update/verify Email',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                // showBottomSheetMethod();
+                                showMe(context, 'phone');
+                              },
+                              child: Card(
+                                child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  color: Colors.purple,
+                                  child: Text(
+                                    'Click to update/verify Phone number',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
-        ),
+              ),
       ),
     );
   }

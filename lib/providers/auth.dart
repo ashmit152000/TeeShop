@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:teeshop/data/http_exception.dart';
@@ -66,6 +68,55 @@ class Auth with ChangeNotifier {
         });
   }
 
+  Future<dynamic> editUser(BuildContext context,
+      {int? id,
+      String? fullName,
+      String? address,
+      String? password,
+      String? phoneNumber,
+      String? email}) async {
+    try {
+      var dio = Dio();
+      var url = 'https://teeshopindia.in/user/edit';
+      Map<String, dynamic> bodyModel = {
+        "id": id,
+      };
+
+      if (fullName != null) {
+        bodyModel["full_name"] = fullName;
+      }
+
+      if (address != null) {
+        bodyModel["address"] = address;
+      }
+
+      if (phoneNumber != null) {
+        bodyModel["phone_number"] = phoneNumber;
+      }
+
+      if (email != null) {
+        bodyModel["email"] = email;
+      }
+
+      if (password != null) {
+        bodyModel["password"] = password;
+      }
+
+      final response = await dio.post(
+        url,
+        data: bodyModel,
+        options: Options(
+            contentType: Headers.jsonContentType,
+            responseType: ResponseType.json),
+      );
+      Fluttertoast.showToast(msg: 'Acount updated');
+      print(response.data['user']['email']);
+      return response.data;
+    } catch (error) {
+      print(error);
+    }
+  }
+
   Future<void> token(BuildContext context) async {
     var url = Uri.parse('https://teeshopindia.in/login/token');
     try {
@@ -86,6 +137,21 @@ class Auth with ChangeNotifier {
 
       _userId = int.parse(responseData['user']['id'].toString());
       notifyListeners();
+    } catch (error) {
+      // throw HttpException(error.toString());
+      print(error);
+    }
+  }
+
+  Future<dynamic> getUser(BuildContext context) async {
+    var url = Uri.parse('https://teeshopindia.in/user/show/$_userId');
+    try {
+      var response = await http.get(
+        url,
+      );
+      final responseData = json.decode(response.body);
+      print(responseData);
+      return responseData;
     } catch (error) {
       // throw HttpException(error.toString());
       print(error);
