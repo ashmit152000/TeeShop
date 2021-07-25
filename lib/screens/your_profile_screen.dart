@@ -25,6 +25,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
   var verify;
   var _isLoading = false;
   var userData;
+  var fullNumber;
   FirebaseAuth auth = FirebaseAuth.instance;
 
   void getDataWorking() async {
@@ -271,7 +272,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                   SizedBox(
                     height: 20,
                   ),
-                  if (type == 'email')
+                  if (type == 'email' && userData['confirmed'] == false)
                     ElevatedButton(
                       onPressed: () async {
                         await Provider.of<Auth>(context, listen: false)
@@ -285,9 +286,10 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                       style: ElevatedButton.styleFrom(primary: Colors.green),
                     ),
 
-                  if (type == 'phone')
+                  if (type == 'phone' && userData['phone_verified'] == false)
                     ElevatedButton(
                       onPressed: () async {
+                        otp.text = '';
                         await FirebaseAuth.instance.verifyPhoneNumber(
                           phoneNumber: phonenumberController.text,
                           verificationCompleted:
@@ -313,8 +315,6 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                             TextFormField(
                                               controller: otp,
                                               enabled: true,
-                                              keyboardType:
-                                                  TextInputType.number,
                                               decoration: InputDecoration(
                                                   hintText: 'OTP',
                                                   labelText: 'OTP'),
@@ -329,14 +329,31 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                                               verificationId,
                                                           smsCode:
                                                               otp.text.trim());
-
-                                                  auth
-                                                      .signInWithCredential(
-                                                          verify)
-                                                      .then((value) {
+                                                  try {
+                                                    auth
+                                                        .signInWithCredential(
+                                                            verify)
+                                                        .then((value) {
+                                                      print(value);
+                                                      Provider.of<Auth>(context,
+                                                              listen: false)
+                                                          .confirmPhone(
+                                                              userData['id'])
+                                                          .then((value) {
+                                                        Fluttertoast.showToast(
+                                                            msg:
+                                                                'Phone number verified',
+                                                            backgroundColor:
+                                                                Colors.green);
+                                                      });
+                                                    });
+                                                  } catch (err) {
                                                     Fluttertoast.showToast(
-                                                        msg: 'Verified');
-                                                  });
+                                                        msg:
+                                                            'Wrong otp entered',
+                                                        backgroundColor:
+                                                            Colors.red);
+                                                  }
                                                 },
                                                 child: Text('Verify'))
                                           ],
@@ -415,7 +432,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                             builder: (context) {
                               return AlertDialog(
                                 title: Text(
-                                  'Update Phone Number',
+                                  'Update Phone Number(Enter Country Code)',
                                   style: TextStyle(
                                       color: Theme.of(context).primaryColor),
                                 ),
@@ -426,7 +443,6 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                           CrossAxisAlignment.stretch,
                                       children: [
                                         TextFormField(
-                                          keyboardType: TextInputType.number,
                                           enabled: true,
                                           controller: phoneNumberPopController,
                                           decoration: InputDecoration(
@@ -435,7 +451,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                           onChanged: (value) {
                                             if (value.isNotEmpty) {
                                               phonenumberController.text =
-                                                  value;
+                                                  "+91" + value;
                                             } else {
                                               phonenumberController.text =
                                                   phoneNumber;

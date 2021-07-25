@@ -211,6 +211,29 @@ class Auth with ChangeNotifier {
     }
   }
 
+  Future<void> confirmPhone(int id) async {
+    var url = 'https://teeshopindia.in/users/phone';
+    try {
+      var dio = Dio();
+
+      Map<String, dynamic> bodyModel = {
+        "id": id,
+      };
+
+      final response = await dio.post(
+        url,
+        data: bodyModel,
+        options: Options(
+            contentType: Headers.jsonContentType,
+            responseType: ResponseType.json),
+      );
+
+      return response.data;
+    } catch (error) {
+      print(error);
+    }
+  }
+
   Future<void> sendVerification() async {
     var url = Uri.parse('https://teeshopindia.in/user/confirm/$_userId');
     try {
