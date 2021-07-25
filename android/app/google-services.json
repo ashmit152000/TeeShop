@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "720559309512",
+    "firebase_url": "https://teeshop-67467-default-rtdb.firebaseio.com",
     "project_id": "teeshop-67467",
     "storage_bucket": "teeshop-67467.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "720559309512-bjj91dm2ok1q2rtu5pl7sjeipld2qalo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aaa.teeshop",
+            "certificate_hash": "50394617b4e6dc2cce1c64e6904775e6aa772b89"
+          }
+        },
         {
           "client_id": "720559309512-3o99mrap9das14l8o9r99ng5odlpdf8r.apps.googleusercontent.com",
           "client_type": 3

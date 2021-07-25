@@ -109,8 +109,10 @@ class Auth with ChangeNotifier {
             contentType: Headers.jsonContentType,
             responseType: ResponseType.json),
       );
-      Fluttertoast.showToast(msg: 'Acount updated');
-      print(response.data['user']['email']);
+
+      Fluttertoast.showToast(
+          msg: 'Account updated. Please hit reload from the bar');
+
       return response.data;
     } catch (error) {
       print(error);
