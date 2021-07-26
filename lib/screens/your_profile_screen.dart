@@ -35,27 +35,25 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
     Provider.of<Auth>(context, listen: false).getUser(context).then((value) {
       setState(() {
         userData = value['user'];
-        emailController.text = value['user']['email'].toString().isEmpty
-            ? 'To be added'
+        emailController.text = value['user']['email'] == null
+            ? 'To be added by you'
             : value['user']['email'];
-        fullNameController.text = value['user']['full_name'].toString().isEmpty
-            ? 'To be added'
+        fullNameController.text = value['user']['full_name'] == null
+            ? 'To be added by you'
             : value['user']['full_name'];
-        fullNamePopController.text =
-            value['user']['full_name'].toString().isEmpty
-                ? 'To be added'
-                : value['user']['full_name'];
-        addressPopController.text = value['user']['address'].toString().isEmpty
-            ? 'To be added'
+        fullNamePopController.text = value['user']['full_name'] == null
+            ? 'To be added by you'
+            : value['user']['full_name'];
+        addressPopController.text = value['user']['address'] == null
+            ? 'To be added by you'
             : value['user']['address'];
-        addressController.text = value['user']['address'].toString().isEmpty
-            ? 'To be added'
+        addressController.text = value['user']['address'] == null
+            ? 'To be added by you'
             : value['user']['address'];
 
-        phonenumberController.text =
-            value['user']['phone_number'].toString().isEmpty
-                ? 'To be Added'
-                : value['user']['phone_number'].toString();
+        phonenumberController.text = value['user']['phone_number'] == null
+            ? 'To be added by you'
+            : value['user']['phone_number'].toString();
         _isLoading = false;
       });
     });
