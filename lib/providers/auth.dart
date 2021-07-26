@@ -109,10 +109,17 @@ class Auth with ChangeNotifier {
             contentType: Headers.jsonContentType,
             responseType: ResponseType.json),
       );
-
-      Fluttertoast.showToast(
-          msg: 'Account updated. Please hit reload from the bar');
-
+      if (response.data['status'] == 200) {
+        Fluttertoast.showToast(
+            msg: response.data['message'],
+            backgroundColor: Colors.green,
+            toastLength: Toast.LENGTH_LONG);
+      } else {
+        Fluttertoast.showToast(
+            msg: response.data['message'],
+            backgroundColor: Colors.red,
+            toastLength: Toast.LENGTH_LONG);
+      }
       return response.data;
     } catch (error) {
       print(error);

@@ -430,7 +430,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                             builder: (context) {
                               return AlertDialog(
                                 title: Text(
-                                  'Update Phone Number(Enter Country Code)',
+                                  'Update Phone Number',
                                   style: TextStyle(
                                       color: Theme.of(context).primaryColor),
                                 ),

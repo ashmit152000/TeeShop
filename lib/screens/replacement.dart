@@ -173,7 +173,7 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
                   ),
                   body: TabBarView(
                     children: [
-                      CustomTee(),
+                      CustomTee(_productListOne, _userData),
 
                       BasicTeeScreen(_productListOne, _userData),
                       FullSleeves(_productListOne, _userData),
