@@ -127,7 +127,9 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
               "textRotation": textRotation,
               "textColor": textColor,
               "price": 399,
+              "address": _productData['user']['address'],
               "url": _productData['data']['url'],
+              "related_products": _productData['data']['related_products'][0],
               "fontFamily": fontFamilySelector,
               "name": _productData['data']['name'],
             });
