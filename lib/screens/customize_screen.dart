@@ -152,8 +152,8 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: AssetImage(
-                        _productData['data']['url'],
+                      image: NetworkImage(
+                        _productData['data']['related_products'][0],
                       ),
                     ),
                   ),
