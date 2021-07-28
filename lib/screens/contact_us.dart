@@ -40,7 +40,7 @@ class ContactUs extends StatelessWidget {
                 ),
                 Center(
                   child: Text(
-                    'Contact us directly at: \n ashmitteeshop@gmail.com\n teeshopindia@gmail.com\n anirudhteeshop@gmail.com',
+                    'Contact us directly at: \n indiateeshop@gmail.com\n ashmitteeshop@gmail.com \n Telephone number:  \n Co-Founder\'s & Developer\'s number: +919588955499 \n +918887566721',
                     style: TextStyle(
                         fontSize: MediaQuery.of(context).size.height / 40),
                   ),
