@@ -34,6 +34,9 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
   var left = 0.0;
   var topText = 0.0;
   var leftText = 0.0;
+  var _productData;
+  var _image;
+  var _isLoading = false;
   var wallpaperCollection = [
     {"image": "assets/svgs/ironman.svg", "clicked": false, "id": "1"},
     {"image": "assets/svgs/flash.svg", "clicked": false, "id": "2"},
@@ -107,223 +110,259 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    Map<String, dynamic> _productData =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+  void initState() {
+    super.initState();
+  }
 
-    return Scaffold(
-      appBar: AppBar(title: Text('Customise'), actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pushNamed(BuyNowCustom.routeName, arguments: {
-              "selectedImage": selectedImage,
-              "selectedColor": selectedColor,
-              "text": text,
-              "iconSize": iconSize,
-              "_isIconPresent": _isLogoPresent,
-              "_isTextPresent": _isTextPresent,
-              "angle": angle,
-              "textSize": textSize,
-              "textRotation": textRotation,
-              "textColor": textColor,
-              "price": 399,
-              "address": _productData['user']['address'],
-              "url": _productData['data']['url'],
-              "related_products": _productData['data']['related_products'][0],
-              "fontFamily": fontFamilySelector,
-              "name": _productData['data']['name'],
-              "product": _productData,
-              "user": _productData['user'],
-              "iconX": left,
-              "iconY": top,
-              "textX": leftText,
-              "textY": topText,
-            });
-          },
-          child: Text(
-            'SELECT',
-            style: TextStyle(
-              color: Colors.white,
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    setState(() {
+      _isLoading = true;
+    });
+    _productData =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    Image.network(_productData['data']['related_products'][0])
+        .image
+        .resolve(new ImageConfiguration())
+        .addListener(ImageStreamListener((ImageInfo info, bool _) {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(title: Text('Customise'), actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context)
+                  .pushNamed(BuyNowCustom.routeName, arguments: {
+                "selectedImage": selectedImage,
+                "selectedColor": selectedColor,
+                "text": text,
+                "iconSize": iconSize,
+                "_isIconPresent": _isLogoPresent,
+                "_isTextPresent": _isTextPresent,
+                "angle": angle,
+                "textSize": textSize,
+                "textRotation": textRotation,
+                "textColor": textColor,
+                "price": 399,
+                "address": _productData['user']['address'],
+                "url": _productData['data']['url'],
+                "related_products": _productData['data']['related_products'][0],
+                "fontFamily": fontFamilySelector,
+                "name": _productData['data']['name'],
+                "product": _productData,
+                "user": _productData['user'],
+                "iconX": left,
+                "iconY": top,
+                "textX": leftText,
+                "textY": topText,
+              });
+            },
+            child: Text(
+              'SELECT',
+              style: TextStyle(
+                color: Colors.white,
+              ),
             ),
           ),
-        ),
-      ]),
-      body: Container(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.all(0),
-                child: Container(
-                  height: MediaQuery.of(context).size.height / 1.5,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                        _productData['data']['related_products'][0],
+        ]),
+        body: _isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Container(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(0),
+                        child: Container(
+                          height: MediaQuery.of(context).size.height / 1.5,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(
+                                _productData['data']['related_products'][0],
+                              ),
+                            ),
+                          ),
+                          child: Container(
+                            child: Stack(
+                              fit: StackFit.loose,
+                              clipBehavior: Clip.antiAlias,
+                              children: [
+                                if (_isLogoPresent &&
+                                    _pickedImage == null &&
+                                    selectedFile == null)
+                                  AnimatedPositioned(
+                                    duration: Duration(milliseconds: 1),
+                                    top: top,
+                                    left: left,
+                                    child: GestureDetector(
+                                      onVerticalDragStart: (details) {
+                                        setState(() {
+                                          top = top;
+                                          left = left;
+                                        });
+                                      },
+                                      onVerticalDragUpdate:
+                                          (DragUpdateDetails dd) {
+                                        setState(() {
+                                          top = dd.localPosition.dy;
+                                          left = dd.localPosition.dx;
+                                        });
+                                      },
+                                      child: Transform.rotate(
+                                        angle: (pi / 4) * angle,
+                                        child: SvgPicture.asset(
+                                          selectedImage,
+                                          height: iconSize.toDouble(),
+                                          colorBlendMode: BlendMode.srcATop,
+                                          allowDrawingOutsideViewBox: false,
+                                          color: selectedColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                if (_isLogoPresent &&
+                                    _pickedImage != null &&
+                                    selectedFile != null)
+                                  AnimatedPositioned(
+                                    top: top,
+                                    left: left,
+                                    duration: Duration(milliseconds: 1),
+                                    child: GestureDetector(
+                                      onVerticalDragUpdate: (dd) {
+                                        setState(() {
+                                          top = dd.localPosition.dy;
+                                          left = dd.localPosition.dx;
+                                        });
+                                      },
+                                      child: Transform.rotate(
+                                        angle: (pi / 4) * angle,
+                                        child: Image.file(
+                                          selectedFile,
+                                          height: iconSize.toDouble(),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                if (_isTextPresent)
+                                  AnimatedPositioned(
+                                    top: topText,
+                                    left: leftText,
+                                    duration: Duration(milliseconds: 1),
+                                    child: GestureDetector(
+                                      onVerticalDragUpdate: (dd) {
+                                        setState(() {
+                                          topText = dd.localPosition.dy;
+                                          leftText = dd.localPosition.dx;
+                                        });
+                                      },
+                                      child: Transform.rotate(
+                                        angle: (pi / 4) * textRotation,
+                                        child: Text(
+                                          text.toString(),
+                                          style: TextStyle(
+                                              fontSize: textSize,
+                                              fontFamily: fontFamilySelector,
+                                              color: textColor),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  child: Container(
-                    child: Stack(
-                      fit: StackFit.loose,
-                      clipBehavior: Clip.antiAlias,
-                      children: [
-                        if (_isLogoPresent &&
-                            _pickedImage == null &&
-                            selectedFile == null)
-                          AnimatedPositioned(
-                            duration: Duration(milliseconds: 1),
-                            top: top,
-                            left: left,
-                            child: GestureDetector(
-                              onVerticalDragStart: (details) {
-                                setState(() {
-                                  top = top;
-                                  left = left;
-                                });
-                              },
-                              onVerticalDragUpdate: (DragUpdateDetails dd) {
-                                setState(() {
-                                  top = dd.localPosition.dy;
-                                  left = dd.localPosition.dx;
-                                });
-                              },
-                              child: Transform.rotate(
-                                angle: (pi / 4) * angle,
-                                child: SvgPicture.asset(
-                                  selectedImage,
-                                  height: iconSize.toDouble(),
-                                  colorBlendMode: BlendMode.srcATop,
-                                  allowDrawingOutsideViewBox: false,
-                                  color: selectedColor,
-                                ),
-                              ),
+                      Container(
+                        height: MediaQuery.of(context).size.height / 2,
+                        width: double.infinity,
+                        color: Colors.black,
+                        child: DefaultTabController(
+                          length: 4,
+                          child: NestedScrollView(
+                            headerSliverBuilder: (context, value) {
+                              return [
+                                PreferredSize(
+                                  child: SliverAppBar(
+                                    automaticallyImplyLeading: false,
+                                    title: TabBar(
+                                      isScrollable: true,
+                                      tabs: [
+                                        Tab(
+                                          child: Text(
+                                            'ICONS',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        ),
+                                        Tab(
+                                          child: Text(
+                                            'CUSTOMIZE ICON',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        ),
+                                        Tab(
+                                          child: Text(
+                                            'TEXT',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        ),
+                                        Tab(
+                                          child: Text(
+                                            'CUSTOMIZE TEXT',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    backgroundColor: Colors.black,
+                                  ),
+                                  preferredSize: Size.fromHeight(0),
+                                )
+                              ];
+                            },
+                            body: TabBarView(
+                              children: [
+                                wallpapers(),
+                                Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: customize()),
+                                textPrint(),
+                                Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: customizeText()),
+                              ],
                             ),
                           ),
-                        if (_isLogoPresent &&
-                            _pickedImage != null &&
-                            selectedFile != null)
-                          AnimatedPositioned(
-                            top: top,
-                            left: left,
-                            duration: Duration(milliseconds: 1),
-                            child: GestureDetector(
-                              onVerticalDragUpdate: (dd) {
-                                setState(() {
-                                  top = dd.localPosition.dy;
-                                  left = dd.localPosition.dx;
-                                });
-                              },
-                              child: Transform.rotate(
-                                angle: (pi / 4) * angle,
-                                child: Image.file(
-                                  selectedFile,
-                                  height: iconSize.toDouble(),
-                                ),
-                              ),
-                            ),
-                          ),
-                        if (_isTextPresent)
-                          AnimatedPositioned(
-                            top: topText,
-                            left: leftText,
-                            duration: Duration(milliseconds: 1),
-                            child: GestureDetector(
-                              onVerticalDragUpdate: (dd) {
-                                setState(() {
-                                  topText = dd.localPosition.dy;
-                                  leftText = dd.localPosition.dx;
-                                });
-                              },
-                              child: Transform.rotate(
-                                angle: (pi / 4) * textRotation,
-                                child: Text(
-                                  text.toString(),
-                                  style: TextStyle(
-                                      fontSize: textSize,
-                                      fontFamily: fontFamilySelector,
-                                      color: textColor),
-                                ),
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ),
-              Container(
-                height: MediaQuery.of(context).size.height / 2,
-                width: double.infinity,
-                color: Colors.black,
-                child: DefaultTabController(
-                  length: 4,
-                  child: NestedScrollView(
-                    headerSliverBuilder: (context, value) {
-                      return [
-                        PreferredSize(
-                          child: SliverAppBar(
-                            automaticallyImplyLeading: false,
-                            title: TabBar(
-                              isScrollable: true,
-                              tabs: [
-                                Tab(
-                                  child: Text(
-                                    'ICONS',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                                Tab(
-                                  child: Text(
-                                    'CUSTOMIZE ICON',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                                Tab(
-                                  child: Text(
-                                    'TEXT',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                                Tab(
-                                  child: Text(
-                                    'CUSTOMIZE TEXT',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            backgroundColor: Colors.black,
-                          ),
-                          preferredSize: Size.fromHeight(0),
-                        )
-                      ];
-                    },
-                    body: TabBarView(
-                      children: [
-                        wallpapers(),
-                        Padding(
-                            padding: EdgeInsets.all(10), child: customize()),
-                        textPrint(),
-                        Padding(
-                            padding: EdgeInsets.all(10),
-                            child: customizeText()),
-                      ],
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
+        floatingActionButton: FloatingActionButton.extended(
+          label: Text('Upload Icon'),
+          onPressed: () {
+            _loadPicker(ImageSource.gallery);
+          },
         ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        label: Text('Upload Icon'),
-        onPressed: () {
-          _loadPicker(ImageSource.gallery);
-        },
       ),
     );
   }
