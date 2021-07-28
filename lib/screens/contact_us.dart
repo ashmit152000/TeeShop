@@ -38,7 +38,13 @@ class ContactUs extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                Text('This is the key'),
+                Center(
+                  child: Text(
+                    'Contact us directly at: \n ashmitteeshop@gmail.com\n teeshopindia@gmail.com\n anirudhteeshop@gmail.com',
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.height / 40),
+                  ),
+                ),
               ],
             ),
           ),

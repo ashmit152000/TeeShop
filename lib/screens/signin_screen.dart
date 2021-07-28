@@ -26,6 +26,8 @@ class _SignInScreenState extends State<SignInScreen>
   late String passwordId;
   late String cPasswordId;
   late GlobalKey<FormState> gKey = GlobalKey();
+  var width;
+  var height;
   bool _isLoading = false;
   void _showErrorDialog(String message) {
     showDialog(
@@ -133,6 +135,9 @@ class _SignInScreenState extends State<SignInScreen>
 
   @override
   Widget build(BuildContext context) {
+    width = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xff21254A),
@@ -154,7 +159,7 @@ class _SignInScreenState extends State<SignInScreen>
                       children: [
                         Container(
                           width: double.infinity,
-                          height: 200,
+                          height: height / 4,
                           child: Stack(
                             children: [
                               Positioned(
@@ -183,18 +188,20 @@ class _SignInScreenState extends State<SignInScreen>
                                     Text(
                                       'WELCOME TO',
                                       style: TextStyle(
-                                          color: Colors.white, fontSize: 20),
+                                          color: Colors.white,
+                                          fontSize: width / 15),
                                     ),
                                     Text(
                                       '🙏 TEESHOP 🙏',
                                       style: TextStyle(
-                                          color: Colors.white, fontSize: 20),
+                                          color: Colors.white,
+                                          fontSize: width / 15),
                                     ),
                                   ],
                                 ),
                               ),
                               SizedBox(
-                                height: 40,
+                                height: height / 20,
                               ),
                               Form(
                                 key: gKey,
@@ -216,6 +223,7 @@ class _SignInScreenState extends State<SignInScreen>
                                               textInputAction:
                                                   TextInputAction.next,
                                               style: TextStyle(
+                                                  fontSize: width / 25,
                                                   color: Colors.white),
                                               decoration: InputDecoration(
                                                 border: InputBorder.none,
@@ -243,7 +251,7 @@ class _SignInScreenState extends State<SignInScreen>
                                       ),
                                     ),
                                     SizedBox(
-                                      height: 40,
+                                      height: height / 20,
                                     ),
                                     Container(
                                       padding: EdgeInsets.all(8),
@@ -263,7 +271,9 @@ class _SignInScreenState extends State<SignInScreen>
                                               obscureText: true,
                                               obscuringCharacter: '*',
                                               style: TextStyle(
-                                                  color: Colors.white),
+                                                color: Colors.white,
+                                                fontSize: width / 25,
+                                              ),
                                               decoration: InputDecoration(
                                                 border: InputBorder.none,
                                                 hintText: 'Password',
@@ -289,7 +299,7 @@ class _SignInScreenState extends State<SignInScreen>
                                       ),
                                     ),
                                     SizedBox(
-                                      height: 40,
+                                      height: height / 20,
                                     ),
                                     authMode == AuthMode.Signup
                                         ? SlideTransition(
@@ -314,8 +324,9 @@ class _SignInScreenState extends State<SignInScreen>
                                                         obscureText: true,
                                                         obscuringCharacter: '*',
                                                         style: TextStyle(
-                                                            color:
-                                                                Colors.white),
+                                                          color: Colors.white,
+                                                          fontSize: width / 25,
+                                                        ),
                                                         decoration:
                                                             InputDecoration(
                                                           border:
@@ -341,7 +352,7 @@ class _SignInScreenState extends State<SignInScreen>
                                           )
                                         : Container(),
                                     SizedBox(
-                                      height: 30,
+                                      height: height / 20,
                                     ),
                                     InkWell(
                                       onTap: () {
@@ -354,6 +365,7 @@ class _SignInScreenState extends State<SignInScreen>
                                             : 'Already have an account ? Sign in',
                                         style: TextStyle(
                                           color: Colors.white,
+                                          fontSize: width / 25,
                                         ),
                                       ),
                                     ),
@@ -383,6 +395,7 @@ class _SignInScreenState extends State<SignInScreen>
                                                       : 'SIGN UP',
                                                   style: TextStyle(
                                                     color: Colors.white,
+                                                    fontSize: width / 25,
                                                   ),
                                                 )
                                               : CircularProgressIndicator(

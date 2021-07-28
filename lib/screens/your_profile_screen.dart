@@ -22,6 +22,8 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
   TextEditingController emailPopController = TextEditingController();
   TextEditingController phoneNumberPopController = TextEditingController();
   TextEditingController otp = TextEditingController();
+  var width;
+  var height;
   var verify;
   var _isLoading = false;
   var userData;
@@ -36,23 +38,23 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
       setState(() {
         userData = value['user'];
         emailController.text = value['user']['email'] == null
-            ? 'To be added by you'
+            ? 'Enter your email'
             : value['user']['email'];
         fullNameController.text = value['user']['full_name'] == null
-            ? 'To be added by you'
+            ? 'Enter your full name'
             : value['user']['full_name'];
         fullNamePopController.text = value['user']['full_name'] == null
-            ? 'To be added by you'
+            ? 'Enter your full name'
             : value['user']['full_name'];
         addressPopController.text = value['user']['address'] == null
-            ? 'To be added by you'
+            ? 'Enter your address'
             : value['user']['address'];
         addressController.text = value['user']['address'] == null
-            ? 'To be added by you'
+            ? 'Enter your address'
             : value['user']['address'];
 
         phonenumberController.text = value['user']['phone_number'] == null
-            ? 'To be added by you'
+            ? 'Enter your phone number'
             : value['user']['phone_number'].toString();
         _isLoading = false;
       });
@@ -127,7 +129,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                 children: <Widget>[
                   Text(
                     'Update Details',
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: width / 20),
                   ),
                   SizedBox(
                     height: 20,
@@ -136,6 +138,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                     child: TextFormField(
                       controller: fullNameController,
                       enabled: false,
+                      style: TextStyle(fontSize: width / 25),
                       decoration: InputDecoration(
                           hintText: 'Present Full Name',
                           labelText: 'Present Full Name'),
@@ -147,6 +150,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                       controller: addressController,
                       enabled: false,
                       maxLines: 5,
+                      style: TextStyle(fontSize: width / 25),
                       decoration: InputDecoration(
                           hintText: 'Present Address',
                           labelText: 'Present Address'),
@@ -175,6 +179,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                       TextFormField(
                                         controller: fullNamePopController,
                                         enabled: true,
+                                        style: TextStyle(fontSize: width / 25),
                                         decoration: InputDecoration(
                                             hintText: 'Full Name',
                                             labelText: 'Full Name'),
@@ -189,6 +194,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                         maxLines: 5,
                                         keyboardType: TextInputType.multiline,
                                         enabled: true,
+                                        style: TextStyle(fontSize: width / 25),
                                         decoration: InputDecoration(
                                             hintText: 'Address',
                                             labelText: 'Address'),
@@ -199,16 +205,21 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                         },
                                       ),
                                       ElevatedButton(
-                                          onPressed: () async {
-                                            Navigator.of(context).pop();
+                                        onPressed: () async {
+                                          Navigator.of(context).pop();
 
-                                            editData(
-                                                fullName:
-                                                    fullNamePopController.text,
-                                                address:
-                                                    addressPopController.text);
-                                          },
-                                          child: Text('Update'))
+                                          editData(
+                                              fullName:
+                                                  fullNamePopController.text,
+                                              address:
+                                                  addressPopController.text);
+                                        },
+                                        child: Text(
+                                          'Update',
+                                          style:
+                                              TextStyle(fontSize: width / 30),
+                                        ),
+                                      )
                                     ],
                                   ),
                                 ),
@@ -241,16 +252,17 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                 children: <Widget>[
                   Text(
                     'Verify Email and Password',
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: width / 20),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: height / 30,
                   ),
                   if (type == 'email')
                     Container(
                       child: TextFormField(
                         controller: emailController,
                         enabled: false,
+                        style: TextStyle(fontSize: width / 25),
                         decoration: InputDecoration(
                             hintText: 'Present Email',
                             labelText: 'Present Email'),
@@ -261,6 +273,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                       child: TextFormField(
                         keyboardType: TextInputType.number,
                         controller: phonenumberController,
+                        style: TextStyle(fontSize: width / 25),
                         enabled: false,
                         decoration: InputDecoration(
                             hintText: 'Present Phone number',
@@ -268,7 +281,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                       ),
                     ),
                   SizedBox(
-                    height: 20,
+                    height: height / 30,
                   ),
                   if (type == 'email' && userData['confirmed'] == false)
                     ElevatedButton(
@@ -313,6 +326,8 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                             TextFormField(
                                               controller: otp,
                                               enabled: true,
+                                              style: TextStyle(
+                                                  fontSize: width / 25),
                                               decoration: InputDecoration(
                                                   hintText: 'OTP',
                                                   labelText: 'OTP'),
@@ -353,7 +368,11 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                                             Colors.red);
                                                   }
                                                 },
-                                                child: Text('Verify'))
+                                                child: Text(
+                                                  'Verify',
+                                                  style: TextStyle(
+                                                      fontSize: width / 25),
+                                                ))
                                           ],
                                         ),
                                       ),
@@ -364,7 +383,10 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                           codeAutoRetrievalTimeout: (String verificationId) {},
                         );
                       },
-                      child: Text('Send Verification'),
+                      child: Text(
+                        'Send Verification',
+                        style: TextStyle(fontSize: width / 30),
+                      ),
                       style: ElevatedButton.styleFrom(primary: Colors.green),
                     ),
                   // Start here
@@ -418,7 +440,10 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                               );
                             });
                       },
-                      child: Text('Edit Email'),
+                      child: Text(
+                        'Edit Email',
+                        style: TextStyle(fontSize: width / 30),
+                      ),
                       style: ElevatedButton.styleFrom(primary: Colors.amber),
                     ),
                   // Update email ends here
@@ -472,7 +497,10 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                               );
                             });
                       },
-                      child: Text('Edit Phone Number'),
+                      child: Text(
+                        'Edit Phone Number',
+                        style: TextStyle(fontSize: width / 30),
+                      ),
                       style: ElevatedButton.styleFrom(primary: Colors.amber),
                     ),
                 ],
@@ -484,6 +512,8 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    width = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
         drawer: AppDrawer(
@@ -510,7 +540,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(
-                        height: 40,
+                        height: width / 12,
                       ),
                       Row(
                         mainAxisSize: MainAxisSize.min,
@@ -521,6 +551,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                               child: TextFormField(
                                 enabled: false,
                                 controller: fullNameController,
+                                style: TextStyle(fontSize: width / 25),
                                 decoration: InputDecoration(
                                     hintText: 'Fullname',
                                     labelText: 'Full Name'),
@@ -530,7 +561,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                         ],
                       ),
                       SizedBox(
-                        height: 20,
+                        height: width / 15,
                       ),
                       Row(
                         mainAxisSize: MainAxisSize.min,
@@ -541,6 +572,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                               child: TextFormField(
                                 maxLines: 5,
                                 enabled: false,
+                                style: TextStyle(fontSize: width / 25),
                                 controller: addressController,
                                 decoration: InputDecoration(
                                     hintText: 'Address', labelText: 'Address'),
@@ -550,7 +582,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                         ],
                       ),
                       SizedBox(
-                        height: 20,
+                        height: width / 15,
                       ),
                       Row(
                         mainAxisSize: MainAxisSize.min,
@@ -561,6 +593,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                               child: TextFormField(
                                 enabled: false,
                                 controller: emailController,
+                                style: TextStyle(fontSize: width / 25),
                                 decoration: InputDecoration(
                                     hintText: 'Email', labelText: 'Email'),
                               ),
@@ -568,7 +601,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                           ),
                           Expanded(
                             child: SizedBox(
-                              width: 10,
+                              height: width / 15,
                             ),
                           ),
                           Flexible(
@@ -586,7 +619,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                         ],
                       ),
                       SizedBox(
-                        height: 20,
+                        height: width / 15,
                       ),
                       Row(
                         mainAxisSize: MainAxisSize.min,
@@ -598,6 +631,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                 enabled: false,
                                 keyboardType: TextInputType.number,
                                 controller: phonenumberController,
+                                style: TextStyle(fontSize: width / 25),
                                 decoration: InputDecoration(
                                     hintText: 'Phone number',
                                     labelText: 'Phone number'),
@@ -624,7 +658,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                         ],
                       ),
                       SizedBox(
-                        height: 40,
+                        height: height / 20,
                       ),
                       Center(
                         child: Column(
@@ -641,10 +675,16 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                   color: Colors.purple,
                                   child: Text(
                                     'Update Account',
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: width / 30,
+                                    ),
                                   ),
                                 ),
                               ),
+                            ),
+                            SizedBox(
+                              height: height / 45,
                             ),
                             GestureDetector(
                               onTap: () {
@@ -657,10 +697,16 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                   color: Colors.purple,
                                   child: Text(
                                     'Click to update/verify Email',
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: width / 30,
+                                    ),
                                   ),
                                 ),
                               ),
+                            ),
+                            SizedBox(
+                              height: height / 45,
                             ),
                             GestureDetector(
                               onTap: () {
@@ -673,10 +719,16 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                   color: Colors.purple,
                                   child: Text(
                                     'Click to update/verify Phone number',
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: width / 30,
+                                    ),
                                   ),
                                 ),
                               ),
+                            ),
+                            SizedBox(
+                              height: height / 50,
                             ),
                           ],
                         ),

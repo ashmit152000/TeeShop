@@ -15,6 +15,8 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
   int quantity = 1;
   var address;
   var total;
+  var width;
+  var height;
   String dropdownValue = "";
   List<String> size = ["S", "M", "L", "XL", "XXL"];
   var args;
@@ -48,10 +50,13 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                   children: [
                     Text(
                       'Edit Address',
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(
+                        fontSize: width / 15,
+                      ),
                     ),
+                    Divider(),
                     SizedBox(
-                      height: 20,
+                      height: width / 30,
                     ),
                     Form(
                       key: pincodeKey,
@@ -91,7 +96,8 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: Text('Cancel'),
+                            child: Text('Cancel',
+                                style: TextStyle(fontSize: width / 25)),
                           ),
                           ElevatedButton(
                             onPressed: () {
@@ -113,7 +119,10 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                                 Navigator.of(context).pop();
                               }
                             },
-                            child: Text('Done'),
+                            child: Text(
+                              'Done',
+                              style: TextStyle(fontSize: width / 25),
+                            ),
                           ),
                         ])
                   ],
@@ -187,7 +196,8 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
   @override
   Widget build(BuildContext context) {
     total = args['price'] * quantity;
-
+    width = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -271,7 +281,8 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                                         Text(
                                           'Quantity: ',
                                           style: TextStyle(
-                                              fontWeight: FontWeight.bold),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: width / 25),
                                         ),
                                         SizedBox(
                                           width: 5,
@@ -319,7 +330,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: height / 40),
                   Card(
                     elevation: 8,
                     child: Container(
@@ -331,7 +342,8 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                               Text(
                                 'Size: ',
                                 style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold),
+                                    fontSize: width / 25,
+                                    fontWeight: FontWeight.bold),
                               ),
                               SizedBox(
                                 width: 10,
@@ -364,7 +376,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                     ),
                   ),
                   SizedBox(
-                    height: 10,
+                    height: height / 40,
                   ),
                   Card(
                     elevation: 8,
@@ -377,14 +389,15 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                               Text(
                                 'Total Amount: ',
                                 style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold),
+                                    fontSize: width / 25,
+                                    fontWeight: FontWeight.bold),
                               ),
                               SizedBox(
                                 width: 10,
                               ),
                               Text(
                                 "₹" + total.toString() + "/-",
-                                style: TextStyle(fontSize: 15),
+                                style: TextStyle(fontSize: width / 25),
                               ),
                             ],
                           ),
@@ -392,7 +405,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: height / 40),
                   Card(
                     elevation: 8,
                     child: Container(
@@ -405,7 +418,8 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                               Text(
                                 'Address: ',
                                 style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold),
+                                    fontSize: width / 25,
+                                    fontWeight: FontWeight.bold),
                               ),
                               Expanded(
                                 child: SingleChildScrollView(
@@ -413,13 +427,16 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                                   child: Text(
                                     address.toString(),
                                     style: TextStyle(
-                                      fontSize: 15,
+                                      fontSize: width / 25,
                                     ),
                                   ),
                                 ),
                               ),
                               TextButton(
-                                child: Text('Edit'),
+                                child: Text(
+                                  'Edit',
+                                  style: TextStyle(fontSize: width / 25),
+                                ),
                                 onPressed: () {
                                   showBottomSheetView(context);
                                 },
@@ -431,7 +448,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                     ),
                   ),
                   SizedBox(
-                    height: 10,
+                    height: height / 25,
                   ),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
@@ -460,7 +477,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                     ),
                   ),
                   SizedBox(
-                    height: 10,
+                    height: height / 40,
                   ),
                 ],
               ),

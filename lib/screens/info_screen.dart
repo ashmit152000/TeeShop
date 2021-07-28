@@ -16,6 +16,8 @@ class InfoScreen extends StatefulWidget {
 class _InfoScreenState extends State<InfoScreen> {
   bool showDesc = false;
   var _isLoading = false;
+  var width;
+  var height;
 
   void _showDialog(data) {
     showDialog(
@@ -39,7 +41,8 @@ class _InfoScreenState extends State<InfoScreen> {
   Widget build(BuildContext context) {
     Map<String, dynamic> _productData =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    print(_productData);
+    width = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -69,11 +72,13 @@ class _InfoScreenState extends State<InfoScreen> {
                           Container(
                             child: Text(
                               _productData['data']['name'],
-                              style: TextStyle(fontSize: 15),
+                              style: TextStyle(
+                                fontSize: width / 25,
+                              ),
                             ),
                           ),
                           SizedBox(
-                            height: 5,
+                            height: width / 25,
                           ),
                           Container(
                             margin: EdgeInsets.only(bottom: 10),
@@ -86,12 +91,12 @@ class _InfoScreenState extends State<InfoScreen> {
                                       FontAwesomeIcons.tags,
                                     ),
                                     SizedBox(
-                                      width: 15,
+                                      width: width / 25,
                                     ),
                                     Text(
                                       '₹${_productData['data']['price']}/-',
                                       style: TextStyle(
-                                          fontSize: 20,
+                                          fontSize: width / 20,
                                           fontWeight: FontWeight.bold),
                                     )
                                   ],
@@ -133,7 +138,12 @@ class _InfoScreenState extends State<InfoScreen> {
                         children: [
                           Row(
                             children: [
-                              Text('Description'),
+                              Text(
+                                'Description',
+                                style: TextStyle(
+                                  fontSize: width / 25,
+                                ),
+                              ),
                               Icon(showDesc
                                   ? Icons.expand_less
                                   : Icons.expand_more),
@@ -148,12 +158,17 @@ class _InfoScreenState extends State<InfoScreen> {
                                 children: [
                                   Text(
                                     _productData['data']['descShort'],
+                                    style: TextStyle(fontSize: width / 28),
                                   ),
                                   TextButton(
-                                      onPressed: () {
-                                        return _showDialog(_productData);
-                                      },
-                                      child: Text('More Details'))
+                                    onPressed: () {
+                                      return _showDialog(_productData);
+                                    },
+                                    child: Text(
+                                      'More Details',
+                                      style: TextStyle(fontSize: width / 28),
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
@@ -187,6 +202,7 @@ class _InfoScreenState extends State<InfoScreen> {
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w700,
+                              fontSize: width / 25,
                             ),
                           ),
                         ),
@@ -213,10 +229,14 @@ class _InfoScreenState extends State<InfoScreen> {
                           Color(0xFFa4508b)
                         ])),
                         child: Center(
-                          child: Text('Customise',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700)),
+                          child: Text(
+                            'Customise',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: width / 25,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -247,8 +267,10 @@ class _InfoScreenState extends State<InfoScreen> {
                             ? CircularProgressIndicator(color: Colors.white)
                             : Text('Add To Cart',
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700)),
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: width / 25,
+                                )),
                       ),
                     ),
                   ),
