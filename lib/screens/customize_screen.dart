@@ -133,7 +133,11 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
               "fontFamily": fontFamilySelector,
               "name": _productData['data']['name'],
               "product": _productData,
-              "user": _productData['user']
+              "user": _productData['user'],
+              "iconX": left,
+              "iconY": top,
+              "textX": leftText,
+              "textY": topText,
             });
           },
           child: Text(
@@ -162,8 +166,6 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                     ),
                   ),
                   child: Container(
-                    height: 100,
-                    width: 100,
                     child: Stack(
                       fit: StackFit.loose,
                       clipBehavior: Clip.antiAlias,

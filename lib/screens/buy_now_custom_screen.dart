@@ -15,7 +15,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
   int quantity = 1;
   var address;
   var total;
-  String dropdownValue = "M";
+  String dropdownValue = "";
   List<String> size = ["S", "M", "L", "XL", "XXL"];
   var args;
   late Razorpay _razorpay;
@@ -24,6 +24,13 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
     super.didChangeDependencies();
     args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     address = args['address'];
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _razorpay.clear();
   }
 
   TextEditingController addressEdit = TextEditingController();
@@ -188,118 +195,130 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Card(
-                    elevation: 8,
-                    child: Column(
+                  Container(
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height / 1.5,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(
+                          args["related_products"],
+                        ),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    child: Stack(
+                      alignment: Alignment.center,
                       children: [
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Image.network(args["related_products"]),
-                            Column(
-                              children: [
-                                if (args["selectedImage"] != null &&
-                                    args["_isIconPresent"] != false)
-                                  Transform.rotate(
-                                    angle: args["angle"],
-                                    child: SvgPicture.asset(
-                                      args['selectedImage'],
-                                      height: args["iconSize"].toDouble(),
-                                      colorBlendMode: BlendMode.srcATop,
-                                      allowDrawingOutsideViewBox: false,
-                                      color: args['selectedColor'],
-                                    ),
-                                  ),
-                                if (args["text"] != null &&
-                                    args["_isTextPresent"] != false)
-                                  Transform.rotate(
-                                    angle: args["textRotation"],
-                                    child: Text(
-                                      args["text"],
-                                      style: TextStyle(
-                                          fontSize: args["textSize"],
-                                          fontFamily: args["fontFamily"],
-                                          color: args["textColor"]),
-                                    ),
-                                  ),
-                              ],
-                            )
-                          ],
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(10),
-                        ),
-                        Container(
-                          child: Text(
-                            args['name'],
-                            style: TextStyle(
-                              fontSize: 20,
+                        if (args["selectedImage"] != null &&
+                            args["_isIconPresent"] != false)
+                          Positioned(
+                            top: args['iconY'],
+                            left: args['iconX'],
+                            child: Transform.rotate(
+                              angle: args["angle"],
+                              child: SvgPicture.asset(
+                                args['selectedImage'],
+                                height: args["iconSize"].toDouble(),
+                                colorBlendMode: BlendMode.srcATop,
+                                allowDrawingOutsideViewBox: false,
+                                color: args['selectedColor'],
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(bottom: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                '₹${args['price']}/-',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                        if (args["text"] != null &&
+                            args["_isTextPresent"] != false)
+                          Positioned(
+                            top: args['textY'],
+                            left: args['textX'],
+                            child: Transform.rotate(
+                              angle: args["textRotation"],
+                              child: Text(
+                                args["text"],
+                                style: TextStyle(
+                                    fontSize: args["textSize"],
+                                    fontFamily: args["fontFamily"],
+                                    color: args["textColor"]),
                               ),
-                              SizedBox(
-                                width: 30,
-                              ),
-                              Row(
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Card(
+                    elevation: 8,
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Text(
-                                    'QTY: ',
+                                    'MRP: ₹${args['price']}/-',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   SizedBox(
-                                    width: 5,
+                                    width: 30,
                                   ),
-                                  Container(
-                                    color: Colors.purple,
-                                    child: Row(
-                                      children: [
-                                        IconButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                if (quantity > 1) {
-                                                  quantity--;
-                                                }
-                                              });
-                                            },
-                                            icon: Icon(Icons.remove,
-                                                color: Colors.white)),
-                                        Container(
-                                          padding: EdgeInsets.all(10),
-                                          color: Colors.white,
-                                          child: Center(
-                                            child: Text(quantity.toString()),
-                                          ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'QTY: ',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Container(
+                                        color: Colors.purple,
+                                        child: Row(
+                                          children: [
+                                            IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    if (quantity > 1) {
+                                                      quantity--;
+                                                    }
+                                                  });
+                                                },
+                                                icon: Icon(Icons.remove,
+                                                    color: Colors.white)),
+                                            Container(
+                                              padding: EdgeInsets.all(10),
+                                              color: Colors.white,
+                                              child: Center(
+                                                child:
+                                                    Text(quantity.toString()),
+                                              ),
+                                            ),
+                                            IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    quantity++;
+                                                  });
+                                                },
+                                                icon: Icon(Icons.add,
+                                                    color: Colors.white)),
+                                          ],
                                         ),
-                                        IconButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                quantity++;
-                                              });
-                                            },
-                                            icon: Icon(Icons.add,
-                                                color: Colors.white)),
-                                      ],
-                                    ),
-                                  )
+                                      )
+                                    ],
+                                  ),
                                 ],
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(height: 10),
@@ -325,6 +344,11 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                                     setState(() {
                                       dropdownValue = newValue.toString();
                                     });
+                                  },
+                                  validator: (newValue) {
+                                    if (dropdownValue == "") {
+                                      return "Please choose your preferred size";
+                                    }
                                   },
                                   items: size.map<DropdownMenuItem<String>>(
                                       (String value) {
