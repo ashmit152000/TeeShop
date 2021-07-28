@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:teeshop/providers/orders.dart';
 
 class BuyNowCustom extends StatefulWidget {
   @override
@@ -10,10 +14,11 @@ class BuyNowCustom extends StatefulWidget {
 class _BuyNowCustomState extends State<BuyNowCustom> {
   int quantity = 1;
   var address;
+  var total;
   String dropdownValue = "M";
   List<String> size = ["S", "M", "L", "XL", "XXL"];
   var args;
-
+  late Razorpay _razorpay;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -107,8 +112,70 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _razorpay = new Razorpay();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, paySuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, handlerErrorFailure);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, handlerExternalWallet);
+  }
+
+  void _onPayment(user, product) {
+    if (dropdownValue == "") {
+      Fluttertoast.showToast(
+          msg: "Please choose your preferred size",
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.red,
+          toastLength: Toast.LENGTH_LONG);
+      return;
+    }
+    openCheckout(user, product);
+  }
+
+  void openCheckout(userData, productData) {
+    var options = {
+      "key": "rzp_live_upLxYKABKr7bhM",
+      "amount": "${total * 100}",
+      "name": "TeeShop",
+      "description": "Payment for the mechandise",
+      "prefill": {
+        "email": args['product']['user']['email'],
+        "size": "$dropdownValue",
+        "address": "$address",
+        "quantity": "$quantity",
+      },
+    };
+
+    try {
+      _razorpay.open(options);
+    } catch (error) {}
+  }
+
+  void paySuccess(PaymentSuccessResponse r) async {
+    // Fluttertoast.showToast(msg: quantity.toString());
+    // Fluttertoast.showToast(msg: dropdownValue.toString());
+    try {
+      await Provider.of<Order>(context, listen: false).addOrder(
+          context, args['product']['data']['id'], quantity, dropdownValue);
+      Fluttertoast.showToast(
+          msg: "Order placed successfully!", backgroundColor: Colors.green);
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  void handlerErrorFailure() {
+    print('Error!!');
+  }
+
+  void handlerExternalWallet() {
+    print('External Wallet');
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var total = args['price'] * quantity;
+    total = args['price'] * quantity;
 
     return SafeArea(
       child: Scaffold(
@@ -347,7 +414,10 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        return _onPayment(
+                            args['product']['user']['email'], args['product']);
+                      },
                       child: Container(
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(

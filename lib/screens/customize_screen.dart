@@ -132,6 +132,8 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
               "related_products": _productData['data']['related_products'][0],
               "fontFamily": fontFamilySelector,
               "name": _productData['data']['name'],
+              "product": _productData,
+              "user": _productData['user']
             });
           },
           child: Text(

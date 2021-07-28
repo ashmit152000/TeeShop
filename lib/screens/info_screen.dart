@@ -166,30 +166,33 @@ class _InfoScreenState extends State<InfoScreen> {
                 SizedBox(
                   height: 10,
                 ),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushNamed(BuyNowScreen.routeName,
-                          arguments: _productData);
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              colors: [Color(0xFF5f0a87), Color(0xFFa4508b)])),
-                      child: Center(
-                        child: Text(
-                          'Buy Now',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
+                if (_productData['data']['customizable'] != true)
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(BuyNowScreen.routeName,
+                            arguments: _productData);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(colors: [
+                          Color(0xFF5f0a87),
+                          Color(0xFFa4508b)
+                        ])),
+                        child: Center(
+                          child: Text(
+                            'Buy Now',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
                 SizedBox(
                   height: 10,
                 ),

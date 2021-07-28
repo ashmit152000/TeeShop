@@ -56,7 +56,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
   void openCheckout(userData, productData) {
     var options = {
       "key": "rzp_live_upLxYKABKr7bhM",
-      "amount": "${1 * 100}",
+      "amount": "${total * 100}",
       "name": "TeeShop",
       "description": "Payment for the mechandise",
       "prefill": {
