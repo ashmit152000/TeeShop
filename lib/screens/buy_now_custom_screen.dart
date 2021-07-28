@@ -38,82 +38,86 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
   GlobalKey<FormState> pincodeKey = GlobalKey();
   void showBottomSheetView(BuildContext context) {
     showBottomSheet(
+        elevation: 40,
         context: context,
         builder: (context) => Container(
               padding: EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    'Edit Address',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Form(
-                    key: pincodeKey,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          TextFormField(
-                            controller: addressEdit,
-                            maxLines: 5,
-                            keyboardType: TextInputType.multiline,
-                            decoration: InputDecoration(labelText: 'Address'),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          TextFormField(
-                            controller: pincodeEdit,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(labelText: 'Pincode'),
-                            validator: (value) {
-                              if (value.toString() == '') {
-                                return 'Please enter your Pincode';
-                              }
-                            },
-                          ),
-                        ],
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      'Edit Address',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Form(
+                      key: pincodeKey,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              controller: addressEdit,
+                              maxLines: 5,
+                              keyboardType: TextInputType.multiline,
+                              decoration: InputDecoration(labelText: 'Address'),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            TextFormField(
+                              controller: pincodeEdit,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(labelText: 'Pincode'),
+                              validator: (value) {
+                                if (value.toString() == '') {
+                                  return 'Please enter your Pincode';
+                                }
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Text('Cancel'),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            pincodeKey.currentState!.validate();
-                            if (addressEdit.text != '' &&
-                                pincodeEdit.text != '') {
-                              setState(() {
-                                address =
-                                    addressEdit.text + "\n" + pincodeEdit.text;
-                              });
-                            } else {
-                              setState(() {
-                                address = args['address'];
-                              });
-                            }
-                            if (addressEdit.text != '' &&
-                                pincodeEdit.text != '') {
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
                               Navigator.of(context).pop();
-                            }
-                          },
-                          child: Text('Done'),
-                        ),
-                      ])
-                ],
+                            },
+                            child: Text('Cancel'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              pincodeKey.currentState!.validate();
+                              if (addressEdit.text != '' &&
+                                  pincodeEdit.text != '') {
+                                setState(() {
+                                  address = addressEdit.text +
+                                      "\n" +
+                                      pincodeEdit.text;
+                                });
+                              } else {
+                                setState(() {
+                                  address = args['address'];
+                                });
+                              }
+                              if (addressEdit.text != '' &&
+                                  pincodeEdit.text != '') {
+                                Navigator.of(context).pop();
+                              }
+                            },
+                            child: Text('Done'),
+                          ),
+                        ])
+                  ],
+                ),
               ),
             ));
   }
@@ -244,9 +248,10 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  if (!args['product']['data']['customizable'])
+                    SizedBox(
+                      height: 10,
+                    ),
                   Card(
                     elevation: 8,
                     child: Container(
@@ -257,61 +262,54 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                             child: Container(
                               margin: EdgeInsets.only(bottom: 10),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Text(
-                                    'MRP: ₹${args['price']}/-',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(
-                                    width: 30,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'QTY: ',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Container(
-                                        color: Colors.purple,
-                                        child: Row(
-                                          children: [
-                                            IconButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    if (quantity > 1) {
-                                                      quantity--;
-                                                    }
-                                                  });
-                                                },
-                                                icon: Icon(Icons.remove,
-                                                    color: Colors.white)),
-                                            Container(
-                                              padding: EdgeInsets.all(10),
-                                              color: Colors.white,
-                                              child: Center(
-                                                child:
-                                                    Text(quantity.toString()),
-                                              ),
-                                            ),
-                                            IconButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    quantity++;
-                                                  });
-                                                },
-                                                icon: Icon(Icons.add,
-                                                    color: Colors.white)),
-                                          ],
+                                  Expanded(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'Quantity: ',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
                                         ),
-                                      )
-                                    ],
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    color: Colors.purple,
+                                    child: Row(
+                                      children: [
+                                        IconButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                if (quantity > 1) {
+                                                  quantity--;
+                                                }
+                                              });
+                                            },
+                                            icon: Icon(Icons.remove,
+                                                color: Colors.white)),
+                                        Container(
+                                          padding: EdgeInsets.all(10),
+                                          color: Colors.white,
+                                          child: Center(
+                                            child: Text(quantity.toString()),
+                                          ),
+                                        ),
+                                        IconButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                quantity++;
+                                              });
+                                            },
+                                            icon: Icon(Icons.add,
+                                                color: Colors.white)),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),

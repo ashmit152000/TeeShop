@@ -149,248 +149,262 @@ class _SignInScreenState extends State<SignInScreen>
             : SingleChildScrollView(
                 child: Container(
                   height: MediaQuery.of(context).size.height,
-                  child: Column(
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        height: 200,
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: AssetImage('assets/images/1.png'),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          height: 200,
+                          child: Stack(
+                            children: [
+                              Positioned(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: AssetImage('assets/images/1.png'),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            )
-                          ],
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 40,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          children: [
-                            Center(
-                              child: Column(
-                                children: [
-                                  Text(
-                                    'WELCOME TO',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
-                                  ),
-                                  Text(
-                                    '🙏 TEESHOP 🙏',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
-                                  ),
-                                ],
+                        SizedBox(
+                          height: 40,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Column(
+                            children: [
+                              Center(
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      'WELCOME TO',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 20),
+                                    ),
+                                    Text(
+                                      '🙏 TEESHOP 🙏',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 20),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 40,
-                            ),
-                            Form(
-                              key: gKey,
-                              child: Column(
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      border: Border(
-                                        bottom: BorderSide(color: Colors.grey),
+                              SizedBox(
+                                height: 40,
+                              ),
+                              Form(
+                                key: gKey,
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          bottom:
+                                              BorderSide(color: Colors.grey),
+                                        ),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            child: TextFormField(
+                                              controller: email,
+                                              textInputAction:
+                                                  TextInputAction.next,
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                              decoration: InputDecoration(
+                                                border: InputBorder.none,
+                                                hintText: 'Email',
+                                                hintStyle: TextStyle(
+                                                    color: Colors.grey),
+                                              ),
+                                              validator: (value) {
+                                                if (value.toString() == '') {
+                                                  return "Please fill in your email id";
+                                                }
+                                                if (!value
+                                                    .toString()
+                                                    .contains('@')) {
+                                                  return 'Please enter a valid email id';
+                                                }
+                                              },
+                                              onSaved: (value) {
+                                                authData['email'] =
+                                                    value.toString();
+                                              },
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          child: TextFormField(
-                                            controller: email,
-                                            textInputAction:
-                                                TextInputAction.next,
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                            decoration: InputDecoration(
-                                              border: InputBorder.none,
-                                              hintText: 'Email',
-                                              hintStyle:
-                                                  TextStyle(color: Colors.grey),
-                                            ),
-                                            validator: (value) {
-                                              if (value.toString() == '') {
-                                                return "Please fill in your email id";
-                                              }
-                                              if (!value
-                                                  .toString()
-                                                  .contains('@')) {
-                                                return 'Please enter a valid email id';
-                                              }
-                                            },
-                                            onSaved: (value) {
-                                              authData['email'] =
-                                                  value.toString();
-                                            },
-                                          ),
-                                        ),
-                                      ],
+                                    SizedBox(
+                                      height: 40,
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: 40,
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      border: Border(
-                                        bottom: BorderSide(color: Colors.grey),
+                                    Container(
+                                      padding: EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          bottom:
+                                              BorderSide(color: Colors.grey),
+                                        ),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            child: TextFormField(
+                                              controller: password,
+                                              textInputAction:
+                                                  TextInputAction.next,
+                                              obscureText: true,
+                                              obscuringCharacter: '*',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                              decoration: InputDecoration(
+                                                border: InputBorder.none,
+                                                hintText: 'Password',
+                                                hintStyle: TextStyle(
+                                                    color: Colors.grey),
+                                              ),
+                                              validator: (value) {
+                                                if (value.toString() == '') {
+                                                  return "Please fill in a password";
+                                                }
+                                                if (value.toString().length <
+                                                    6) {
+                                                  return "Password should be 6 characters long";
+                                                }
+                                              },
+                                              onSaved: (value) {
+                                                authData['password'] =
+                                                    value.toString();
+                                              },
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          child: TextFormField(
-                                            controller: password,
-                                            textInputAction:
-                                                TextInputAction.next,
-                                            obscureText: true,
-                                            obscuringCharacter: '*',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                            decoration: InputDecoration(
-                                              border: InputBorder.none,
-                                              hintText: 'Password',
-                                              hintStyle:
-                                                  TextStyle(color: Colors.grey),
-                                            ),
-                                            validator: (value) {
-                                              if (value.toString() == '') {
-                                                return "Please fill in a password";
-                                              }
-                                              if (value.toString().length < 6) {
-                                                return "Password should be 6 characters long";
-                                              }
-                                            },
-                                            onSaved: (value) {
-                                              authData['password'] =
-                                                  value.toString();
-                                            },
-                                          ),
-                                        ),
-                                      ],
+                                    SizedBox(
+                                      height: 40,
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: 40,
-                                  ),
-                                  authMode == AuthMode.Signup
-                                      ? SlideTransition(
-                                          position: _slideTransition,
-                                          child: FadeTransition(
-                                            opacity: _fadeInFadeOut,
-                                            child: Container(
-                                              padding: EdgeInsets.all(8),
-                                              decoration: BoxDecoration(
-                                                border: Border(
-                                                  bottom: BorderSide(
-                                                      color: Colors.grey),
+                                    authMode == AuthMode.Signup
+                                        ? SlideTransition(
+                                            position: _slideTransition,
+                                            child: FadeTransition(
+                                              opacity: _fadeInFadeOut,
+                                              child: Container(
+                                                padding: EdgeInsets.all(8),
+                                                decoration: BoxDecoration(
+                                                  border: Border(
+                                                    bottom: BorderSide(
+                                                        color: Colors.grey),
+                                                  ),
+                                                ),
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      child: TextFormField(
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .done,
+                                                        obscureText: true,
+                                                        obscuringCharacter: '*',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                        decoration:
+                                                            InputDecoration(
+                                                          border:
+                                                              InputBorder.none,
+                                                          hintText:
+                                                              'Confirm Password',
+                                                          hintStyle: TextStyle(
+                                                              color:
+                                                                  Colors.grey),
+                                                        ),
+                                                        validator: (value) {
+                                                          if (value !=
+                                                              password.text) {
+                                                            return "Password doesn't match";
+                                                          }
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
-                                              child: Column(
-                                                children: [
-                                                  Container(
-                                                    child: TextFormField(
-                                                      textInputAction:
-                                                          TextInputAction.done,
-                                                      obscureText: true,
-                                                      obscuringCharacter: '*',
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                      decoration:
-                                                          InputDecoration(
-                                                        border:
-                                                            InputBorder.none,
-                                                        hintText:
-                                                            'Confirm Password',
-                                                        hintStyle: TextStyle(
-                                                            color: Colors.grey),
-                                                      ),
-                                                      validator: (value) {
-                                                        if (value !=
-                                                            password.text) {
-                                                          return "Password doesn't match";
-                                                        }
-                                                      },
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
                                             ),
-                                          ),
-                                        )
-                                      : Container(),
-                                  SizedBox(
-                                    height: 30,
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      print(authMode);
-                                      return toggleAuth();
-                                    },
-                                    child: Text(
-                                      authMode == AuthMode.Signin
-                                          ? 'Don\'t have an account ? Sign up'
-                                          : 'Already have an account ? Sign in',
-                                      style: TextStyle(
-                                        color: Colors.white,
+                                          )
+                                        : Container(),
+                                    SizedBox(
+                                      height: 30,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        print(authMode);
+                                        return toggleAuth();
+                                      },
+                                      child: Text(
+                                        authMode == AuthMode.Signin
+                                            ? 'Don\'t have an account ? Sign up'
+                                            : 'Already have an account ? Sign in',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      return auth();
-                                    },
-                                    child: Container(
-                                      width:
-                                          MediaQuery.of(context).size.width / 2,
-                                      padding: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(colors: [
-                                          Color(0xFF5f0a87),
-                                          Color(0xFF703ED1)
-                                        ]),
-                                      ),
-                                      child: Center(
-                                        child: _isLoading != true
-                                            ? Text(
-                                                authMode == AuthMode.Signin
-                                                    ? 'SIGN IN'
-                                                    : 'SIGN UP',
-                                                style: TextStyle(
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        return auth();
+                                      },
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                2,
+                                        padding: EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(colors: [
+                                            Color(0xFF5f0a87),
+                                            Color(0xFF703ED1)
+                                          ]),
+                                        ),
+                                        child: Center(
+                                          child: _isLoading != true
+                                              ? Text(
+                                                  authMode == AuthMode.Signin
+                                                      ? 'SIGN IN'
+                                                      : 'SIGN UP',
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                  ),
+                                                )
+                                              : CircularProgressIndicator(
                                                   color: Colors.white,
                                                 ),
-                                              )
-                                            : CircularProgressIndicator(
-                                                color: Colors.white,
-                                              ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                    SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              12,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                      ],
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                    ),
                   ),
                 ),
               ),
