@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>720559309512-m10g5vddokq53h4cstd9ni5bjjdn48ll.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.720559309512-m10g5vddokq53h4cstd9ni5bjjdn48ll</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>720559309512-bjj91dm2ok1q2rtu5pl7sjeipld2qalo.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDArhSPiGWZBvEzQko880LnobgtZwUiG_4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>720559309512</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.aaa.teeshop</string>
+	<key>PROJECT_ID</key>
+	<string>teeshop-67467</string>
+	<key>STORAGE_BUCKET</key>
+	<string>teeshop-67467.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:720559309512:ios:0bd5f03c61b68618bb9bfd</string>
+	<key>DATABASE_URL</key>
+	<string>https://teeshop-67467-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

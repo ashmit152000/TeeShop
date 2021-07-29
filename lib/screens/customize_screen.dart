@@ -113,17 +113,18 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
   @override
   void initState() {
     super.initState();
+    Fluttertoast.showToast(
+        msg:
+            'You can slide, reposition, change and edit the Icon above from the toolbar at the bottom',
+        toastLength: Toast.LENGTH_LONG,
+        backgroundColor: Colors.blue);
   }
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    Fluttertoast.showToast(
-        msg:
-            'You can slide, reposition, change and edit the Icon above from the toolbar at the bottom',
-        toastLength: Toast.LENGTH_LONG,
-        backgroundColor: Colors.blue);
+
     setState(() {
       _isLoading = true;
     });
