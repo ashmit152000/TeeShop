@@ -98,7 +98,8 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                                 });
                               } else {
                                 setState(() {
-                                  address = _productData['user']['address'];
+                                  address = _productData['product']['user']
+                                      ['address'];
                                 });
                               }
                               if (addressEdit.text != '' &&
@@ -131,6 +132,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
     super.didChangeDependencies();
     _productData =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    print(_productData);
   }
 
   @override
@@ -197,7 +199,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
 
-    total = _productData['data']['price'] * quantity;
+    total = _productData['product']['data']['price'] * quantity;
 
     return SafeArea(
       child: Scaffold(
@@ -220,14 +222,14 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                           children: [
                             InteractiveViewer(
                               child: Image.network(
-                                _productData['data']['url'],
+                                _productData['selectedImage'].toString(),
                                 width: double.infinity,
                               ),
                             ),
                             Padding(padding: EdgeInsets.all(10)),
                             Container(
                               child: Text(
-                                _productData['data']['name'],
+                                _productData['product']['data']['name'],
                                 style: TextStyle(
                                   fontSize: width / 20,
                                 ),
@@ -243,7 +245,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Text(
-                                    '₹${_productData['data']['price']}/-',
+                                    '₹${_productData['product']['data']['price']}/-',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
@@ -429,8 +431,9 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                     borderRadius: BorderRadius.circular(10),
                     child: InkWell(
                       onTap: () {
-                        return _onPayment(_productData['user']['email'],
-                            _productData['data']);
+                        return _onPayment(
+                            _productData['product']['user']['email'],
+                            _productData['product']['data']);
                       },
                       child: Container(
                         padding: EdgeInsets.all(10),

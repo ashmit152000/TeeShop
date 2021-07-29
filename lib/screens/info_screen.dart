@@ -18,6 +18,8 @@ class _InfoScreenState extends State<InfoScreen> {
   var _isLoading = false;
   var width;
   var height;
+  var imageSelectedRightNow;
+  var _productData;
 
   void _showDialog(data) {
     showDialog(
@@ -38,11 +40,19 @@ class _InfoScreenState extends State<InfoScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    Map<String, dynamic> _productData =
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    _productData =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    imageSelectedRightNow = _productData['data']['url'];
+  }
+
+  @override
+  Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
+    var related_products = List.from(_productData['data']['related_products']);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -62,7 +72,7 @@ class _InfoScreenState extends State<InfoScreen> {
                         children: [
                           InteractiveViewer(
                             child: Image.network(
-                              _productData['data']['url']
+                              imageSelectedRightNow
                                   .toString()
                                   .replaceAll(' ', ''),
                               width: double.infinity,
@@ -107,23 +117,46 @@ class _InfoScreenState extends State<InfoScreen> {
                         ],
                       ),
                     ),
-                    // Container(
-                    //   padding: EdgeInsets.all(10),
-                    //   width: double.infinity,
-                    //   alignment: Alignment.center,
-                    //   child: Text(
-                    //     '₹399/-',
-                    //     style: TextStyle(color: Colors.white, fontSize: 20),
-                    //   ),
-                    //   decoration: BoxDecoration(
-                    //     gradient: LinearGradient(
-                    //       colors: [Color(0xFFf53844), Color(0xFF864ba2)],
-                    //     ),
-                    //   ),
-                    // ),
                   ],
                 ),
-                SizedBox(height: 10),
+                SizedBox(
+                  height: height / 50,
+                ),
+                Card(
+                  child: Container(
+                    padding: EdgeInsets.all(width / 40),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(
+                          related_products.length,
+                          (index) {
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  imageSelectedRightNow =
+                                      related_products[index].toString();
+                                });
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(5),
+                                child: CircleAvatar(
+                                  radius: width / 15,
+                                  backgroundImage: NetworkImage(
+                                      related_products[index].toString()),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: height / 50,
+                ),
                 GestureDetector(
                   onTap: () {
                     setState(() {
@@ -133,7 +166,7 @@ class _InfoScreenState extends State<InfoScreen> {
                   child: Card(
                     elevation: 8,
                     child: Container(
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(width / 40),
                       child: Column(
                         children: [
                           Row(
@@ -179,7 +212,7 @@ class _InfoScreenState extends State<InfoScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: height / 50,
                 ),
                 if (_productData['data']['customizable'] != true)
                   ClipRRect(
@@ -187,7 +220,10 @@ class _InfoScreenState extends State<InfoScreen> {
                     child: InkWell(
                       onTap: () {
                         Navigator.of(context).pushNamed(BuyNowScreen.routeName,
-                            arguments: _productData);
+                            arguments: {
+                              "product": _productData,
+                              "selectedImage": imageSelectedRightNow
+                            });
                       },
                       child: Container(
                         padding: EdgeInsets.all(10),
@@ -210,7 +246,7 @@ class _InfoScreenState extends State<InfoScreen> {
                     ),
                   ),
                 SizedBox(
-                  height: 10,
+                  height: height / 50,
                 ),
                 if (_productData['data']['customizable'])
                   ClipRRect(
@@ -242,7 +278,7 @@ class _InfoScreenState extends State<InfoScreen> {
                     ),
                   ),
                 SizedBox(
-                  height: 10,
+                  height: height / 50,
                 ),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
@@ -276,7 +312,7 @@ class _InfoScreenState extends State<InfoScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: height / 50,
                 ),
               ],
             ),
