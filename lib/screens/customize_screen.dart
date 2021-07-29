@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
@@ -118,6 +119,11 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
+    Fluttertoast.showToast(
+        msg:
+            'You can slide, reposition, change and edit the Icon above from the toolbar at the bottom',
+        toastLength: Toast.LENGTH_LONG,
+        backgroundColor: Colors.blue);
     setState(() {
       _isLoading = true;
     });

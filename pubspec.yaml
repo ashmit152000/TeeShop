@@ -73,15 +73,7 @@ flutter:
     - assets/svgs/joker.svg
     - assets/svgs/kakashi.svg
     - assets/images/hd.png
-    - assets/images/black.png
-    - assets/images/blue.png
-    - assets/images/green.png
     - assets/images/3A.png
-    - assets/images/pink.png
-    - assets/images/purple.png
-    - assets/images/red.png
-    - assets/images/white.png
-    - assets/images/yellow.png
     - assets/images/product-placeholder.png
 
     # An image asset can refer to one or more resolution-specific "variants", see
