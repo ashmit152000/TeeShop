@@ -4,22 +4,29 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class Order with ChangeNotifier {
-  void _showErrorDialog(context, message, title) {
+  void _showErrorDialog(context, message, title, height, width) {
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             title: Text(
               title,
-              style: TextStyle(color: Colors.purple),
+              style: TextStyle(color: Colors.purple, fontSize: width / 20),
             ),
-            content: Text(message),
+            content: Text(
+              message,
+              style: TextStyle(fontSize: width / 25),
+            ),
             actions: [
               TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('OK'))
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  'OK',
+                  style: TextStyle(fontSize: width / 25),
+                ),
+              )
             ],
           );
         });
@@ -31,8 +38,8 @@ class Order with ChangeNotifier {
     user_id = userId;
   }
 
-  Future<void> addOrder(
-      BuildContext context, int product_id, int qty, String size) async {
+  Future<void> addOrder(BuildContext context, int product_id, int qty,
+      String size, height, width) async {
     var url = 'https://teeshopindia.in/orders';
     Map<String, dynamic> bodyModel = {
       "user_id": user_id,
@@ -52,15 +59,15 @@ class Order with ChangeNotifier {
 
       print(response.data);
       if (response.data['status'] == 401) {
-        _showErrorDialog(
-            context, response.data['message'].toString(), "Error :(");
+        _showErrorDialog(context, response.data['message'].toString(),
+            "Error :(", height, width);
       }
     } catch (error) {
       print(error);
     }
   }
 
-  Future<dynamic> fetchOrders(BuildContext context) async {
+  Future<dynamic> fetchOrders(BuildContext context, height, width) async {
     var url = 'https://teeshopindia.in/orders/$user_id';
 
     try {
@@ -71,8 +78,8 @@ class Order with ChangeNotifier {
 
       print(response.data);
       if (response.data['status'] == 401) {
-        _showErrorDialog(
-            context, response.data['message'].toString(), "Error :(");
+        _showErrorDialog(context, response.data['message'].toString(),
+            "Error :(", height, width);
         return;
       }
 

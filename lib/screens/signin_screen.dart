@@ -50,7 +50,9 @@ class _SignInScreenState extends State<SignInScreen>
 
   @override
   void initState() {
-    Provider.of<Auth>(context, listen: false).token(context).then((value) {
+    Provider.of<Auth>(context, listen: false)
+        .token(context, height, width)
+        .then((value) {
       setState(() {
         _isLoadingCheck = false;
       });
@@ -83,7 +85,8 @@ class _SignInScreenState extends State<SignInScreen>
     });
     if (authMode == AuthMode.Signin) {
       try {
-        await Provider.of<Auth>(context, listen: false).login(context,
+        await Provider.of<Auth>(context, listen: false).login(
+            context, height, width,
             email: authData['email'].toString(),
             password: authData["password"].toString());
       } catch (error) {
@@ -97,7 +100,9 @@ class _SignInScreenState extends State<SignInScreen>
         await Provider.of<Auth>(context, listen: false).signUp(
             authData['email'].toString(),
             authData["password"].toString(),
-            context);
+            context,
+            height,
+            width);
       } on HttpException catch (error) {
         _showErrorDialog(error.toString());
       }

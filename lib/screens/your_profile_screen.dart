@@ -71,7 +71,13 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
     });
     if (email != null) {
       Provider.of<Auth>(context, listen: false)
-          .editUser(context, id: userData['id'], email: emailPopController.text)
+          .editUser(
+        context,
+        height,
+        width,
+        id: userData['id'],
+        email: emailPopController.text,
+      )
           .then((value) {
         emailController.text = value['user']['email'];
         setState(() {
@@ -82,7 +88,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
 
     if (fullName != null && address != null) {
       Provider.of<Auth>(context, listen: false)
-          .editUser(context,
+          .editUser(context, height, width,
               id: userData['id'],
               fullName: fullNamePopController.text,
               address: addressPopController.text)
@@ -98,7 +104,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
 
     if (phoneNumber != null) {
       Provider.of<Auth>(context, listen: false)
-          .editUser(context,
+          .editUser(context, height, width,
               id: userData['id'], phoneNumber: phonenumberController.text)
           .then((value) {
         phonenumberController.text = value['user']['phone_number'];
@@ -228,8 +234,12 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                           });
                     },
                     style: ElevatedButton.styleFrom(primary: Colors.amber),
-                    child: Text('Edit Details'),
+                    child: Text(
+                      'Edit Details',
+                      style: TextStyle(fontSize: width / 30),
+                    ),
                   ),
+                  SizedBox(height: height / 50),
                 ],
               ),
             ),
@@ -291,7 +301,8 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                         Fluttertoast.showToast(
                             msg:
                                 'Verrification sent on your registered email address',
-                            backgroundColor: Colors.green);
+                            backgroundColor: Colors.green,
+                            fontSize: width / 25);
                       },
                       child: Text('Send Verification'),
                       style: ElevatedButton.styleFrom(primary: Colors.green),
@@ -314,8 +325,9 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                     title: Text(
                                       'Enter OTP',
                                       style: TextStyle(
-                                          color:
-                                              Theme.of(context).primaryColor),
+                                        color: Theme.of(context).primaryColor,
+                                        fontSize: width / 25,
+                                      ),
                                     ),
                                     content: SingleChildScrollView(
                                       child: Container(
@@ -333,46 +345,49 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                                   labelText: 'OTP'),
                                             ),
                                             ElevatedButton(
-                                                onPressed: () {
-                                                  FirebaseAuth auth =
-                                                      FirebaseAuth.instance;
-                                                  verify = PhoneAuthProvider
-                                                      .credential(
-                                                          verificationId:
-                                                              verificationId,
-                                                          smsCode:
-                                                              otp.text.trim());
-                                                  try {
-                                                    auth
-                                                        .signInWithCredential(
-                                                            verify)
+                                              onPressed: () {
+                                                FirebaseAuth auth =
+                                                    FirebaseAuth.instance;
+                                                verify = PhoneAuthProvider
+                                                    .credential(
+                                                        verificationId:
+                                                            verificationId,
+                                                        smsCode:
+                                                            otp.text.trim());
+                                                try {
+                                                  auth
+                                                      .signInWithCredential(
+                                                          verify)
+                                                      .then((value) {
+                                                    print(value);
+                                                    Provider.of<Auth>(context,
+                                                            listen: false)
+                                                        .confirmPhone(
+                                                            userData['id'])
                                                         .then((value) {
-                                                      print(value);
-                                                      Provider.of<Auth>(context,
-                                                              listen: false)
-                                                          .confirmPhone(
-                                                              userData['id'])
-                                                          .then((value) {
-                                                        Fluttertoast.showToast(
-                                                            msg:
-                                                                'Phone number verified',
-                                                            backgroundColor:
-                                                                Colors.green);
-                                                      });
+                                                      Fluttertoast.showToast(
+                                                          msg:
+                                                              'Phone number verified',
+                                                          fontSize: width / 25,
+                                                          backgroundColor:
+                                                              Colors.green);
                                                     });
-                                                  } catch (err) {
-                                                    Fluttertoast.showToast(
-                                                        msg:
-                                                            'Wrong otp entered',
-                                                        backgroundColor:
-                                                            Colors.red);
-                                                  }
-                                                },
-                                                child: Text(
-                                                  'Verify',
-                                                  style: TextStyle(
-                                                      fontSize: width / 25),
-                                                ))
+                                                  });
+                                                } catch (err) {
+                                                  Fluttertoast.showToast(
+                                                      msg: 'Wrong otp entered',
+                                                      fontSize: width / 25,
+                                                      backgroundColor:
+                                                          Colors.red);
+                                                }
+                                              },
+                                              child: Text(
+                                                'Verify',
+                                                style: TextStyle(
+                                                  fontSize: width / 25,
+                                                ),
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -401,10 +416,13 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                 title: Text(
                                   'Update Email',
                                   style: TextStyle(
-                                      color: Theme.of(context).primaryColor),
+                                      color: Theme.of(context).primaryColor,
+                                      fontSize: width / 20),
                                 ),
                                 content: SingleChildScrollView(
                                   child: Container(
+                                    padding: EdgeInsets.all(10),
+                                    margin: EdgeInsets.only(top: 20),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.stretch,
@@ -412,11 +430,16 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                         TextFormField(
                                           keyboardType:
                                               TextInputType.emailAddress,
+                                          style:
+                                              TextStyle(fontSize: width / 25),
                                           enabled: true,
                                           controller: emailPopController,
                                           decoration: InputDecoration(
-                                              hintText: 'Email',
-                                              labelText: 'Email'),
+                                            hintText: 'Email',
+                                            labelText: 'Email',
+                                            labelStyle:
+                                                TextStyle(fontSize: width / 25),
+                                          ),
                                           onChanged: (value) {
                                             if (value.isNotEmpty) {
                                               emailController.text = value;
@@ -426,13 +449,17 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                           },
                                         ),
                                         ElevatedButton(
-                                            onPressed: () async {
-                                              Navigator.of(context).pop();
-                                              editData(
-                                                  email:
-                                                      emailPopController.text);
-                                            },
-                                            child: Text('Update'))
+                                          onPressed: () async {
+                                            Navigator.of(context).pop();
+                                            editData(
+                                                email: emailPopController.text);
+                                          },
+                                          child: Text(
+                                            'Update',
+                                            style:
+                                                TextStyle(fontSize: width / 25),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -457,7 +484,8 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                 title: Text(
                                   'Update Phone Number',
                                   style: TextStyle(
-                                      color: Theme.of(context).primaryColor),
+                                      color: Theme.of(context).primaryColor,
+                                      fontSize: width / 20),
                                 ),
                                 content: SingleChildScrollView(
                                   child: Container(
@@ -466,11 +494,16 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                           CrossAxisAlignment.stretch,
                                       children: [
                                         TextFormField(
+                                          style:
+                                              TextStyle(fontSize: width / 25),
                                           enabled: true,
                                           controller: phoneNumberPopController,
                                           decoration: InputDecoration(
-                                              hintText: 'Phone number',
-                                              labelText: 'Phone number'),
+                                            hintText: 'Phone number',
+                                            labelText: 'Phone number',
+                                            labelStyle:
+                                                TextStyle(fontSize: width / 25),
+                                          ),
                                           onChanged: (value) {
                                             if (value.isNotEmpty) {
                                               phonenumberController.text =
@@ -482,14 +515,19 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                           },
                                         ),
                                         ElevatedButton(
-                                            onPressed: () async {
-                                              Navigator.of(context).pop();
-                                              editData(
-                                                  phoneNumber:
-                                                      phoneNumberPopController
-                                                          .text);
-                                            },
-                                            child: Text('Update'))
+                                          onPressed: () async {
+                                            Navigator.of(context).pop();
+                                            editData(
+                                                phoneNumber:
+                                                    phoneNumberPopController
+                                                        .text);
+                                          },
+                                          child: Text(
+                                            'Update',
+                                            style:
+                                                TextStyle(fontSize: width / 25),
+                                          ),
+                                        )
                                       ],
                                     ),
                                   ),
@@ -503,6 +541,10 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                       ),
                       style: ElevatedButton.styleFrom(primary: Colors.amber),
                     ),
+
+                  SizedBox(
+                    height: height / 50,
+                  ),
                 ],
               ),
             ),

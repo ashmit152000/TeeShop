@@ -8,22 +8,29 @@ import 'package:teeshop/data/http_exception.dart';
 class Cart with ChangeNotifier {
   var user_id;
 
-  void _showErrorDialog(context, message, title) {
+  void _showErrorDialog(context, message, title, height, width) {
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             title: Text(
               title,
-              style: TextStyle(color: Colors.purple),
+              style: TextStyle(color: Colors.purple, fontSize: width / 20),
             ),
-            content: Text(message),
+            content: Text(
+              message,
+              style: TextStyle(fontSize: width / 25),
+            ),
             actions: [
               TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('OK'))
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  'OK',
+                  style: TextStyle(fontSize: width / 25),
+                ),
+              )
             ],
           );
         });
@@ -33,7 +40,7 @@ class Cart with ChangeNotifier {
     user_id = userId;
   }
 
-  Future<void> addCart(BuildContext context, product_id) async {
+  Future<void> addCart(BuildContext context, product_id, height, width) async {
     try {
       var dio = Dio();
       var url = 'https://teeshopindia.in/cart';
@@ -48,22 +55,23 @@ class Cart with ChangeNotifier {
               responseType: ResponseType.json));
       print(response.data);
       if (response.data['status'] == 401) {
-        _showErrorDialog(
-            context, response.data['errors'].toString(), 'Error!!');
+        _showErrorDialog(context, response.data['errors'].toString(), 'Error!!',
+            height, width);
       }
 
       if (response.data["status"] == 201) {
-        _showErrorDialog(context, response.data['message'].toString(), "Alert");
+        _showErrorDialog(context, response.data['message'].toString(), "Alert",
+            height, width);
       }
       if (response.data["status"] == 200) {
-        _showErrorDialog(context, "Added to cart", "Done :)");
+        _showErrorDialog(context, "Added to cart", "Done :)", height, width);
       }
     } catch (error) {
       print(error);
     }
   }
 
-  Future<void> removeCard(BuildContext context, int id) async {
+  Future<void> removeCard(BuildContext context, int id, height, width) async {
     try {
       var url = 'https://teeshopindia.in/cart/delete';
       var dio = Dio();
@@ -77,8 +85,8 @@ class Cart with ChangeNotifier {
           data: bodyModel);
       print(response.data);
       if (response.data['status'] == 401) {
-        _showErrorDialog(
-            context, response.data['message'].toString(), "Error!");
+        _showErrorDialog(context, response.data['message'].toString(), "Error!",
+            height, width);
       }
       notifyListeners();
     } catch (error) {
@@ -86,7 +94,7 @@ class Cart with ChangeNotifier {
     }
   }
 
-  Future<dynamic> getCart(BuildContext context) async {
+  Future<dynamic> getCart(BuildContext context, height, width) async {
     try {
       var dio = Dio();
       var url = 'https://teeshopindia.in/carts/$user_id';
@@ -94,12 +102,13 @@ class Cart with ChangeNotifier {
       final response = await dio.get(url);
       print(response.data);
       if (response.data['status'] == 401) {
-        _showErrorDialog(
-            context, response.data['message'].toString(), "Error!!");
+        _showErrorDialog(context, response.data['message'].toString(),
+            "Error!!", height, width);
       }
 
       if (response.data["status"] == 500) {
-        _showErrorDialog(context, response.data['message'].toString(), "Info");
+        _showErrorDialog(context, response.data['message'].toString(), "Info",
+            height, width);
       }
 
       return response.data;

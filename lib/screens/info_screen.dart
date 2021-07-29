@@ -88,7 +88,7 @@ class _InfoScreenState extends State<InfoScreen> {
                             ),
                           ),
                           SizedBox(
-                            height: width / 25,
+                            height: height / 50,
                           ),
                           Container(
                             margin: EdgeInsets.only(bottom: 10),
@@ -287,8 +287,8 @@ class _InfoScreenState extends State<InfoScreen> {
                       setState(() {
                         _isLoading = true;
                       });
-                      await Provider.of<Cart>(context, listen: false)
-                          .addCart(context, _productData['data']['id']);
+                      await Provider.of<Cart>(context, listen: false).addCart(
+                          context, _productData['data']['id'], height, width);
                       setState(() {
                         _isLoading = false;
                       });

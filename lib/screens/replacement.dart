@@ -26,9 +26,13 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
   var isFav;
   var _isLoading = false;
   var _cartCount = 0;
+  var height;
+  var width;
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
     setState(() {
       _isLoading = true;
     });
@@ -83,10 +87,14 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
                   drawer: AppDrawer(userData: _userData),
                   drawerEnableOpenDragGesture: false,
                   appBar: AppBar(
-                    title: Text('TeeShop'),
+                    title: Text(
+                      'TeeShop',
+                      style: TextStyle(fontSize: width / 25),
+                    ),
                     actions: [
                       Padding(
-                        padding: EdgeInsets.only(right: 10),
+                        padding:
+                            EdgeInsets.only(right: width / 25, top: width / 25),
                         child: GestureDetector(
                           onTap: () {
                             Navigator.of(context)
@@ -101,7 +109,7 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(right: 0),
+                        padding: EdgeInsets.only(top: width / 28),
                         child: IconButton(
                           icon: Icon(Icons.logout),
                           onPressed: () async {
@@ -150,23 +158,38 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
                       isScrollable: true,
                       tabs: [
                         Tab(
-                          child: Text('Custom Merchs'),
+                          child: Text(
+                            'Custom Merchs',
+                            style: TextStyle(fontSize: width / 28),
+                          ),
                         ),
 
                         Tab(
-                          child: Text('Tees'),
+                          child: Text(
+                            'Tees',
+                            style: TextStyle(fontSize: width / 28),
+                          ),
                         ),
                         Tab(
-                          child: Text('Full Sleeves'),
+                          child: Text(
+                            'Full Sleeves',
+                            style: TextStyle(fontSize: width / 28),
+                          ),
                         ),
                         Tab(
-                          child: Text('Polo Tees'),
+                          child: Text(
+                            'Polo Tees',
+                            style: TextStyle(fontSize: width / 28),
+                          ),
                         ),
                         // Tab(
                         //   child: Text('Embroidered Polos'),
                         // ),
                         Tab(
-                          child: Text('Sandose'),
+                          child: Text(
+                            'Sandose',
+                            style: TextStyle(fontSize: width / 28),
+                          ),
                         ),
                       ],
                     ),

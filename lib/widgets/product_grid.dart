@@ -17,8 +17,16 @@ class _ProductGridState extends State<ProductGrid> {
   var _productListOne = [];
   var _userData = {};
   var favList;
-
+  var height;
+  var width;
   var _isLoading = false;
+
+  @override
+  void didChangeDependencies() {
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
+    super.didChangeDependencies();
+  }
 
   Future<void> getData() async {
     Provider.of<Product>(context, listen: false)
@@ -80,6 +88,7 @@ class _ProductGridState extends State<ProductGrid> {
                             widget._productListOne[index]['name'],
                             style: TextStyle(
                               color: Colors.white,
+                              fontSize: width / 25,
                             ),
                           ),
                         ),

@@ -16,14 +16,18 @@ class _OrderCartScreenState extends State<OrderCartScreen> {
   var products = [];
   var _isLoading = false;
   var _userData;
+  var height;
+  var width;
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
     setState(() {
       _isLoading = true;
     });
-    Provider.of<Cart>(context).getCart(context).then((value) {
+    Provider.of<Cart>(context).getCart(context, height, width).then((value) {
       setState(() {
         _userData = value["user"] != null ? value["user"] : {};
         cart = value["cart"] != null ? List.from(value["cart"]) : [];
@@ -35,7 +39,7 @@ class _OrderCartScreenState extends State<OrderCartScreen> {
     super.didChangeDependencies();
   }
 
-  Widget cartGrid() {
+  Widget cartGrid(height, width) {
     return products.isNotEmpty
         ? GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -79,9 +83,11 @@ class _OrderCartScreenState extends State<OrderCartScreen> {
                       onPressed: () async {
                         print(cart[index]['id']);
                         await Provider.of<Cart>(context, listen: false)
-                            .removeCard(context, cart[index]['id']);
+                            .removeCard(
+                                context, cart[index]['id'], height, width);
                         Fluttertoast.showToast(
-                            msg: 'Product removed from cart');
+                            msg: 'Product removed from cart',
+                            fontSize: width / 25);
 
                         // setState(() {});
                       },
@@ -117,7 +123,7 @@ class _OrderCartScreenState extends State<OrderCartScreen> {
         ),
         body: Container(
           child: _isLoading != true
-              ? cartGrid()
+              ? cartGrid(height, width)
               : Center(
                   child: CircularProgressIndicator(),
                 ),

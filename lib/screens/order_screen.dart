@@ -16,37 +16,20 @@ class _OrderScreenState extends State<OrderScreen> {
   var products = [];
   var _isLoading = false;
   var ordersPresent;
-  // Future<bool> _onWillPop() async {
-  //   return (await showDialog(
-  //         context: context,
-  //         builder: (context) => new AlertDialog(
-  //           title: new Text(
-  //             'Do you want to exit ?',
-  //             style: TextStyle(color: Colors.purple),
-  //           ),
-  //           content: new Text('We were enjoying your time wit us.'),
-  //           actions: <Widget>[
-  //             TextButton(
-  //               onPressed: () => Navigator.of(context).pop(false),
-  //               child: new Text('No'),
-  //             ),
-  //             TextButton(
-  //               onPressed: () => Navigator.of(context).pop(true),
-  //               child: new Text('Yes'),
-  //             ),
-  //           ],
-  //         ),
-  //       )) ??
-  //       false;
-  // }
+  var height;
+  var width;
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
     setState(() {
       _isLoading = true;
     });
-    Provider.of<Order>(context).fetchOrders(context).then((value) {
+    Provider.of<Order>(context)
+        .fetchOrders(context, height, width)
+        .then((value) {
       setState(() {
         ordersPresent = value["orders"] != null ? true : false;
         orders = value["orders"] != null ? List.from(value["orders"]) : [];
@@ -83,17 +66,27 @@ class _OrderScreenState extends State<OrderScreen> {
                           children: [
                             Text(
                               products[index]["name"],
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: width / 25),
                             ),
-                            Text(date),
+                            Text(
+                              date,
+                              style: TextStyle(fontSize: width / 25),
+                            ),
                           ],
                         ),
                         title: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            Text('Amount:'),
                             Text(
-                                '₹${orders[index]['quantity'] * products[index]['price']}')
+                              'Amount:',
+                              style: TextStyle(fontSize: width / 25),
+                            ),
+                            Text(
+                              '₹${orders[index]['quantity'] * products[index]['price']}',
+                              style: TextStyle(fontSize: width / 25),
+                            )
                           ],
                         ),
                         trailing: Icon(orders[index]['showDesc']
@@ -119,9 +112,14 @@ class _OrderScreenState extends State<OrderScreen> {
                               Row(children: [
                                 Text(
                                   "Size: ",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: width / 25),
                                 ),
-                                Text(orders[index]["size"])
+                                Text(
+                                  orders[index]["size"],
+                                  style: TextStyle(fontSize: width / 25),
+                                )
                               ]),
                               SizedBox(
                                 height: 10,
@@ -129,15 +127,23 @@ class _OrderScreenState extends State<OrderScreen> {
                               Row(children: [
                                 Text(
                                   "Quantity: ",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: width / 25),
                                 ),
-                                Text(orders[index]["quantity"].toString())
+                                Text(
+                                  orders[index]["quantity"].toString(),
+                                  style: TextStyle(fontSize: width / 25),
+                                )
                               ]),
                               SizedBox(
                                 height: 10,
                               ),
-                              Text('Description Short: ' +
-                                  products[index]['descShort'].toString())
+                              Text(
+                                'Description Short: ' +
+                                    products[index]['descShort'].toString(),
+                                style: TextStyle(fontSize: width / 25),
+                              )
                             ],
                           ),
                         ),
@@ -159,7 +165,7 @@ class _OrderScreenState extends State<OrderScreen> {
                 padding: EdgeInsets.all(10),
                 child: Text(
                   'No orders yet!!',
-                  style: TextStyle(color: Colors.purple, fontSize: 20),
+                  style: TextStyle(color: Colors.purple, fontSize: width / 25),
                 ),
               ),
             ),
@@ -171,7 +177,10 @@ class _OrderScreenState extends State<OrderScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Orders'),
+          title: Text(
+            'Orders',
+            style: TextStyle(fontSize: width / 25),
+          ),
         ),
         body:
             _isLoading ? Center(child: CircularProgressIndicator()) : getList(),

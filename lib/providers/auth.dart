@@ -15,7 +15,7 @@ class Auth with ChangeNotifier {
     return _userId;
   }
 
-  Future<void> login(BuildContext context,
+  Future<void> login(BuildContext context, height, width,
       {String email = '', String password = ''}) async {
     var url = Uri.parse('https://teeshopindia.in/login');
     if (email != '' && password != '') {
@@ -31,7 +31,8 @@ class Auth with ChangeNotifier {
         final responseData = json.decode(response.body);
         print(responseData);
         if (responseData['status'] == 401) {
-          _showErrorDialog(context, responseData['message'].toString());
+          _showErrorDialog(
+              context, responseData['message'].toString(), height, width);
           return;
         }
         var getToken = await getAuthToken();
@@ -47,14 +48,14 @@ class Auth with ChangeNotifier {
     }
   }
 
-  void _showErrorDialog(context, message) {
+  void _showErrorDialog(context, message, height, width) {
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             title: Text(
               'Error!!',
-              style: TextStyle(color: Colors.purple),
+              style: TextStyle(color: Colors.purple, fontSize: width / 25),
             ),
             content: Text(message),
             actions: [
@@ -62,19 +63,26 @@ class Auth with ChangeNotifier {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('OK'))
+                  child: Text(
+                    'OK',
+                    style: TextStyle(fontSize: width / 25),
+                  ))
             ],
           );
         });
   }
 
-  Future<dynamic> editUser(BuildContext context,
-      {int? id,
-      String? fullName,
-      String? address,
-      String? password,
-      String? phoneNumber,
-      String? email}) async {
+  Future<dynamic> editUser(
+    BuildContext context,
+    height,
+    width, {
+    int? id,
+    String? fullName,
+    String? address,
+    String? password,
+    String? phoneNumber,
+    String? email,
+  }) async {
     try {
       var dio = Dio();
       var url = 'https://teeshopindia.in/user/edit';
@@ -113,11 +121,13 @@ class Auth with ChangeNotifier {
         Fluttertoast.showToast(
             msg: response.data['message'],
             backgroundColor: Colors.green,
+            fontSize: width / 25,
             toastLength: Toast.LENGTH_LONG);
       } else {
         Fluttertoast.showToast(
             msg: response.data['message'],
             backgroundColor: Colors.red,
+            fontSize: width / 25,
             toastLength: Toast.LENGTH_LONG);
       }
       return response.data;
@@ -126,7 +136,7 @@ class Auth with ChangeNotifier {
     }
   }
 
-  Future<void> token(BuildContext context) async {
+  Future<void> token(BuildContext context, height, width) async {
     var url = Uri.parse('https://teeshopindia.in/login/token');
     try {
       var response = await http.post(
@@ -138,7 +148,8 @@ class Auth with ChangeNotifier {
 
       notifyListeners();
       if (responseData['status'] == 500) {
-        _showErrorDialog(context, responseData['message'].toString());
+        _showErrorDialog(
+            context, responseData['message'].toString(), height, width);
         return;
       }
 
@@ -167,8 +178,8 @@ class Auth with ChangeNotifier {
     }
   }
 
-  Future<void> signUp(
-      String email, String password, BuildContext context) async {
+  Future<void> signUp(String email, String password, BuildContext context,
+      height, width) async {
     var url = Uri.parse('https://teeshopindia.in/users');
     try {
       var response = await http.post(
@@ -182,7 +193,8 @@ class Auth with ChangeNotifier {
       final responseData = json.decode(response.body);
       print(responseData);
       if (responseData['status'] == 500) {
-        _showErrorDialog(context, responseData['message'].toString());
+        _showErrorDialog(
+            context, responseData['message'].toString(), height, width);
         return;
       }
 

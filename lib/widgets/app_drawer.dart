@@ -10,12 +10,23 @@ import 'package:teeshop/screens/your_profile_screen.dart';
 
 class AppDrawer extends StatefulWidget {
   var userData;
+
   AppDrawer({this.userData});
   @override
   _AppDrawerState createState() => _AppDrawerState();
 }
 
 class _AppDrawerState extends State<AppDrawer> {
+  var height;
+  var width;
+  @override
+  void didChangeDependencies() {
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     bool _isLoading = false;
@@ -31,7 +42,7 @@ class _AppDrawerState extends State<AppDrawer> {
                 'TeeShop',
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: 20,
+                    fontSize: width / 20,
                     fontWeight: FontWeight.bold),
               ),
             ),
@@ -46,16 +57,18 @@ class _AppDrawerState extends State<AppDrawer> {
               child: ListTile(
                 leading: Icon(
                   Icons.home,
-                  size: 30.0,
+                  size: width / 15,
                 ),
                 title: Text(
                   "Home",
-                  style: TextStyle(fontSize: 15),
+                  style: TextStyle(
+                    fontSize: width / 25,
+                  ),
                 ),
               ),
             ),
             Divider(
-              height: 10,
+              height: height / 50,
             ),
             GestureDetector(
               onTap: () {
@@ -65,16 +78,18 @@ class _AppDrawerState extends State<AppDrawer> {
               child: ListTile(
                 leading: Icon(
                   Icons.shopping_cart,
-                  size: 30.0,
+                  size: width / 15,
                 ),
                 title: Text(
                   "Wishlist",
-                  style: TextStyle(fontSize: 15),
+                  style: TextStyle(
+                    fontSize: width / 25,
+                  ),
                 ),
               ),
             ),
             Divider(
-              height: 10,
+              height: height / 50,
             ),
             GestureDetector(
               onTap: () {
@@ -84,21 +99,23 @@ class _AppDrawerState extends State<AppDrawer> {
               child: ListTile(
                 leading: Icon(
                   Icons.money,
-                  size: 30.0,
+                  size: width / 15,
                 ),
                 title: Text(
                   "Orders",
-                  style: TextStyle(fontSize: 15),
+                  style: TextStyle(
+                    fontSize: width / 25,
+                  ),
                 ),
               ),
             ),
             Divider(
-              height: 10,
+              height: height / 50,
             ),
             ListTile(
               leading: Icon(
                 Icons.person,
-                size: 30.0,
+                size: width / 15,
               ),
               title: GestureDetector(
                 onTap: () {
@@ -110,10 +127,12 @@ class _AppDrawerState extends State<AppDrawer> {
                   children: [
                     Text(
                       "My Profile",
-                      style: TextStyle(fontSize: 15),
+                      style: TextStyle(
+                        fontSize: width / 25,
+                      ),
                     ),
                     SizedBox(
-                      width: 10,
+                      width: height / 55,
                     ),
                     if (widget.userData['confirmed'] != true)
                       Icon(
@@ -125,7 +144,7 @@ class _AppDrawerState extends State<AppDrawer> {
               ),
             ),
             Divider(
-              height: 10,
+              height: height / 50,
             ),
             GestureDetector(
               onTap: () {
@@ -135,16 +154,18 @@ class _AppDrawerState extends State<AppDrawer> {
               child: ListTile(
                 leading: Icon(
                   Icons.info,
-                  size: 30.0,
+                  size: width / 15,
                 ),
                 title: Text(
                   "About Us",
-                  style: TextStyle(fontSize: 15),
+                  style: TextStyle(
+                    fontSize: width / 25,
+                  ),
                 ),
               ),
             ),
             Divider(
-              height: 10,
+              height: height / 50,
             ),
             GestureDetector(
               onTap: () {
@@ -154,16 +175,18 @@ class _AppDrawerState extends State<AppDrawer> {
               child: ListTile(
                 leading: Icon(
                   Icons.contact_mail,
-                  size: 30.0,
+                  size: width / 15,
                 ),
                 title: Text(
                   "Contact Us",
-                  style: TextStyle(fontSize: 15),
+                  style: TextStyle(
+                    fontSize: width / 25,
+                  ),
                 ),
               ),
             ),
             Divider(
-              height: 10,
+              height: height / 50,
             ),
           ],
         ),

@@ -145,6 +145,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
     if (dropdownValue == "") {
       Fluttertoast.showToast(
           msg: "Please choose your preferred size",
+          fontSize: width / 25,
           gravity: ToastGravity.CENTER,
           backgroundColor: Colors.red,
           toastLength: Toast.LENGTH_LONG);
@@ -177,7 +178,12 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
     // Fluttertoast.showToast(msg: dropdownValue.toString());
     try {
       await Provider.of<Order>(context, listen: false).addOrder(
-          context, args['product']['data']['id'], quantity, dropdownValue);
+          context,
+          args['product']['data']['id'],
+          quantity,
+          dropdownValue,
+          height,
+          width);
       Fluttertoast.showToast(
           msg: "Order placed successfully!", backgroundColor: Colors.green);
     } catch (error) {

@@ -27,9 +27,11 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
   TextEditingController pincodeEdit = TextEditingController();
   GlobalKey<FormState> pincodeKey = GlobalKey();
   var _productData;
+  var height;
+  var width;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  void showBottomSheetView(BuildContext context) {
+  void showBottomSheetView(BuildContext context, height, width) {
     showBottomSheet(
         elevation: 40,
         context: context,
@@ -41,10 +43,10 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                   children: [
                     Text(
                       'Edit Address',
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(fontSize: width / 25),
                     ),
                     SizedBox(
-                      height: 20,
+                      height: height / 50,
                     ),
                     Form(
                       key: pincodeKey,
@@ -54,16 +56,24 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                             TextFormField(
                               controller: addressEdit,
                               maxLines: 5,
+                              style: TextStyle(fontSize: width / 25),
                               keyboardType: TextInputType.multiline,
-                              decoration: InputDecoration(labelText: 'Address'),
+                              decoration: InputDecoration(
+                                labelText: 'Address',
+                                labelStyle: TextStyle(fontSize: width / 25),
+                              ),
                             ),
                             SizedBox(
-                              height: 20,
+                              height: height / 50,
                             ),
                             TextFormField(
                               controller: pincodeEdit,
+                              style: TextStyle(fontSize: width / 25),
                               keyboardType: TextInputType.number,
-                              decoration: InputDecoration(labelText: 'Pincode'),
+                              decoration: InputDecoration(
+                                labelText: 'Pincode',
+                                labelStyle: TextStyle(fontSize: width / 25),
+                              ),
                               validator: (value) {
                                 if (value.toString() == '') {
                                   return 'Please enter your Pincode';
@@ -75,7 +85,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: 20,
+                      height: height / 50,
                     ),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -84,7 +94,10 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: Text('Cancel'),
+                            child: Text(
+                              'Cancel',
+                              style: TextStyle(fontSize: width / 25),
+                            ),
                           ),
                           ElevatedButton(
                             onPressed: () {
@@ -107,7 +120,10 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                                 Navigator.of(context).pop();
                               }
                             },
-                            child: Text('Done'),
+                            child: Text('Done',
+                                style: TextStyle(
+                                  fontSize: width / 25,
+                                )),
                           ),
                         ])
                   ],
@@ -133,6 +149,8 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
     _productData =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     print(_productData);
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
   }
 
   @override
@@ -148,6 +166,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
           msg: "Please choose your preferred size",
           gravity: ToastGravity.CENTER,
           backgroundColor: Colors.red,
+          fontSize: width / 25,
           toastLength: Toast.LENGTH_LONG);
       return;
     }
@@ -174,13 +193,14 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
   }
 
   void paySuccess(PaymentSuccessResponse r) async {
-    // Fluttertoast.showToast(msg: quantity.toString());
-    // Fluttertoast.showToast(msg: dropdownValue.toString());
     try {
-      await Provider.of<Order>(context, listen: false)
-          .addOrder(context, productData['id'], quantity, dropdownValue);
+      await Provider.of<Order>(context, listen: false).addOrder(
+          context, productData['id'], quantity, dropdownValue, height, width);
       Fluttertoast.showToast(
-          msg: "Order placed successfully!", backgroundColor: Colors.green);
+        msg: "Order placed successfully!",
+        backgroundColor: Colors.green,
+        fontSize: width / 25,
+      );
     } catch (error) {
       print(error);
     }
@@ -196,9 +216,6 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
-
     total = _productData['product']['data']['price'] * quantity;
 
     return SafeArea(
@@ -246,21 +263,23 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                                 children: [
                                   Text(
                                     '₹${_productData['product']['data']['price']}/-',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: width / 25),
                                   ),
                                   SizedBox(
-                                    width: 30,
+                                    width: width / 25,
                                   ),
                                   Row(
                                     children: [
                                       Text(
                                         'QTY: ',
                                         style: TextStyle(
-                                            fontWeight: FontWeight.bold),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: width / 25),
                                       ),
                                       SizedBox(
-                                        width: width / 40,
+                                        width: width / 25,
                                       ),
                                       Container(
                                         color: Colors.purple,
@@ -306,7 +325,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: height / 50),
                   Card(
                     elevation: 8,
                     child: Container(
@@ -318,13 +337,17 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                               Text(
                                 'Size: ',
                                 style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold),
+                                    fontSize: width / 25,
+                                    fontWeight: FontWeight.bold),
                               ),
                               SizedBox(
-                                width: 10,
+                                width: width / 25,
                               ),
                               Expanded(
                                 child: DropdownButtonFormField(
+                                  style: TextStyle(
+                                      fontSize: width / 25,
+                                      color: Colors.black),
                                   onChanged: (newValue) {
                                     setState(() {
                                       dropdownValue = newValue.toString();
@@ -351,7 +374,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 10,
+                    height: height / 50,
                   ),
                   Card(
                     elevation: 8,
@@ -364,10 +387,11 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                               Text(
                                 'Total Amount: ',
                                 style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold),
+                                    fontSize: width / 25,
+                                    fontWeight: FontWeight.bold),
                               ),
                               SizedBox(
-                                width: 10,
+                                width: width / 25,
                               ),
                               Expanded(
                                 child: SingleChildScrollView(
@@ -375,7 +399,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                                   child: Container(
                                     child: Text(
                                       "₹" + total.toString() + "/-",
-                                      style: TextStyle(fontSize: 15),
+                                      style: TextStyle(fontSize: width / 25),
                                     ),
                                   ),
                                 ),
@@ -386,7 +410,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: height / 50),
                   Card(
                     elevation: 8,
                     child: Container(
@@ -399,7 +423,8 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                               Text(
                                 'Address: ',
                                 style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold),
+                                    fontSize: width / 25,
+                                    fontWeight: FontWeight.bold),
                               ),
                               Expanded(
                                 child: SingleChildScrollView(
@@ -407,15 +432,18 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                                   child: Text(
                                     address.toString(),
                                     style: TextStyle(
-                                      fontSize: 15,
+                                      fontSize: width / 25,
                                     ),
                                   ),
                                 ),
                               ),
                               TextButton(
-                                child: Text('Edit'),
+                                child: Text(
+                                  'Edit',
+                                  style: TextStyle(fontSize: width / 25),
+                                ),
                                 onPressed: () {
-                                  showBottomSheetView(context);
+                                  showBottomSheetView(context, height, width);
                                 },
                               ),
                             ],
@@ -425,7 +453,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 10,
+                    height: height / 50,
                   ),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
@@ -446,6 +474,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                           child: Text(
                             'CHECK OUT',
                             style: TextStyle(
+                              fontSize: width / 25,
                               color: Colors.white,
                               fontWeight: FontWeight.w700,
                             ),
@@ -455,7 +484,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 10,
+                    height: height / 50,
                   ),
                 ],
               ),
