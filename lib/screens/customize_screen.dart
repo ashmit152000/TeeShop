@@ -186,6 +186,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                     "iconY": top,
                     "textX": leftText,
                     "textY": topText,
+                    "pickedFile": selectedFile,
                   });
                 },
                 child: Text(
@@ -766,8 +767,9 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                     wallpaperCollection[i]['clicked'] = false;
                   }
                   wallpaperCollection[index]['clicked'] = true;
+                  _pickedImage = null;
+                  selectedFile = null;
                 });
-                _pickedImage = null;
               },
               child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(0)),

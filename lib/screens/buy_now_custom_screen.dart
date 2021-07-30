@@ -241,7 +241,8 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                       alignment: Alignment.center,
                       children: [
                         if (args["selectedImage"] != null &&
-                            args["_isIconPresent"] != false)
+                            args["_isIconPresent"] != false &&
+                            args['pickedFile'] == null)
                           Positioned(
                             top: args['iconY'] - 10,
                             left: args['iconX'] - 10,
@@ -255,6 +256,18 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                                 color: args['selectedColor'],
                               ),
                             ),
+                          ),
+                        if (args["_isIconPresent"] != false &&
+                            args['pickedFile'] != null)
+                          Positioned(
+                            top: args['iconY'] - 10,
+                            left: args['iconX'] - 10,
+                            child: Transform.rotate(
+                                angle: args["angle"],
+                                child: Image.file(
+                                  args['pickedFile'],
+                                  height: args['iconSize'],
+                                )),
                           ),
                         if (args["text"] != null &&
                             args["_isTextPresent"] != false)

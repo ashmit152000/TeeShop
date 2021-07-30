@@ -160,6 +160,8 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
     // TODO: implement dispose
     super.dispose();
     _razorpay.clear();
+    addressEdit.dispose();
+    pincodeEdit.dispose();
   }
 
   void _onPayment(user, product) {
