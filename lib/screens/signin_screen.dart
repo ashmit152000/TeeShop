@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:teeshop/data/http_exception.dart';
 import 'package:teeshop/providers/auth.dart';
+import 'package:teeshop/screens/forgot_password.dart';
 
 enum AuthMode { Signup, Signin }
 
@@ -87,8 +88,8 @@ class _SignInScreenState extends State<SignInScreen>
       try {
         await Provider.of<Auth>(context, listen: false).login(
             context, height, width,
-            email: authData['email'].toString(),
-            password: authData["password"].toString());
+            email: authData['email'].toString().trim(),
+            password: authData["password"].toString().trim());
       } catch (error) {
         print(error);
       }
@@ -98,8 +99,8 @@ class _SignInScreenState extends State<SignInScreen>
     } else {
       try {
         await Provider.of<Auth>(context, listen: false).signUp(
-            authData['email'].toString(),
-            authData["password"].toString(),
+            authData['email'].toString().trim(),
+            authData["password"].toString().trim(),
             context,
             height,
             width);
@@ -118,6 +119,9 @@ class _SignInScreenState extends State<SignInScreen>
     // TODO: implement dispose
     super.dispose();
     animation.dispose();
+    email.dispose();
+    password.dispose();
+    cPassword.dispose();
   }
 
   void toggleAuth() {
@@ -248,7 +252,7 @@ class _SignInScreenState extends State<SignInScreen>
                                               },
                                               onSaved: (value) {
                                                 authData['email'] =
-                                                    value.toString();
+                                                    value.toString().trim();
                                               },
                                             ),
                                           ),
@@ -296,7 +300,7 @@ class _SignInScreenState extends State<SignInScreen>
                                               },
                                               onSaved: (value) {
                                                 authData['password'] =
-                                                    value.toString();
+                                                    value.toString().trim();
                                               },
                                             ),
                                           ),
@@ -358,6 +362,23 @@ class _SignInScreenState extends State<SignInScreen>
                                         : Container(),
                                     SizedBox(
                                       height: height / 20,
+                                    ),
+                                    if (authMode == AuthMode.Signin)
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.of(context).pushNamed(
+                                              ForgotPassword.routeName);
+                                        },
+                                        child: Text(
+                                          "Forgot Password ? ",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: width / 25,
+                                          ),
+                                        ),
+                                      ),
+                                    SizedBox(
+                                      height: height / 40,
                                     ),
                                     InkWell(
                                       onTap: () {

@@ -17,8 +17,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
   TextEditingController qtyController = TextEditingController();
   var productData;
   late Razorpay _razorpay;
-  String address =
-      "QTR No. S/2, \n S-Block, \n Hudco Extension, \n Near Ansal Plaza, \n 110049, \n Delhi, New Delhi";
+  String address = "Enter your address";
   List<String> size = ["S", "M", "L", "XL", "XXL"];
   String dropdownValue = "";
   Map<String, dynamic> buyData = {};

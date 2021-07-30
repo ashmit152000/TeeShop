@@ -136,6 +136,39 @@ class Auth with ChangeNotifier {
     }
   }
 
+  Future<dynamic> forgotPassword(BuildContext context, height, width,
+      String email, String password) async {
+    try {
+      var dio = Dio();
+      var url = 'https://teeshopindia.in/forgot/password';
+      Map<String, dynamic> bodyModel = {"email": email, "password": password};
+
+      final response = await dio.post(
+        url,
+        data: bodyModel,
+        options: Options(
+            contentType: Headers.jsonContentType,
+            responseType: ResponseType.json),
+      );
+      if (response.data['status'] == 200) {
+        Fluttertoast.showToast(
+            msg: response.data['message'],
+            backgroundColor: Colors.green,
+            fontSize: width / 25,
+            toastLength: Toast.LENGTH_LONG);
+      } else {
+        Fluttertoast.showToast(
+            msg: response.data['message'],
+            backgroundColor: Colors.red,
+            fontSize: width / 25,
+            toastLength: Toast.LENGTH_LONG);
+      }
+      return response.data;
+    } catch (error) {
+      print(error);
+    }
+  }
+
   Future<void> token(BuildContext context, height, width) async {
     var url = Uri.parse('https://teeshopindia.in/login/token');
     try {

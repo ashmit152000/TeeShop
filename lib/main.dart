@@ -11,6 +11,7 @@ import 'package:teeshop/screens/buy_now_custom_screen.dart';
 import 'package:teeshop/screens/buy_now_screen.dart';
 import 'package:teeshop/screens/contact_us.dart';
 import 'package:teeshop/screens/customize_screen.dart';
+import 'package:teeshop/screens/forgot_password.dart';
 import 'package:teeshop/screens/info_screen.dart';
 import 'package:teeshop/screens/order_cart_screen.dart';
 import 'package:teeshop/screens/order_screen.dart';
@@ -55,6 +56,7 @@ class MyApp extends StatelessWidget {
           OrderScreen.routeName: (context) => OrderScreen(),
           OrderCartScreen.routeName: (context) => OrderCartScreen(),
           YourProfileScreen.routeName: (context) => YourProfileScreen(),
+          ForgotPassword.routeName: (context) => ForgotPassword(),
         },
       ),
       providers: [
