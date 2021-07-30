@@ -25,6 +25,9 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    print(args.toString());
+    print(args['_isIconPresent']);
+    print(args['_isTextPresent']);
     address = args['address'];
   }
 
@@ -165,7 +168,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
   void openCheckout(userData, productData) {
     var options = {
       "key": "rzp_live_upLxYKABKr7bhM",
-      "amount": "${total * 100}",
+      "amount": "${1 * 100}",
       "name": "TeeShop",
       "description": "Payment for the mechandise",
       "prefill": {
@@ -182,16 +185,34 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
   }
 
   void paySuccess(PaymentSuccessResponse r) async {
-    // Fluttertoast.showToast(msg: quantity.toString());
-    // Fluttertoast.showToast(msg: dropdownValue.toString());
     try {
       await Provider.of<Order>(context, listen: false).addOrder(
-          context,
-          args['product']['data']['id'],
-          quantity,
-          dropdownValue,
-          height,
-          width);
+        context,
+        height,
+        width,
+        product_id: args['product']['data']['id'],
+        qty: quantity,
+        size: dropdownValue,
+        selectedImage: args['selectedImage'].toString(),
+        selectedColor: args['selectedColor'].toString(),
+        text: args['text'].toString(),
+        iconSize: args['iconSize'],
+        isIconPresent: args['_isIconPresent'],
+        isTextPresent: args['_isTextPresent'],
+        angle: args['angle'],
+        textSize: args['textSize'].ceil(),
+        textRotation: args['textRotation'],
+        textColor: args['textColor'].toString(),
+        address: args['address'].toString(),
+        fontFamily: args['fontFamily'].toString(),
+        iconX: args['iconX'],
+        iconY: args['iconY'],
+        textX: args['textX'],
+        textY: args['textY'],
+        pickedFile: args['pickedFile'],
+        urlOne: args["related_products"].toString(),
+        price: args['product']['data']['price'],
+      );
       Fluttertoast.showToast(
           msg: "Order placed successfully!", backgroundColor: Colors.green);
     } catch (error) {

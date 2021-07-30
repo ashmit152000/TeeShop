@@ -180,7 +180,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
   void openCheckout(userData, productData) {
     var options = {
       "key": "rzp_live_upLxYKABKr7bhM",
-      "amount": "${total * 100}",
+      "amount": "${1 * 100}",
       "name": "TeeShop",
       "description": "Payment for the mechandise",
       "prefill": {
@@ -197,9 +197,16 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
   }
 
   void paySuccess(PaymentSuccessResponse r) async {
+    print(_productData['product']['data']['id'].toString());
     try {
       await Provider.of<Order>(context, listen: false).addOrder(
-          context, productData['id'], quantity, dropdownValue, height, width);
+          context, height, width,
+          product_id: _productData['product']['data']['id'],
+          qty: quantity,
+          size: dropdownValue,
+          price: _productData['product']['data']['id'],
+          address: address,
+          urlOne: _productData['selectedImage'].toString());
       Fluttertoast.showToast(
         msg: "Order placed successfully!",
         backgroundColor: Colors.green,
