@@ -17,7 +17,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
   TextEditingController qtyController = TextEditingController();
   var productData;
   late Razorpay _razorpay;
-  String address = "Enter your address";
+  var address;
   List<String> size = ["S", "M", "L", "XL", "XXL"];
   String dropdownValue = "";
   Map<String, dynamic> buyData = {};
@@ -150,6 +150,9 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
     print(_productData);
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
+    address = _productData['product']['user']['address'] != null
+        ? _productData['product']['user']['address']
+        : 'Edit your address';
   }
 
   @override
