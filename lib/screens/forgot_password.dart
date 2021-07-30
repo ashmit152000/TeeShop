@@ -59,7 +59,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         child: Scaffold(
       appBar: AppBar(
         title: Text(
-          'Reset Password',
+          'Forgot Password ?',
           style: TextStyle(fontSize: width / 20),
         ),
       ),
@@ -136,10 +136,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     child: Container(
                       width: MediaQuery.of(context).size.width / 2,
                       padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            colors: [Color(0xFF5f0a87), Color(0xFF703ED1)]),
-                      ),
+                      decoration:
+                          BoxDecoration(color: Theme.of(context).primaryColor),
                       child: Center(
                           child: _isLoading
                               ? CircularProgressIndicator()
