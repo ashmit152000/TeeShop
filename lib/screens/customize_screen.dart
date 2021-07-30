@@ -23,6 +23,8 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
   var _pickedImage;
   var croppedFile;
   var selectedFile;
+  var height;
+  var width;
   final _picker = ImagePicker();
   bool _isTextPresent = false;
   bool _isLogoPresent = true;
@@ -31,10 +33,10 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
   var textRotation = 0.0;
   var text = 'TeeShop';
   var textColor = Colors.black;
-  var top = 0.0;
-  var left = 0.0;
-  var topText = 0.0;
-  var leftText = 0.0;
+  var top;
+  var left;
+  var topText;
+  var leftText;
   var _productData;
   var _image;
   var _isLoading = false;
@@ -124,7 +126,12 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-
+    width = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+    left = width * 0.5;
+    top = height / 1.5 * 0.5;
+    leftText = width * 0.5;
+    topText = height / 1.5 * 0.5;
     setState(() {
       _isLoading = true;
     });
@@ -146,43 +153,47 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: Text('Customise'), actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context)
-                  .pushNamed(BuyNowCustom.routeName, arguments: {
-                "selectedImage": selectedImage,
-                "selectedColor": selectedColor,
-                "text": text,
-                "iconSize": iconSize,
-                "_isIconPresent": _isLogoPresent,
-                "_isTextPresent": _isTextPresent,
-                "angle": angle,
-                "textSize": textSize,
-                "textRotation": textRotation,
-                "textColor": textColor,
-                "price": 399,
-                "address": _productData['user']['address'],
-                "url": _productData['data']['url'],
-                "related_products": _productData['data']['related_products'][0],
-                "fontFamily": fontFamilySelector,
-                "name": _productData['data']['name'],
-                "product": _productData,
-                "user": _productData['user'],
-                "iconX": left,
-                "iconY": top,
-                "textX": leftText,
-                "textY": topText,
-              });
-            },
-            child: Text(
-              'SELECT',
-              style: TextStyle(
-                color: Colors.white,
-              ),
+        appBar: AppBar(
+            title: Text(
+              'Customise',
+              style: TextStyle(fontSize: width / 25),
             ),
-          ),
-        ]),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context)
+                      .pushNamed(BuyNowCustom.routeName, arguments: {
+                    "selectedImage": selectedImage,
+                    "selectedColor": selectedColor,
+                    "text": text,
+                    "iconSize": iconSize,
+                    "_isIconPresent": _isLogoPresent,
+                    "_isTextPresent": _isTextPresent,
+                    "angle": angle,
+                    "textSize": textSize,
+                    "textRotation": textRotation,
+                    "textColor": textColor,
+                    "price": 399,
+                    "address": _productData['user']['address'],
+                    "url": _productData['data']['url'],
+                    "related_products": _productData['data']['related_products']
+                        [0],
+                    "fontFamily": fontFamilySelector,
+                    "name": _productData['data']['name'],
+                    "product": _productData,
+                    "user": _productData['user'],
+                    "iconX": left,
+                    "iconY": top,
+                    "textX": leftText,
+                    "textY": topText,
+                  });
+                },
+                child: Text(
+                  'Select',
+                  style: TextStyle(color: Colors.white, fontSize: width / 25),
+                ),
+              ),
+            ]),
         body: _isLoading
             ? Center(
                 child: CircularProgressIndicator(),
@@ -312,29 +323,33 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                         Tab(
                                           child: Text(
                                             'ICONS',
-                                            style:
-                                                TextStyle(color: Colors.white),
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: width / 25),
                                           ),
                                         ),
                                         Tab(
                                           child: Text(
                                             'CUSTOMIZE ICON',
-                                            style:
-                                                TextStyle(color: Colors.white),
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: width / 25),
                                           ),
                                         ),
                                         Tab(
                                           child: Text(
                                             'TEXT',
-                                            style:
-                                                TextStyle(color: Colors.white),
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: width / 25),
                                           ),
                                         ),
                                         Tab(
                                           child: Text(
                                             'CUSTOMIZE TEXT',
-                                            style:
-                                                TextStyle(color: Colors.white),
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: width / 25),
                                           ),
                                         ),
                                       ],
@@ -365,7 +380,10 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                 ),
               ),
         floatingActionButton: FloatingActionButton.extended(
-          label: Text('Upload Icon'),
+          label: Text(
+            'Upload Icon',
+            style: TextStyle(fontSize: width / 25),
+          ),
           onPressed: () {
             _loadPicker(ImageSource.gallery);
           },
@@ -386,10 +404,12 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                     Text(
                       'COLOR: ',
                       style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: width / 25),
                     ),
                     SizedBox(
-                      width: 20,
+                      width: width / 25,
                     ),
                     GestureDetector(
                       onTap: () {
@@ -403,8 +423,8 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                         decoration: BoxDecoration(
                             border: Border.all(color: Colors.white),
                             color: selectedColor),
-                        height: 50,
-                        width: 50,
+                        height: width / 10,
+                        width: width / 10,
                       ),
                     ),
                   ],
@@ -414,13 +434,13 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                 ),
                 Row(
                   children: [
-                    Text(
-                      'ICON SIZE: ',
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
+                    Text('ICON SIZE: ',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: width / 25)),
                     SizedBox(
-                      width: 20,
+                      width: width / 25,
                     ),
                     GestureDetector(
                         onTap: () {
@@ -430,28 +450,33 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                 return getGrid();
                               });
                         },
-                        child: Slider(
-                            min: 20,
-                            max: 70,
-                            value: iconSize,
-                            inactiveColor: Colors.grey,
-                            onChanged: (newVal) {
-                              setState(() {
-                                iconSize = newVal;
-                              });
-                            })),
+                        child: Container(
+                          width: width / 2.5,
+                          child: Slider(
+                              min: 20,
+                              max: width / 4.2,
+                              value: iconSize,
+                              inactiveColor: Colors.grey,
+                              onChanged: (newVal) {
+                                setState(() {
+                                  iconSize = newVal;
+                                });
+                              }),
+                        )),
                   ],
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: height / 50),
                 Row(
                   children: [
                     Text(
                       'ROTATE: ',
                       style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: width / 25),
                     ),
                     SizedBox(
-                      width: 40,
+                      width: width / 25,
                     ),
                     GestureDetector(
                       onTap: () {
@@ -465,7 +490,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                           min: 0,
                           max: 8,
                           appearance: CircularSliderAppearance(
-                            size: 100,
+                            size: width / 5,
                             infoProperties: InfoProperties(
                               mainLabelStyle: TextStyle(color: Colors.black),
                             ),
@@ -501,10 +526,12 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                     Text(
                       'COLOR: ',
                       style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: width / 25),
                     ),
                     SizedBox(
-                      width: 20,
+                      width: width / 25,
                     ),
                     GestureDetector(
                       onTap: () {
@@ -518,47 +545,54 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                         decoration: BoxDecoration(
                             border: Border.all(color: Colors.white),
                             color: textColor),
-                        height: 50,
-                        width: 50,
+                        height: width / 10,
+                        width: width / 10,
                       ),
                     ),
                   ],
                 ),
                 SizedBox(
-                  height: 20,
+                  height: height / 50,
                 ),
                 Row(
                   children: [
                     Text(
                       'TEXT SIZE: ',
                       style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: width / 25),
                     ),
                     SizedBox(
-                      width: 20,
+                      width: width / 25,
                     ),
-                    Slider(
-                        min: 5,
-                        max: 20,
-                        value: textSize,
-                        inactiveColor: Colors.grey,
-                        onChanged: (newVal) {
-                          setState(() {
-                            textSize = newVal;
-                          });
-                        }),
+                    Container(
+                      width: width / 2.5,
+                      child: Slider(
+                          min: 5,
+                          max: width / 10,
+                          value: textSize,
+                          inactiveColor: Colors.grey,
+                          onChanged: (newVal) {
+                            setState(() {
+                              textSize = newVal;
+                            });
+                          }),
+                    ),
                   ],
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: height / 50),
                 Row(
                   children: [
                     Text(
                       'FONT FAMILY: ',
                       style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: width / 25),
                     ),
                     SizedBox(
-                      width: 20,
+                      width: width / 25,
                     ),
                     Expanded(
                       child: Container(
@@ -566,7 +600,8 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                             dropdownColor: Colors.purple,
                             decoration: InputDecoration(
                               labelText: "Choose Font",
-                              labelStyle: TextStyle(color: Colors.white),
+                              labelStyle: TextStyle(
+                                  color: Colors.white, fontSize: width / 25),
                             ),
                             onChanged: (newValue) {
                               setState(() {
@@ -579,29 +614,33 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                   value: value,
                                   child: Text(
                                     value,
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: width / 40),
                                   ));
                             }).toList()),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: height / 50),
                 Row(
                   children: [
                     Text(
                       'ROTATE: ',
                       style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: width / 25),
                     ),
                     SizedBox(
-                      width: 40,
+                      width: width / 25,
                     ),
                     SleekCircularSlider(
                         min: 0,
                         max: 8,
                         appearance: CircularSliderAppearance(
-                          size: 100,
+                          size: width / 5,
                           infoProperties: InfoProperties(
                             mainLabelStyle: TextStyle(color: Colors.black),
                           ),
@@ -696,6 +735,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
         'WANT ICON ? ',
         style: TextStyle(
           color: Colors.white,
+          fontSize: width / 25,
         ),
       ),
       Switch(
@@ -703,8 +743,8 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
           onChanged: (newValue) {
             setState(() {
               _isLogoPresent = newValue;
-              top = 0.0;
-              left = 0.0;
+              top = height / 1.5 * 0.5;
+              left = width / 2;
             });
           }),
       Expanded(
@@ -759,17 +799,19 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
       child: SingleChildScrollView(
         child: Column(children: [
           Row(children: [
-            Text(
-              'WANT TEXT ? ',
-              style: TextStyle(color: Colors.white),
+            Center(
+              child: Text(
+                'WANT TEXT ? ',
+                style: TextStyle(color: Colors.white, fontSize: width / 25),
+              ),
             ),
             Switch(
                 value: _isTextPresent,
                 onChanged: (newValue) {
                   setState(() {
                     _isTextPresent = newValue;
-                    topText = 0.0;
-                    leftText = 0.0;
+                    topText = height / 1.5 * 0.5;
+                    leftText = width / 2;
                   });
                 }),
           ]),
@@ -777,11 +819,12 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
             height: 20,
           ),
           TextFormField(
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontSize: width / 25),
             controller: textPrintController,
             decoration: InputDecoration(
-                labelText: "Enter Text",
-                labelStyle: TextStyle(color: Colors.white)),
+              labelText: "Enter Text",
+              labelStyle: TextStyle(color: Colors.white, fontSize: width / 25),
+            ),
             onChanged: (newVal) {
               setState(() {
                 text = newVal;
@@ -789,12 +832,18 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
             },
           ),
           SizedBox(
-            height: 20,
+            height: height / 50,
           ),
           Text(
-              'NOTE: IF THE TEXT CROSSES THE BORDERS OF THE SHIRT HERE, WE WILL MAKE IT MULTILINE IN THE ACTUAL PRINT.',
-              style:
-                  TextStyle(color: Colors.purple, fontWeight: FontWeight.bold)),
+            'NOTE: IF THE TEXT CROSSES THE BORDERS OF THE SHIRT HERE, WE WILL MAKE IT MULTILINE IN THE ACTUAL PRINT.',
+            style: TextStyle(
+                color: Colors.purple,
+                fontWeight: FontWeight.bold,
+                fontSize: width / 25),
+          ),
+          SizedBox(
+            height: height / 50,
+          ),
         ]),
       ),
     );

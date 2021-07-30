@@ -109,7 +109,7 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: width / 28),
+                        padding: EdgeInsets.only(top: width / 35),
                         child: IconButton(
                           icon: Icon(Icons.logout),
                           onPressed: () async {

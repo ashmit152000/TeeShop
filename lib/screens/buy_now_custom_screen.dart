@@ -66,8 +66,12 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                             TextFormField(
                               controller: addressEdit,
                               maxLines: 5,
+                              style: TextStyle(fontSize: width / 25),
                               keyboardType: TextInputType.multiline,
-                              decoration: InputDecoration(labelText: 'Address'),
+                              decoration: InputDecoration(
+                                labelText: 'Address',
+                                labelStyle: TextStyle(fontSize: width / 25),
+                              ),
                             ),
                             SizedBox(
                               height: 20,
@@ -75,7 +79,11 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                             TextFormField(
                               controller: pincodeEdit,
                               keyboardType: TextInputType.number,
-                              decoration: InputDecoration(labelText: 'Pincode'),
+                              style: TextStyle(fontSize: width / 25),
+                              decoration: InputDecoration(
+                                labelText: 'Pincode',
+                                labelStyle: TextStyle(fontSize: width / 25),
+                              ),
                               validator: (value) {
                                 if (value.toString() == '') {
                                   return 'Please enter your Pincode';
@@ -207,7 +215,10 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("BUY"),
+          title: Text(
+            "BUY",
+            style: TextStyle(fontSize: width / 25),
+          ),
         ),
         body: Builder(
           builder: (context) => Container(
@@ -232,8 +243,8 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                         if (args["selectedImage"] != null &&
                             args["_isIconPresent"] != false)
                           Positioned(
-                            top: args['iconY'],
-                            left: args['iconX'],
+                            top: args['iconY'] - 10,
+                            left: args['iconX'] - 10,
                             child: Transform.rotate(
                               angle: args["angle"],
                               child: SvgPicture.asset(
@@ -248,8 +259,8 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                         if (args["text"] != null &&
                             args["_isTextPresent"] != false)
                           Positioned(
-                            top: args['textY'],
-                            left: args['textX'],
+                            top: args['textY'] - 10,
+                            left: args['textX'] - 10,
                             child: Transform.rotate(
                               angle: args["textRotation"],
                               child: Text(
@@ -301,30 +312,40 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                                     child: Row(
                                       children: [
                                         IconButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                if (quantity > 1) {
-                                                  quantity--;
-                                                }
-                                              });
-                                            },
-                                            icon: Icon(Icons.remove,
-                                                color: Colors.white)),
+                                          onPressed: () {
+                                            setState(() {
+                                              if (quantity > 1) {
+                                                quantity--;
+                                              }
+                                            });
+                                          },
+                                          icon: Icon(
+                                            Icons.remove,
+                                            color: Colors.white,
+                                            size: width / 25,
+                                          ),
+                                        ),
                                         Container(
-                                          padding: EdgeInsets.all(10),
+                                          padding: EdgeInsets.all(width / 60),
                                           color: Colors.white,
                                           child: Center(
-                                            child: Text(quantity.toString()),
+                                            child: Text(quantity.toString(),
+                                                style: TextStyle(
+                                                    fontSize: width / 25)),
                                           ),
                                         ),
                                         IconButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                quantity++;
-                                              });
-                                            },
-                                            icon: Icon(Icons.add,
-                                                color: Colors.white)),
+                                          onPressed: () {
+                                            setState(() {
+                                              quantity++;
+                                            });
+                                          },
+                                          icon: Icon(
+                                            Icons.add,
+                                            color: Colors.white,
+                                            size: width / 25,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -372,7 +393,10 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                                         value: value, child: Text(value));
                                   }).toList(),
                                   decoration: InputDecoration(
-                                      labelText: 'Select Size', filled: true),
+                                    labelText: 'Select Size',
+                                    filled: true,
+                                    labelStyle: TextStyle(fontSize: width / 25),
+                                  ),
                                 ),
                               )
                             ],
@@ -476,6 +500,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w700,
+                              fontSize: width / 25,
                             ),
                           ),
                         ),
