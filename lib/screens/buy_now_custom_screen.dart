@@ -22,7 +22,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
   var total;
   var width;
   var height;
-  var downLoadUrl;
+  var downLoadUrl = '';
   String dropdownValue = "";
   List<String> size = ["S", "M", "L", "XL", "XXL"];
   var args;
