@@ -22,7 +22,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
   var total;
   var width;
   var height;
-  var downLoadUrl = '';
+  String downLoadUrl = '';
   String dropdownValue = "";
   List<String> size = ["S", "M", "L", "XL", "XXL"];
   var args;
@@ -196,10 +196,34 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
     } catch (error) {}
   }
 
-  void paySuccess(PaymentSuccessResponse r) async {
-    var urlSelected;
+  void handlerErrorFailure() {
+    print('Error!!');
+  }
+
+  void handlerExternalWallet() {
+    print('External Wallet');
+  }
+
+  Future<void> uploadFile(filePath) async {
+    File file = File(filePath);
+
     try {
-      if (args['pickedFile'] != '') {
+      var snapShot = await firebase_storage.FirebaseStorage.instance
+          .ref()
+          .child('UserUploads/${DateTime.now().toString()}')
+          .putFile(file);
+      var gotUrl = await snapShot.ref.getDownloadURL();
+      setState(() {
+        downLoadUrl = gotUrl;
+      });
+    } on FirebaseException catch (e) {
+      Fluttertoast.showToast(msg: e.toString(), backgroundColor: Colors.red);
+    }
+  }
+
+  void paySuccess(PaymentSuccessResponse r) async {
+    try {
+      if (args['pickedFile'] != null) {
         uploadFile(args['pickedFile']);
         print('This is done');
       }
@@ -227,7 +251,9 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
         iconY: args['iconY'],
         textX: args['textX'],
         textY: args['textY'],
-        pickedFile: args['pickedFile'] != null ? downLoadUrl : '',
+        pickedFile: downLoadUrl != ''
+            ? downLoadUrl
+            : 'File couldn\'t be uploaded contact user',
         urlOne: args["related_products"].toString(),
         price: args['product']['data']['price'],
       );
@@ -237,36 +263,6 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
       print("------------------" +
           error.toString() +
           "----------------------------");
-    }
-  }
-
-  void handlerErrorFailure() {
-    print('Error!!');
-  }
-
-  void handlerExternalWallet() {
-    print('External Wallet');
-  }
-
-  Future<void> uploadFile(filePath) async {
-    File file = File(filePath);
-
-    try {
-      var snapShot = await firebase_storage.FirebaseStorage.instance
-          .ref('')
-          .child('UserUploads/${DateTime.now().toString()}')
-          .putFile(file);
-      var gotUrl = await snapShot.ref.getDownloadURL();
-
-      setState(() {
-        downLoadUrl = gotUrl;
-        print("THis is the download URl" +
-            downLoadUrl +
-            " this is gor url" +
-            gotUrl);
-      });
-    } on FirebaseException catch (e) {
-      Fluttertoast.showToast(msg: e.toString(), backgroundColor: Colors.red);
     }
   }
 
