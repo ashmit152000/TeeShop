@@ -35,6 +35,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
   var textColor = Colors.black;
   var top;
   var left;
+  var pathImage;
   var topText;
   var leftText;
   var _productData;
@@ -103,6 +104,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
         print(croppedFile.toString());
         setState(() {
           selectedFile = croppedFile;
+          pathImage = croppedFile.path;
         });
       } else {
         _pickedImage = null;
@@ -163,7 +165,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                 onPressed: () {
                   Navigator.of(context)
                       .pushNamed(BuyNowCustom.routeName, arguments: {
-                    "selectedImage": selectedImage,
+                    "selectedImage": selectedFile,
                     "selectedColor": selectedColor,
                     "text": text,
                     "iconSize": iconSize,
@@ -186,7 +188,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                     "iconY": top,
                     "textX": leftText,
                     "textY": topText,
-                    "pickedFile": selectedFile,
+                    "pickedFile": pathImage,
                   });
                 },
                 child: Text(

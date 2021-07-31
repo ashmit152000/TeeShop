@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class Order with ChangeNotifier {
   void _showErrorDialog(context, message, title, height, width) {
@@ -62,7 +63,7 @@ class Order with ChangeNotifier {
     double iconY = 0.0,
     double textX = 0.0,
     double textY = 0.0,
-    File? pickedFile,
+    String pickedFile = '',
     int price = 0,
   }) async {
     var url = 'https://teeshopindia.in/orders';

@@ -1,3 +1,8 @@
+import 'dart:io';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -17,6 +22,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
   var total;
   var width;
   var height;
+  var downLoadUrl;
   String dropdownValue = "";
   List<String> size = ["S", "M", "L", "XL", "XXL"];
   var args;
@@ -28,6 +34,12 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
     print(args.toString());
     print(args['_isIconPresent']);
     print(args['_isTextPresent']);
+    print("-------------------------------" +
+        args['pickedFile'] +
+        "---------------------------------");
+    print("-------------------------------" +
+        args['selectedImage'].toString() +
+        "---------------------------------");
     address = args['address'];
   }
 
@@ -185,7 +197,13 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
   }
 
   void paySuccess(PaymentSuccessResponse r) async {
+    var urlSelected;
     try {
+      if (args['pickedFile'] != '') {
+        uploadFile(args['pickedFile']);
+        print('This is done');
+      }
+
       await Provider.of<Order>(context, listen: false).addOrder(
         context,
         height,
@@ -209,14 +227,16 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
         iconY: args['iconY'],
         textX: args['textX'],
         textY: args['textY'],
-        pickedFile: args['pickedFile'],
+        pickedFile: args['pickedFile'] != null ? downLoadUrl : '',
         urlOne: args["related_products"].toString(),
         price: args['product']['data']['price'],
       );
       Fluttertoast.showToast(
           msg: "Order placed successfully!", backgroundColor: Colors.green);
     } catch (error) {
-      print(error);
+      print("------------------" +
+          error.toString() +
+          "----------------------------");
     }
   }
 
@@ -226,6 +246,28 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
 
   void handlerExternalWallet() {
     print('External Wallet');
+  }
+
+  Future<void> uploadFile(filePath) async {
+    File file = File(filePath);
+
+    try {
+      var snapShot = await firebase_storage.FirebaseStorage.instance
+          .ref('')
+          .child('UserUploads/${DateTime.now().toString()}')
+          .putFile(file);
+      var gotUrl = await snapShot.ref.getDownloadURL();
+
+      setState(() {
+        downLoadUrl = gotUrl;
+        print("THis is the download URl" +
+            downLoadUrl +
+            " this is gor url" +
+            gotUrl);
+      });
+    } on FirebaseException catch (e) {
+      Fluttertoast.showToast(msg: e.toString(), backgroundColor: Colors.red);
+    }
   }
 
   @override
@@ -286,7 +328,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                             child: Transform.rotate(
                                 angle: args["angle"],
                                 child: Image.file(
-                                  args['pickedFile'],
+                                  args['selectedImage'],
                                   height: args['iconSize'],
                                 )),
                           ),
