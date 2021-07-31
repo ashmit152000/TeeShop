@@ -45,7 +45,9 @@ class _InfoScreenState extends State<InfoScreen> {
     super.didChangeDependencies();
     _productData =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    imageSelectedRightNow = _productData['data']['related_products'][0];
+    imageSelectedRightNow = _productData['data']['related_products'].length > 0
+        ? _productData['data']['related_products'][0]
+        : _productData['data']['url'];
   }
 
   @override
@@ -122,38 +124,39 @@ class _InfoScreenState extends State<InfoScreen> {
                 SizedBox(
                   height: height / 50,
                 ),
-                Card(
-                  child: Container(
-                    padding: EdgeInsets.all(width / 40),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(
-                          related_products.length,
-                          (index) {
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  imageSelectedRightNow =
-                                      related_products[index].toString();
-                                });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(5),
-                                child: CircleAvatar(
-                                  radius: width / 15,
-                                  backgroundImage: NetworkImage(
-                                      related_products[index].toString()),
+                if (_productData['data']['related_products'].length > 0)
+                  Card(
+                    child: Container(
+                      padding: EdgeInsets.all(width / 40),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: List.generate(
+                            related_products.length,
+                            (index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    imageSelectedRightNow =
+                                        related_products[index].toString();
+                                  });
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(5),
+                                  child: CircleAvatar(
+                                    radius: width / 15,
+                                    backgroundImage: NetworkImage(
+                                        related_products[index].toString()),
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
                 SizedBox(
                   height: height / 50,
                 ),
