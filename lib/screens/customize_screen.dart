@@ -8,6 +8,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 import 'package:teeshop/screens/buy_now_custom_screen.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class CustomizeScreen extends StatefulWidget {
   static const routeName = '\customize';
@@ -71,46 +72,52 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
   var fontFamilySelector = "Roboto";
 
   _loadPicker(ImageSource source) async {
-    final PickedFile? picked = await _picker.getImage(source: source);
-    if (picked != null) {
-      setState(() {
-        _pickedImage = picked;
-      });
-    }
+    var status = await Permission.photos.status;
 
-    try {
-      if (_pickedImage != null) {
-        croppedFile = await ImageCropper.cropImage(
-            sourcePath: _pickedImage.path,
-            aspectRatioPresets: [
-              CropAspectRatioPreset.square,
-              CropAspectRatioPreset.ratio3x2,
-              CropAspectRatioPreset.original,
-              CropAspectRatioPreset.ratio4x3,
-              CropAspectRatioPreset.ratio16x9,
-              CropAspectRatioPreset.ratio5x3,
-              CropAspectRatioPreset.ratio5x4,
-              CropAspectRatioPreset.ratio7x5,
-            ],
-            compressQuality: 100,
-            maxWidth: 200,
-            maxHeight: 200,
-            compressFormat: ImageCompressFormat.jpg,
-            androidUiSettings: AndroidUiSettings(
-              toolbarColor: Colors.purple,
-              toolbarTitle: 'TeeShop Cropper',
-              backgroundColor: Colors.white,
-            ));
-        print(croppedFile.toString());
+    if (status.isGranted) {
+      final PickedFile? picked = await _picker.getImage(source: source);
+      if (picked != null) {
         setState(() {
-          selectedFile = croppedFile;
-          pathImage = croppedFile.path;
+          _pickedImage = picked;
         });
-      } else {
-        _pickedImage = null;
       }
-    } catch (error) {
-      print(error);
+
+      try {
+        if (_pickedImage != null) {
+          croppedFile = await ImageCropper.cropImage(
+              sourcePath: _pickedImage.path,
+              aspectRatioPresets: [
+                CropAspectRatioPreset.square,
+                CropAspectRatioPreset.ratio3x2,
+                CropAspectRatioPreset.original,
+                CropAspectRatioPreset.ratio4x3,
+                CropAspectRatioPreset.ratio16x9,
+                CropAspectRatioPreset.ratio5x3,
+                CropAspectRatioPreset.ratio5x4,
+                CropAspectRatioPreset.ratio7x5,
+              ],
+              compressQuality: 100,
+              maxWidth: 200,
+              maxHeight: 200,
+              compressFormat: ImageCompressFormat.jpg,
+              androidUiSettings: AndroidUiSettings(
+                toolbarColor: Colors.purple,
+                toolbarTitle: 'TeeShop Cropper',
+                backgroundColor: Colors.white,
+              ));
+          print(croppedFile.toString());
+          setState(() {
+            selectedFile = croppedFile;
+            pathImage = croppedFile.path;
+          });
+        } else {
+          _pickedImage = null;
+        }
+      } catch (error) {
+        print(error);
+      }
+    } else {
+      _loadPicker(source);
     }
   }
 
@@ -165,7 +172,8 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                 onPressed: () {
                   Navigator.of(context)
                       .pushNamed(BuyNowCustom.routeName, arguments: {
-                    "selectedImage": selectedFile,
+                    "selectedImage":
+                        _pickedImage != null ? selectedFile : selectedImage,
                     "selectedColor": selectedColor,
                     "text": text,
                     "iconSize": iconSize,

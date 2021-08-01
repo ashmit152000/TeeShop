@@ -34,12 +34,12 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
     print(args.toString());
     print(args['_isIconPresent']);
     print(args['_isTextPresent']);
-    print("-------------------------------" +
-        args['pickedFile'] +
-        "---------------------------------");
-    print("-------------------------------" +
-        args['selectedImage'].toString() +
-        "---------------------------------");
+    // print("-------------------------------" +
+    //     args['pickedFile'] +
+    //     "---------------------------------");
+    // print("-------------------------------" +
+    //     args['selectedImage'].toString() +
+    //     "---------------------------------");
     address = args['address'];
   }
 
@@ -215,7 +215,10 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
       var gotUrl = await snapShot.ref.getDownloadURL();
       return gotUrl;
     } on FirebaseException catch (e) {
-      Fluttertoast.showToast(msg: e.toString(), backgroundColor: Colors.red);
+      Fluttertoast.showToast(
+          msg:
+              'Something went wrong! Please try again Or contact the developer at ashmitteeshop@gmail.com',
+          backgroundColor: Colors.red);
     }
   }
 
