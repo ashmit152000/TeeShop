@@ -40,7 +40,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
   var topText;
   var leftText;
   var _productData;
-  var _image;
+
   var _isLoading = false;
   var wallpaperCollection = [
     {"image": "assets/svgs/ironman.svg", "clicked": false, "id": "1"},
@@ -146,7 +146,8 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
     });
     _productData =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    Image.network(_productData['data']['related_products'][0])
+    print(_productData.toString());
+    Image.network(_productData['product']['data']['related_products'][0])
         .image
         .resolve(new ImageConfiguration())
         .addListener(ImageStreamListener((ImageInfo info, bool _) {
@@ -175,6 +176,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                     "selectedImage":
                         _pickedImage != null ? selectedFile : selectedImage,
                     "selectedColor": selectedColor,
+                    "shirtShade": _productData['selectedImage'],
                     "text": text,
                     "iconSize": iconSize,
                     "_isIconPresent": _isLogoPresent,
@@ -184,14 +186,14 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                     "textRotation": textRotation,
                     "textColor": textColor,
                     "price": 399,
-                    "address": _productData['user']['address'],
-                    "url": _productData['data']['url'],
-                    "related_products": _productData['data']['related_products']
-                        [0],
+                    "address": _productData['product']['user']['address'],
+                    "url": _productData['product']['data']['url'],
+                    "related_products": _productData['product']['data']
+                        ['related_products'],
                     "fontFamily": fontFamilySelector,
-                    "name": _productData['data']['name'],
+                    "name": _productData['product']['data']['name'],
                     "product": _productData,
-                    "user": _productData['user'],
+                    "user": _productData['product']['user'],
                     "iconX": left,
                     "iconY": top,
                     "textX": leftText,
@@ -222,7 +224,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                             image: DecorationImage(
                               fit: BoxFit.cover,
                               image: NetworkImage(
-                                _productData['data']['related_products'][0],
+                                _productData['selectedImage'].toString(),
                               ),
                             ),
                           ),
@@ -465,7 +467,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                           width: width / 2.5,
                           child: Slider(
                               min: 20,
-                              max: width / 4.2,
+                              max: width / 3,
                               value: iconSize,
                               inactiveColor: Colors.grey,
                               onChanged: (newVal) {

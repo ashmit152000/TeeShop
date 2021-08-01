@@ -256,9 +256,11 @@ class _InfoScreenState extends State<InfoScreen> {
                     borderRadius: BorderRadius.circular(10),
                     child: InkWell(
                       onTap: () {
-                        Navigator.of(context).pushNamed(
-                            CustomizeScreen.routeName,
-                            arguments: _productData);
+                        Navigator.of(context)
+                            .pushNamed(CustomizeScreen.routeName, arguments: {
+                          "product": _productData,
+                          "selectedImage": imageSelectedRightNow.toString()
+                        });
                       },
                       child: Container(
                         padding: EdgeInsets.all(10),

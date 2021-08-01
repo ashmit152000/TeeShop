@@ -31,7 +31,8 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    print(args.toString());
+    print(args['product']['product']['user'].toString());
+
     print(args['_isIconPresent']);
     print(args['_isTextPresent']);
     // print("-------------------------------" +
@@ -184,7 +185,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
       "name": "TeeShop",
       "description": "Payment for the mechandise",
       "prefill": {
-        "email": args['product']['user']['email'],
+        "email": args['product']['product']['user']['email'],
         "size": "$dropdownValue",
         "address": "$address",
         "quantity": "$quantity",
@@ -233,7 +234,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
         context,
         height,
         width,
-        product_id: args['product']['data']['id'],
+        product_id: args['product']['product']['data']['id'],
         qty: quantity,
         size: dropdownValue,
         selectedImage: args['selectedImage'].toString(),
@@ -255,8 +256,8 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
         pickedFile: downLoadUrl.toString() != ''
             ? downLoadUrl.toString()
             : 'File couldn\'t be uploaded contact user',
-        urlOne: args["related_products"].toString(),
-        price: args['product']['data']['price'],
+        urlOne: args["shirtShade"].toString(),
+        price: args['product']['product']['data']['price'],
       );
       Fluttertoast.showToast(
           msg: "Order placed successfully!", backgroundColor: Colors.green);
@@ -292,7 +293,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: NetworkImage(
-                          args["related_products"],
+                          args["shirtShade"],
                         ),
                         fit: BoxFit.cover,
                       ),
@@ -348,7 +349,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                       ],
                     ),
                   ),
-                  if (!args['product']['data']['customizable'])
+                  if (!args['product']['product']['data']['customizable'])
                     SizedBox(
                       height: 10,
                     ),
@@ -558,7 +559,8 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                     child: InkWell(
                       onTap: () {
                         return _onPayment(
-                            args['product']['user']['email'], args['product']);
+                            args['product']['product']['user']['email'],
+                            args['product']['product']);
                       },
                       child: Container(
                         padding: EdgeInsets.all(10),
