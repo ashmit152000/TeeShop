@@ -18,7 +18,6 @@ import 'package:teeshop/screens/order_screen.dart';
 import 'package:teeshop/screens/replacement.dart';
 import 'package:teeshop/screens/signin_screen.dart';
 import 'package:teeshop/screens/your_profile_screen.dart';
-import 'package:teeshop/widgets/app_drawer.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

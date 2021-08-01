@@ -22,7 +22,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
   var total;
   var width;
   var height;
-  String downLoadUrl = '';
+  String? downLoadUrl = '';
   String dropdownValue = "";
   List<String> size = ["S", "M", "L", "XL", "XXL"];
   var args;
@@ -204,7 +204,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
     print('External Wallet');
   }
 
-  Future<void> uploadFile(filePath) async {
+  Future<String?> uploadFile(filePath) async {
     File file = File(filePath);
 
     try {
@@ -213,9 +213,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
           .child('UserUploads/${DateTime.now().toString()}')
           .putFile(file);
       var gotUrl = await snapShot.ref.getDownloadURL();
-      setState(() {
-        downLoadUrl = gotUrl;
-      });
+      return gotUrl;
     } on FirebaseException catch (e) {
       Fluttertoast.showToast(msg: e.toString(), backgroundColor: Colors.red);
     }
@@ -224,7 +222,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
   void paySuccess(PaymentSuccessResponse r) async {
     try {
       if (args['pickedFile'] != null) {
-        uploadFile(args['pickedFile']);
+        downLoadUrl = await uploadFile(args['pickedFile']);
         print('This is done');
       }
 
@@ -251,8 +249,8 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
         iconY: args['iconY'],
         textX: args['textX'],
         textY: args['textY'],
-        pickedFile: downLoadUrl != ''
-            ? downLoadUrl
+        pickedFile: downLoadUrl.toString() != ''
+            ? downLoadUrl.toString()
             : 'File couldn\'t be uploaded contact user',
         urlOne: args["related_products"].toString(),
         price: args['product']['data']['price'],
