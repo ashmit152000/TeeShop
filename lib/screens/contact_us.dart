@@ -32,7 +32,7 @@ class ContactUs extends StatelessWidget {
 
     _callWhat() async {
       // Android and iOS
-      const uri = 'tel:+919205809145';
+      const uri = "https://wa.me/+919205809145";
       if (await canLaunch(uri)) {
         await launch(uri);
       } else {
@@ -172,7 +172,7 @@ class ContactUs extends StatelessWidget {
                           SizedBox(width: width / 20),
                           TextButton(
                             child: Text(
-                              'Call',
+                              'Text',
                               style: TextStyle(
                                 fontSize: width / 30,
                               ),
