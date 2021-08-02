@@ -47,6 +47,7 @@ dependencies:
   firebase_storage: ^10.0.1
   permission_handler: ^8.1.4+2
   flutter_launcher_icons: "^0.9.1"
+  flutter_native_splash: ^1.2.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -83,6 +84,7 @@ flutter:
     - assets/images/3A.png
     - assets/images/product-placeholder.png
     - assets/images/1.png
+    - assets/images/teeshop.png
 
     # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -131,6 +133,10 @@ flutter:
     - family: Yellowtail
       fonts:
         - asset: assets/font/Yellowtail/Yellowtail-Regular.ttf
+
+flutter_native_splash:
+  color: "#21254A"
+  image: assets/images/teeshop.png
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
