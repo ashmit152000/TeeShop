@@ -116,6 +116,7 @@ class _AppDrawerState extends State<AppDrawer> {
               ),
               title: GestureDetector(
                 onTap: () {
+                  Navigator.of(context).pop();
                   Navigator.of(context).pushNamed(YourProfileScreen.routeName,
                       arguments: widget.userData);
                 },
