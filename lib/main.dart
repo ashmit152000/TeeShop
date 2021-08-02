@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       child: MaterialApp(
-        title: 'TeeShop',
+        title: 'TeeshopIndia',
         theme: ThemeData(
           primarySwatch: Colors.purple,
           primaryColor: Colors.purple,

@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:teeshop/providers/orders.dart';
+import 'package:teeshop/screens/your_profile_screen.dart';
 
 class BuyNowScreen extends StatefulWidget {
   static const routeName = '/buy-now';
@@ -470,9 +471,52 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                     borderRadius: BorderRadius.circular(10),
                     child: InkWell(
                       onTap: () {
-                        return _onPayment(
-                            _productData['product']['user']['email'],
-                            _productData['product']['data']);
+                        if (address != '' &&
+                            _productData['product']['user']['phone_verified'] !=
+                                false) {
+                          return _onPayment(
+                              _productData['product']['user']['email'],
+                              _productData['product']['data']);
+                        } else {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text(
+                                    'Profile Issue',
+                                    style: TextStyle(
+                                        fontSize: width / 20,
+                                        color: Colors.purple),
+                                  ),
+                                  content: Text(
+                                    'You haven\'t selected an address for delivery. Or your Phone Number is not verified',
+                                    style: TextStyle(fontSize: width / 25),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text(
+                                        'Cancel',
+                                        style: TextStyle(fontSize: width / 25),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .pushReplacementNamed(
+                                                YourProfileScreen.routeName);
+                                      },
+                                      child: Text(
+                                        'Go To Profile',
+                                        style: TextStyle(fontSize: width / 25),
+                                      ),
+                                    )
+                                  ],
+                                );
+                              });
+                        }
                       },
                       child: Container(
                         padding: EdgeInsets.all(10),

@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
-import 'package:teeshop/providers/auth.dart';
 import 'package:teeshop/screens/about_us.dart';
 import 'package:teeshop/screens/contact_us.dart';
 import 'package:teeshop/screens/order_cart_screen.dart';
@@ -23,7 +20,7 @@ class _AppDrawerState extends State<AppDrawer> {
   void didChangeDependencies() {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
-    // TODO: implement didChangeDependencies
+
     super.didChangeDependencies();
   }
 
@@ -39,7 +36,7 @@ class _AppDrawerState extends State<AppDrawer> {
               height: MediaQuery.of(context).size.height * 0.2,
               color: Theme.of(context).primaryColor,
               child: Text(
-                'TeeShop',
+                'TeeshopIndia',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: width / 20,

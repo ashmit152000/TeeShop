@@ -6,7 +6,7 @@ import 'package:teeshop/providers/products.dart';
 
 import 'package:teeshop/screens/different_shirt/custom_tee.dart';
 import 'package:teeshop/screens/different_shirt/full_sleeves.dart';
-import 'package:teeshop/screens/different_shirt/embro_polo.dart';
+
 import 'package:teeshop/screens/different_shirt/polo.dart';
 import 'package:teeshop/screens/different_shirt/polyester.dart';
 import 'package:teeshop/screens/different_shirt/sandose.dart';
@@ -88,7 +88,7 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
                   drawerEnableOpenDragGesture: false,
                   appBar: AppBar(
                     title: Text(
-                      'TeeShop',
+                      'TeeshopIndia',
                       style: TextStyle(fontSize: width / 25),
                     ),
                     actions: [
