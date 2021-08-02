@@ -29,6 +29,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
   var _productData;
   var height;
   var width;
+  var _isLoading = false;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   void showBottomSheetView(BuildContext context, height, width) {
@@ -198,7 +199,9 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
   }
 
   void paySuccess(PaymentSuccessResponse r) async {
-    print(_productData['product']['data']['id'].toString());
+    setState(() {
+      _isLoading = true;
+    });
     try {
       await Provider.of<Order>(context, listen: false).addOrder(
           context, height, width,
@@ -208,6 +211,9 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
           price: _productData['product']['data']['id'],
           address: address,
           urlOne: _productData['selectedImage'].toString());
+      setState(() {
+        _isLoading = false;
+      });
       Fluttertoast.showToast(
         msg: "Order placed successfully!",
         backgroundColor: Colors.green,
@@ -235,317 +241,334 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
         appBar: AppBar(
           title: Text('BUY'),
         ),
-        body: Builder(
-          builder: (context) => Container(
-            padding: EdgeInsets.all(width / 80),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Column(
-                    children: [
-                      Card(
-                        elevation: 8,
-                        child: Column(
+        body: _isLoading
+            ? Center(
+                child: SizedBox(
+                    child: CircularProgressIndicator(),
+                    height: width / 10,
+                    width: width / 10),
+              )
+            : Builder(
+                builder: (context) => Container(
+                  padding: EdgeInsets.all(width / 80),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(
                           children: [
-                            InteractiveViewer(
-                              child: Image.network(
-                                _productData['selectedImage'].toString(),
-                                width: double.infinity,
-                              ),
-                            ),
-                            Padding(padding: EdgeInsets.all(10)),
-                            Container(
-                              child: Text(
-                                _productData['product']['data']['name'],
-                                style: TextStyle(
-                                  fontSize: width / 20,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(bottom: 10),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                            Card(
+                              elevation: 8,
+                              child: Column(
                                 children: [
-                                  Text(
-                                    '₹${_productData['product']['data']['price']}/-',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: width / 25),
+                                  InteractiveViewer(
+                                    child: Image.network(
+                                      _productData['selectedImage'].toString(),
+                                      width: double.infinity,
+                                    ),
+                                  ),
+                                  Padding(padding: EdgeInsets.all(10)),
+                                  Container(
+                                    child: Text(
+                                      _productData['product']['data']['name'],
+                                      style: TextStyle(
+                                        fontSize: width / 20,
+                                      ),
+                                    ),
                                   ),
                                   SizedBox(
-                                    width: width / 25,
+                                    height: 15,
                                   ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'QTY: ',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: width / 25),
-                                      ),
-                                      SizedBox(
-                                        width: width / 25,
-                                      ),
-                                      Container(
-                                        color: Colors.purple,
-                                        child: Row(
+                                  Container(
+                                    margin: EdgeInsets.only(bottom: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Text(
+                                          '₹${_productData['product']['data']['price']}/-',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: width / 25),
+                                        ),
+                                        SizedBox(
+                                          width: width / 25,
+                                        ),
+                                        Row(
                                           children: [
-                                            IconButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    if (quantity > 1) {
-                                                      quantity--;
-                                                    }
-                                                  });
-                                                },
-                                                icon: Icon(Icons.remove,
-                                                    color: Colors.white)),
+                                            Text(
+                                              'QTY: ',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: width / 25),
+                                            ),
+                                            SizedBox(
+                                              width: width / 25,
+                                            ),
                                             Container(
-                                              padding: EdgeInsets.all(10),
-                                              color: Colors.white,
-                                              child: Center(
-                                                child: Text(
-                                                  quantity.toString(),
-                                                ),
+                                              color: Colors.purple,
+                                              child: Row(
+                                                children: [
+                                                  IconButton(
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          if (quantity > 1) {
+                                                            quantity--;
+                                                          }
+                                                        });
+                                                      },
+                                                      icon: Icon(Icons.remove,
+                                                          color: Colors.white)),
+                                                  Container(
+                                                    padding: EdgeInsets.all(10),
+                                                    color: Colors.white,
+                                                    child: Center(
+                                                      child: Text(
+                                                        quantity.toString(),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  IconButton(
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          quantity++;
+                                                        });
+                                                      },
+                                                      icon: Icon(Icons.add,
+                                                          color: Colors.white)),
+                                                ],
                                               ),
                                             ),
-                                            IconButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    quantity++;
-                                                  });
-                                                },
-                                                icon: Icon(Icons.add,
-                                                    color: Colors.white)),
                                           ],
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
                           ],
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: height / 50),
-                  Card(
-                    elevation: 8,
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                'Size: ',
-                                style: TextStyle(
-                                    fontSize: width / 25,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(
-                                width: width / 25,
-                              ),
-                              Expanded(
-                                child: DropdownButtonFormField(
-                                  style: TextStyle(
-                                      fontSize: width / 25,
-                                      color: Colors.black),
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      dropdownValue = newValue.toString();
-                                    });
-                                  },
-                                  validator: (newValue) {
-                                    if (dropdownValue == "") {
-                                      return "Please choose your preferred size";
-                                    }
-                                  },
-                                  items: size.map<DropdownMenuItem<String>>(
-                                      (String value) {
-                                    return DropdownMenuItem<String>(
-                                        value: value, child: Text(value));
-                                  }).toList(),
-                                  decoration: InputDecoration(
-                                      labelText: 'Select Size', filled: true),
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: height / 50,
-                  ),
-                  Card(
-                    elevation: 8,
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                'Total Amount: ',
-                                style: TextStyle(
-                                    fontSize: width / 25,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(
-                                width: width / 25,
-                              ),
-                              Expanded(
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Container(
-                                    child: Text(
-                                      "₹" + total.toString() + "/-",
-                                      style: TextStyle(fontSize: width / 25),
+                        SizedBox(height: height / 50),
+                        Card(
+                          elevation: 8,
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Size: ',
+                                      style: TextStyle(
+                                          fontSize: width / 25,
+                                          fontWeight: FontWeight.bold),
                                     ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: height / 50),
-                  Card(
-                    elevation: 8,
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Address: ',
-                                style: TextStyle(
-                                    fontSize: width / 25,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Expanded(
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Text(
-                                    address.toString(),
-                                    style: TextStyle(
-                                      fontSize: width / 25,
+                                    SizedBox(
+                                      width: width / 25,
                                     ),
-                                  ),
-                                ),
-                              ),
-                              TextButton(
-                                child: Text(
-                                  'Edit',
-                                  style: TextStyle(fontSize: width / 25),
-                                ),
-                                onPressed: () {
-                                  showBottomSheetView(context, height, width);
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: height / 50,
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: InkWell(
-                      onTap: () {
-                        if (address != '' &&
-                            _productData['product']['user']['phone_verified'] !=
-                                false) {
-                          return _onPayment(
-                              _productData['product']['user']['email'],
-                              _productData['product']['data']);
-                        } else {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: Text(
-                                    'Profile Issue',
-                                    style: TextStyle(
-                                        fontSize: width / 20,
-                                        color: Colors.purple),
-                                  ),
-                                  content: Text(
-                                    'You haven\'t selected an address for delivery. Or your Phone Number is not verified',
-                                    style: TextStyle(fontSize: width / 25),
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text(
-                                        'Cancel',
-                                        style: TextStyle(fontSize: width / 25),
-                                      ),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context)
-                                            .pushReplacementNamed(
-                                                YourProfileScreen.routeName);
-                                      },
-                                      child: Text(
-                                        'Go To Profile',
-                                        style: TextStyle(fontSize: width / 25),
+                                    Expanded(
+                                      child: DropdownButtonFormField(
+                                        style: TextStyle(
+                                            fontSize: width / 25,
+                                            color: Colors.black),
+                                        onChanged: (newValue) {
+                                          setState(() {
+                                            dropdownValue = newValue.toString();
+                                          });
+                                        },
+                                        validator: (newValue) {
+                                          if (dropdownValue == "") {
+                                            return "Please choose your preferred size";
+                                          }
+                                        },
+                                        items: size
+                                            .map<DropdownMenuItem<String>>(
+                                                (String value) {
+                                          return DropdownMenuItem<String>(
+                                              value: value, child: Text(value));
+                                        }).toList(),
+                                        decoration: InputDecoration(
+                                            labelText: 'Select Size',
+                                            filled: true),
                                       ),
                                     )
                                   ],
-                                );
-                              });
-                        }
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(colors: [
-                          Color(0xFF5f0a87),
-                          Color(0xFFa4508b)
-                        ])),
-                        child: Center(
-                          child: Text(
-                            'CHECK OUT',
-                            style: TextStyle(
-                              fontSize: width / 25,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      ),
+                        SizedBox(
+                          height: height / 50,
+                        ),
+                        Card(
+                          elevation: 8,
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Total Amount: ',
+                                      style: TextStyle(
+                                          fontSize: width / 25,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      width: width / 25,
+                                    ),
+                                    Expanded(
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Container(
+                                          child: Text(
+                                            "₹" + total.toString() + "/-",
+                                            style:
+                                                TextStyle(fontSize: width / 25),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: height / 50),
+                        Card(
+                          elevation: 8,
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Address: ',
+                                      style: TextStyle(
+                                          fontSize: width / 25,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Expanded(
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Text(
+                                          address.toString(),
+                                          style: TextStyle(
+                                            fontSize: width / 25,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      child: Text(
+                                        'Edit',
+                                        style: TextStyle(fontSize: width / 25),
+                                      ),
+                                      onPressed: () {
+                                        showBottomSheetView(
+                                            context, height, width);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: height / 50,
+                        ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: InkWell(
+                            onTap: () {
+                              if (address != '' &&
+                                  _productData['product']['user']
+                                          ['phone_verified'] !=
+                                      false) {
+                                return _onPayment(
+                                    _productData['product']['user']['email'],
+                                    _productData['product']['data']);
+                              } else {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: Text(
+                                          'Profile Issue',
+                                          style: TextStyle(
+                                              fontSize: width / 20,
+                                              color: Colors.purple),
+                                        ),
+                                        content: Text(
+                                          'You haven\'t selected an address for delivery. Or your Phone Number is not verified',
+                                          style:
+                                              TextStyle(fontSize: width / 25),
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text(
+                                              'Cancel',
+                                              style: TextStyle(
+                                                  fontSize: width / 25),
+                                            ),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context)
+                                                  .pushReplacementNamed(
+                                                      YourProfileScreen
+                                                          .routeName);
+                                            },
+                                            child: Text(
+                                              'Go To Profile',
+                                              style: TextStyle(
+                                                  fontSize: width / 25),
+                                            ),
+                                          )
+                                        ],
+                                      );
+                                    });
+                              }
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(colors: [
+                                Color(0xFF5f0a87),
+                                Color(0xFFa4508b)
+                              ])),
+                              child: Center(
+                                child: Text(
+                                  'CHECK OUT',
+                                  style: TextStyle(
+                                    fontSize: width / 25,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: height / 50,
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(
-                    height: height / 50,
-                  ),
-                ],
+                ),
               ),
-            ),
-          ),
-        ),
       ),
     );
   }

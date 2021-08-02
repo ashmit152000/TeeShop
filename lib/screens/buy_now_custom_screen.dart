@@ -27,6 +27,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
   String dropdownValue = "";
   List<String> size = ["S", "M", "L", "XL", "XXL"];
   var args;
+  var _isLoading = false;
   late Razorpay _razorpay;
   @override
   void didChangeDependencies() {
@@ -225,6 +226,9 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
   }
 
   void paySuccess(PaymentSuccessResponse r) async {
+    setState(() {
+      _isLoading = true;
+    });
     try {
       if (args['pickedFile'] != null) {
         downLoadUrl = await uploadFile(args['pickedFile']);
@@ -260,6 +264,9 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
         urlOne: args["shirtShade"].toString(),
         price: args['product']['product']['data']['price'],
       );
+      setState(() {
+        _isLoading = false;
+      });
       Fluttertoast.showToast(
           msg: "Order placed successfully!", backgroundColor: Colors.green);
     } catch (error) {
@@ -282,359 +289,377 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
             style: TextStyle(fontSize: width / 25),
           ),
         ),
-        body: Builder(
-          builder: (context) => Container(
-            padding: EdgeInsets.all(10),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    height: MediaQuery.of(context).size.height / 1.5,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(
-                          args["shirtShade"],
-                        ),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    child: Stack(
-                      alignment: Alignment.center,
+        body: _isLoading
+            ? Center(
+                child: SizedBox(
+                  width: width / 10,
+                  height: width / 10,
+                  child: CircularProgressIndicator(),
+                ),
+              )
+            : Builder(
+                builder: (context) => Container(
+                  padding: EdgeInsets.all(10),
+                  child: SingleChildScrollView(
+                    child: Column(
                       children: [
-                        if (args["selectedImage"] != null &&
-                            args["_isIconPresent"] != false &&
-                            args['pickedFile'] == null)
-                          Positioned(
-                            top: args['iconY'] - 10,
-                            left: args['iconX'] - 10,
-                            child: Transform.rotate(
-                              angle: args["angle"],
-                              child: SvgPicture.asset(
-                                args['selectedImage'],
-                                height: args["iconSize"].toDouble(),
-                                colorBlendMode: BlendMode.srcATop,
-                                allowDrawingOutsideViewBox: false,
-                                color: args['selectedColor'],
+                        Container(
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height / 1.5,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                args["shirtShade"],
                               ),
+                              fit: BoxFit.cover,
                             ),
                           ),
-                        if (args["_isIconPresent"] != false &&
-                            args['pickedFile'] != null)
-                          Positioned(
-                            top: args['iconY'] - 10,
-                            left: args['iconX'] - 10,
-                            child: Transform.rotate(
-                                angle: args["angle"],
-                                child: Image.file(
-                                  args['selectedImage'],
-                                  height: args['iconSize'],
-                                )),
-                          ),
-                        if (args["text"] != null &&
-                            args["_isTextPresent"] != false)
-                          Positioned(
-                            top: args['textY'] - 10,
-                            left: args['textX'] - 10,
-                            child: Transform.rotate(
-                              angle: args["textRotation"],
-                              child: Text(
-                                args["text"],
-                                style: TextStyle(
-                                    fontSize: args["textSize"],
-                                    fontFamily: args["fontFamily"],
-                                    color: args["textColor"]),
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                  if (!args['product']['product']['data']['customizable'])
-                    SizedBox(
-                      height: 10,
-                    ),
-                  Card(
-                    elevation: 8,
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              margin: EdgeInsets.only(bottom: 10),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'Quantity: ',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: width / 25),
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                      ],
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              if (args["selectedImage"] != null &&
+                                  args["_isIconPresent"] != false &&
+                                  args['pickedFile'] == null)
+                                Positioned(
+                                  top: args['iconY'] - 10,
+                                  left: args['iconX'] - 10,
+                                  child: Transform.rotate(
+                                    angle: args["angle"],
+                                    child: SvgPicture.asset(
+                                      args['selectedImage'],
+                                      height: args["iconSize"].toDouble(),
+                                      colorBlendMode: BlendMode.srcATop,
+                                      allowDrawingOutsideViewBox: false,
+                                      color: args['selectedColor'],
                                     ),
                                   ),
-                                  Container(
-                                    color: Colors.purple,
+                                ),
+                              if (args["_isIconPresent"] != false &&
+                                  args['pickedFile'] != null)
+                                Positioned(
+                                  top: args['iconY'] - 10,
+                                  left: args['iconX'] - 10,
+                                  child: Transform.rotate(
+                                      angle: args["angle"],
+                                      child: Image.file(
+                                        args['selectedImage'],
+                                        height: args['iconSize'],
+                                      )),
+                                ),
+                              if (args["text"] != null &&
+                                  args["_isTextPresent"] != false)
+                                Positioned(
+                                  top: args['textY'] - 10,
+                                  left: args['textX'] - 10,
+                                  child: Transform.rotate(
+                                    angle: args["textRotation"],
+                                    child: Text(
+                                      args["text"],
+                                      style: TextStyle(
+                                          fontSize: args["textSize"],
+                                          fontFamily: args["fontFamily"],
+                                          color: args["textColor"]),
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                        if (!args['product']['product']['data']['customizable'])
+                          SizedBox(
+                            height: 10,
+                          ),
+                        Card(
+                          elevation: 8,
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    margin: EdgeInsets.only(bottom: 10),
                                     child: Row(
                                       children: [
-                                        IconButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              if (quantity > 1) {
-                                                quantity--;
-                                              }
-                                            });
-                                          },
-                                          icon: Icon(
-                                            Icons.remove,
-                                            color: Colors.white,
-                                            size: width / 25,
+                                        Expanded(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                'Quantity: ',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: width / 25),
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                            ],
                                           ),
                                         ),
                                         Container(
-                                          padding: EdgeInsets.all(width / 60),
-                                          color: Colors.white,
-                                          child: Center(
-                                            child: Text(quantity.toString(),
-                                                style: TextStyle(
-                                                    fontSize: width / 25)),
-                                          ),
-                                        ),
-                                        IconButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              quantity++;
-                                            });
-                                          },
-                                          icon: Icon(
-                                            Icons.add,
-                                            color: Colors.white,
-                                            size: width / 25,
+                                          color: Colors.purple,
+                                          child: Row(
+                                            children: [
+                                              IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    if (quantity > 1) {
+                                                      quantity--;
+                                                    }
+                                                  });
+                                                },
+                                                icon: Icon(
+                                                  Icons.remove,
+                                                  color: Colors.white,
+                                                  size: width / 25,
+                                                ),
+                                              ),
+                                              Container(
+                                                padding:
+                                                    EdgeInsets.all(width / 60),
+                                                color: Colors.white,
+                                                child: Center(
+                                                  child: Text(
+                                                      quantity.toString(),
+                                                      style: TextStyle(
+                                                          fontSize:
+                                                              width / 25)),
+                                                ),
+                                              ),
+                                              IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    quantity++;
+                                                  });
+                                                },
+                                                icon: Icon(
+                                                  Icons.add,
+                                                  color: Colors.white,
+                                                  size: width / 25,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: height / 40),
-                  Card(
-                    elevation: 8,
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                'Size: ',
-                                style: TextStyle(
-                                    fontSize: width / 25,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: DropdownButtonFormField(
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      dropdownValue = newValue.toString();
-                                    });
-                                  },
-                                  validator: (newValue) {
-                                    if (dropdownValue == "") {
-                                      return "Please choose your preferred size";
-                                    }
-                                  },
-                                  items: size.map<DropdownMenuItem<String>>(
-                                      (String value) {
-                                    return DropdownMenuItem<String>(
-                                        value: value, child: Text(value));
-                                  }).toList(),
-                                  decoration: InputDecoration(
-                                    labelText: 'Select Size',
-                                    filled: true,
-                                    labelStyle: TextStyle(fontSize: width / 25),
-                                  ),
                                 ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: height / 40,
-                  ),
-                  Card(
-                    elevation: 8,
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                'Total Amount: ',
-                                style: TextStyle(
-                                    fontSize: width / 25,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                "₹" + total.toString() + "/-",
-                                style: TextStyle(fontSize: width / 25),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: height / 40),
-                  Card(
-                    elevation: 8,
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Address: ',
-                                style: TextStyle(
-                                    fontSize: width / 25,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Expanded(
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Text(
-                                    address.toString(),
-                                    style: TextStyle(
-                                      fontSize: width / 25,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              TextButton(
-                                child: Text(
-                                  'Edit',
-                                  style: TextStyle(fontSize: width / 25),
-                                ),
-                                onPressed: () {
-                                  showBottomSheetView(context);
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: height / 25,
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: InkWell(
-                      onTap: () {
-                        if (address != '' &&
-                            args['product']['product']['user']
-                                    ['phone_verified'] !=
-                                false) {
-                          return _onPayment(
-                              args['product']['product']['user']['email'],
-                              args['product']['product']);
-                        } else {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: Text(
-                                    'Profile Issue',
-                                    style: TextStyle(
-                                        fontSize: width / 20,
-                                        color: Colors.purple),
-                                  ),
-                                  content: Text(
-                                    'You haven\'t selected an address for delivery. Or your Phone Number is not verified',
-                                    style: TextStyle(fontSize: width / 25),
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text(
-                                        'Cancel',
-                                        style: TextStyle(fontSize: width / 25),
-                                      ),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context)
-                                            .pushReplacementNamed(
-                                                YourProfileScreen.routeName);
-                                      },
-                                      child: Text(
-                                        'Go To Profile',
-                                        style: TextStyle(fontSize: width / 25),
-                                      ),
-                                    )
-                                  ],
-                                );
-                              });
-                        }
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(colors: [
-                          Color(0xFF5f0a87),
-                          Color(0xFFa4508b)
-                        ])),
-                        child: Center(
-                          child: Text(
-                            'CHECK OUT',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: width / 25,
+                              ],
                             ),
                           ),
                         ),
-                      ),
+                        SizedBox(height: height / 40),
+                        Card(
+                          elevation: 8,
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Size: ',
+                                      style: TextStyle(
+                                          fontSize: width / 25,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                      child: DropdownButtonFormField(
+                                        onChanged: (newValue) {
+                                          setState(() {
+                                            dropdownValue = newValue.toString();
+                                          });
+                                        },
+                                        validator: (newValue) {
+                                          if (dropdownValue == "") {
+                                            return "Please choose your preferred size";
+                                          }
+                                        },
+                                        items: size
+                                            .map<DropdownMenuItem<String>>(
+                                                (String value) {
+                                          return DropdownMenuItem<String>(
+                                              value: value, child: Text(value));
+                                        }).toList(),
+                                        decoration: InputDecoration(
+                                          labelText: 'Select Size',
+                                          filled: true,
+                                          labelStyle:
+                                              TextStyle(fontSize: width / 25),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: height / 40,
+                        ),
+                        Card(
+                          elevation: 8,
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Total Amount: ',
+                                      style: TextStyle(
+                                          fontSize: width / 25,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      "₹" + total.toString() + "/-",
+                                      style: TextStyle(fontSize: width / 25),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: height / 40),
+                        Card(
+                          elevation: 8,
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Address: ',
+                                      style: TextStyle(
+                                          fontSize: width / 25,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Expanded(
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Text(
+                                          address.toString(),
+                                          style: TextStyle(
+                                            fontSize: width / 25,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      child: Text(
+                                        'Edit',
+                                        style: TextStyle(fontSize: width / 25),
+                                      ),
+                                      onPressed: () {
+                                        showBottomSheetView(context);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: height / 25,
+                        ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: InkWell(
+                            onTap: () {
+                              if (address != '' &&
+                                  args['product']['product']['user']
+                                          ['phone_verified'] !=
+                                      false) {
+                                return _onPayment(
+                                    args['product']['product']['user']['email'],
+                                    args['product']['product']);
+                              } else {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: Text(
+                                          'Profile Issue',
+                                          style: TextStyle(
+                                              fontSize: width / 20,
+                                              color: Colors.purple),
+                                        ),
+                                        content: Text(
+                                          'You haven\'t selected an address for delivery. Or your Phone Number is not verified',
+                                          style:
+                                              TextStyle(fontSize: width / 25),
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text(
+                                              'Cancel',
+                                              style: TextStyle(
+                                                  fontSize: width / 25),
+                                            ),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context)
+                                                  .pushReplacementNamed(
+                                                      YourProfileScreen
+                                                          .routeName);
+                                            },
+                                            child: Text(
+                                              'Go To Profile',
+                                              style: TextStyle(
+                                                  fontSize: width / 25),
+                                            ),
+                                          )
+                                        ],
+                                      );
+                                    });
+                              }
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(colors: [
+                                Color(0xFF5f0a87),
+                                Color(0xFFa4508b)
+                              ])),
+                              child: Center(
+                                child: Text(
+                                  'CHECK OUT',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: width / 25,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: height / 40,
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(
-                    height: height / 40,
-                  ),
-                ],
+                ),
               ),
-            ),
-          ),
-        ),
       ),
     );
   }
