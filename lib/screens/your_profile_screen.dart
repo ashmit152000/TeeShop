@@ -575,8 +575,8 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
             ? Center(
                 child: SizedBox(
                   child: CircularProgressIndicator(),
-                  height: width / 25,
-                  width: width / 25,
+                  height: width / 10,
+                  width: width / 10,
                 ),
               )
             : SingleChildScrollView(

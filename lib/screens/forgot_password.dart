@@ -150,8 +150,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           child: _isLoading
                               ? SizedBox(
                                   child: CircularProgressIndicator(),
-                                  height: width / 25,
-                                  width: width / 25,
+                                  height: width / 10,
+                                  width: width / 10,
                                 )
                               : Text(
                                   "Update Password",

@@ -186,8 +186,8 @@ class _OrderScreenState extends State<OrderScreen> {
             ? Center(
                 child: SizedBox(
                   child: CircularProgressIndicator(),
-                  height: width / 25,
-                  width: width / 25,
+                  height: width / 10,
+                  width: width / 10,
                 ),
               )
             : getList(),

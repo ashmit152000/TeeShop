@@ -127,8 +127,8 @@ class _OrderCartScreenState extends State<OrderCartScreen> {
               : Center(
                   child: SizedBox(
                     child: CircularProgressIndicator(),
-                    height: width / 25,
-                    width: width / 25,
+                    height: width / 10,
+                    width: width / 10,
                   ),
                 ),
           padding: EdgeInsets.all(10),

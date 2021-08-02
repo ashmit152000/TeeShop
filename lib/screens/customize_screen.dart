@@ -209,7 +209,11 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
             ]),
         body: _isLoading
             ? Center(
-                child: CircularProgressIndicator(),
+                child: SizedBox(
+                  child: CircularProgressIndicator(),
+                  height: width / 10,
+                  width: width / 10,
+                ),
               )
             : Container(
                 child: SingleChildScrollView(
