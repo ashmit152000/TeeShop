@@ -125,7 +125,11 @@ class _OrderCartScreenState extends State<OrderCartScreen> {
           child: _isLoading != true
               ? cartGrid(height, width)
               : Center(
-                  child: CircularProgressIndicator(),
+                  child: SizedBox(
+                    child: CircularProgressIndicator(),
+                    height: width / 25,
+                    width: width / 25,
+                  ),
                 ),
           padding: EdgeInsets.all(10),
         ),

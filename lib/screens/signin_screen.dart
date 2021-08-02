@@ -424,8 +424,12 @@ class _SignInScreenState extends State<SignInScreen>
                                                     fontSize: width / 25,
                                                   ),
                                                 )
-                                              : CircularProgressIndicator(
-                                                  color: Colors.white,
+                                              : SizedBox(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                          color: Colors.white),
+                                                  height: width / 25,
+                                                  width: width / 25,
                                                 ),
                                         ),
                                       ),

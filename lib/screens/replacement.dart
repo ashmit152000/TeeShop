@@ -208,7 +208,11 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
                 ),
               )
             : Center(
-                child: CircularProgressIndicator(),
+                child: SizedBox(
+                  child: CircularProgressIndicator(),
+                  height: width / 25,
+                  width: width / 25,
+                ),
               ),
       ),
     );

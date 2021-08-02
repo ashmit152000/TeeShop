@@ -305,7 +305,12 @@ class _InfoScreenState extends State<InfoScreen> {
                               colors: [Color(0xFF5f0a87), Color(0xFFa4508b)])),
                       child: Center(
                         child: _isLoading
-                            ? CircularProgressIndicator(color: Colors.white)
+                            ? SizedBox(
+                                child: CircularProgressIndicator(
+                                    color: Colors.white),
+                                height: width / 25,
+                                width: width / 25,
+                              )
                             : Text('Add To Cart',
                                 style: TextStyle(
                                   color: Colors.white,

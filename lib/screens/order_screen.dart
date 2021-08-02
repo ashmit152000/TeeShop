@@ -182,8 +182,15 @@ class _OrderScreenState extends State<OrderScreen> {
             style: TextStyle(fontSize: width / 25),
           ),
         ),
-        body:
-            _isLoading ? Center(child: CircularProgressIndicator()) : getList(),
+        body: _isLoading
+            ? Center(
+                child: SizedBox(
+                  child: CircularProgressIndicator(),
+                  height: width / 25,
+                  width: width / 25,
+                ),
+              )
+            : getList(),
       ),
     );
   }

@@ -573,7 +573,11 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
         ),
         body: _isLoading
             ? Center(
-                child: CircularProgressIndicator(),
+                child: SizedBox(
+                  child: CircularProgressIndicator(),
+                  height: width / 25,
+                  width: width / 25,
+                ),
               )
             : SingleChildScrollView(
                 child: Container(

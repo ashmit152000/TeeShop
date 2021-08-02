@@ -148,7 +148,11 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           BoxDecoration(color: Theme.of(context).primaryColor),
                       child: Center(
                           child: _isLoading
-                              ? CircularProgressIndicator()
+                              ? SizedBox(
+                                  child: CircularProgressIndicator(),
+                                  height: width / 25,
+                                  width: width / 25,
+                                )
                               : Text(
                                   "Update Password",
                                   style: TextStyle(
