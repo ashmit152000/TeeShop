@@ -187,7 +187,7 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
                         // ),
                         Tab(
                           child: Text(
-                            'Sandose',
+                            'Sandoz & Caps',
                             style: TextStyle(fontSize: width / 28),
                           ),
                         ),
