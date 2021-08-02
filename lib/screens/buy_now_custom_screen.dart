@@ -616,10 +616,8 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                                           ),
                                           TextButton(
                                             onPressed: () {
-                                              Navigator.of(context)
-                                                  .pushReplacementNamed(
-                                                      YourProfileScreen
-                                                          .routeName);
+                                              Navigator.of(context).pushNamed(
+                                                  YourProfileScreen.routeName);
                                             },
                                             child: Text(
                                               'Go To Profile',

@@ -570,9 +570,6 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
     height = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
-        drawer: AppDrawer(
-          userData: userData,
-        ),
         appBar: AppBar(
           title: Text('My Profile'),
           actions: [

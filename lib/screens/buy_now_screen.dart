@@ -526,7 +526,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                                           TextButton(
                                             onPressed: () {
                                               Navigator.of(context)
-                                                  .pushReplacementNamed(
+                                                  .pushNamed(
                                                       YourProfileScreen
                                                           .routeName);
                                             },
