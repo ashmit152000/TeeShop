@@ -312,12 +312,18 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                     ElevatedButton(
                       onPressed: () async {
                         otp.text = '';
+                        setState(() {
+                          _isLoading = true;
+                        });
                         await FirebaseAuth.instance.verifyPhoneNumber(
                           phoneNumber: phonenumberController.text,
                           verificationCompleted:
                               (PhoneAuthCredential credential) {},
                           verificationFailed: (FirebaseAuthException e) {},
                           codeSent: (String verificationId, int? resendToken) {
+                            setState(() {
+                              _isLoading = false;
+                            });
                             showDialog(
                                 context: context,
                                 builder: (context) {
@@ -346,6 +352,9 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                             ),
                                             ElevatedButton(
                                               onPressed: () {
+                                                setState(() {
+                                                  _isLoading = true;
+                                                });
                                                 FirebaseAuth auth =
                                                     FirebaseAuth.instance;
                                                 verify = PhoneAuthProvider
@@ -371,6 +380,9 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                                           fontSize: width / 25,
                                                           backgroundColor:
                                                               Colors.green);
+                                                    });
+                                                    setState(() {
+                                                      _isLoading = false;
                                                     });
                                                   });
                                                 } catch (err) {
