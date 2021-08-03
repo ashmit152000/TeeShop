@@ -102,7 +102,11 @@ class ContactUs extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Icon(FontAwesomeIcons.solidEnvelope),
+                          Icon(
+                            FontAwesomeIcons.solidEnvelope,
+                            color: Colors.red,
+                            size: width / 15,
+                          ),
                           SizedBox(width: width / 20),
                           Text(
                             'indiateeshop@gmail.com',
@@ -112,8 +116,7 @@ class ContactUs extends StatelessWidget {
                             child: Text(
                               'Mail',
                               style: TextStyle(
-                                fontSize: width / 30,
-                              ),
+                                  fontSize: width / 30, color: Colors.red),
                             ),
                             onPressed: () {
                               _sendMail();
@@ -133,17 +136,19 @@ class ContactUs extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Icon(FontAwesomeIcons.phoneAlt),
+                          Icon(FontAwesomeIcons.phoneAlt,
+                              color: Colors.green, size: width / 15),
                           SizedBox(width: width / 20),
-                          Text('01145635397',
-                              style: TextStyle(fontSize: width / 25)),
+                          Text(
+                            '01145635397',
+                            style: TextStyle(fontSize: width / 25),
+                          ),
                           SizedBox(width: width / 20),
                           TextButton(
                             child: Text(
                               'Call',
                               style: TextStyle(
-                                fontSize: width / 30,
-                              ),
+                                  fontSize: width / 30, color: Colors.green),
                             ),
                             onPressed: () {
                               _call();
@@ -163,7 +168,8 @@ class ContactUs extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Icon(FontAwesomeIcons.whatsapp),
+                          Icon(FontAwesomeIcons.whatsapp,
+                              color: Colors.green, size: width / 15),
                           SizedBox(width: width / 20),
                           Text(
                             '+919205809145',
@@ -175,6 +181,7 @@ class ContactUs extends StatelessWidget {
                               'Text',
                               style: TextStyle(
                                 fontSize: width / 30,
+                                color: Colors.green,
                               ),
                             ),
                             onPressed: () {
@@ -195,7 +202,8 @@ class ContactUs extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Icon(FontAwesomeIcons.terminal),
+                          Icon(FontAwesomeIcons.terminal,
+                              color: Colors.blue, size: width / 15),
                           SizedBox(width: width / 20),
                           Text(
                             '+919588955499',
@@ -207,6 +215,7 @@ class ContactUs extends StatelessWidget {
                               'Call',
                               style: TextStyle(
                                 fontSize: width / 30,
+                                color: Colors.blue,
                               ),
                             ),
                             onPressed: () {
@@ -227,7 +236,8 @@ class ContactUs extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Icon(FontAwesomeIcons.terminal),
+                          Icon(FontAwesomeIcons.terminal,
+                              color: Colors.blue, size: width / 15),
                           SizedBox(width: width / 20),
                           Text(
                             '+918887566721',
@@ -239,6 +249,7 @@ class ContactUs extends StatelessWidget {
                               'Call',
                               style: TextStyle(
                                 fontSize: width / 30,
+                                color: Colors.blue,
                               ),
                             ),
                             onPressed: () {

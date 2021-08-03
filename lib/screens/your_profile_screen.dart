@@ -37,24 +37,21 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
     Provider.of<Auth>(context, listen: false).getUser(context).then((value) {
       setState(() {
         userData = value['user'];
-        emailController.text = value['user']['email'] == null
-            ? 'Enter your email'
-            : value['user']['email'];
+        emailController.text =
+            value['user']['email'] == null ? '' : value['user']['email'];
         fullNameController.text = value['user']['full_name'] == null
-            ? 'Enter your full name'
+            ? ''
             : value['user']['full_name'];
         fullNamePopController.text = value['user']['full_name'] == null
-            ? 'Enter your full name'
+            ? ''
             : value['user']['full_name'];
-        addressPopController.text = value['user']['address'] == null
-            ? 'Enter your address'
-            : value['user']['address'];
-        addressController.text = value['user']['address'] == null
-            ? 'Enter your address'
-            : value['user']['address'];
+        addressPopController.text =
+            value['user']['address'] == null ? '' : value['user']['address'];
+        addressController.text =
+            value['user']['address'] == null ? '' : value['user']['address'];
 
         phonenumberController.text = value['user']['phone_number'] == null
-            ? 'Enter your phone number'
+            ? ''
             : value['user']['phone_number'].toString();
         _isLoading = false;
       });
@@ -380,9 +377,20 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                                           fontSize: width / 25,
                                                           backgroundColor:
                                                               Colors.green);
-                                                    });
-                                                    setState(() {
-                                                      _isLoading = false;
+                                                      setState(() {
+                                                        _isLoading = false;
+                                                      });
+                                                    }).onError((error,
+                                                            stackTrace) {
+                                                      Fluttertoast.showToast(
+                                                          msg:
+                                                              'Wrong otp entered',
+                                                          fontSize: width / 25,
+                                                          backgroundColor:
+                                                              Colors.red);
+                                                      setState(() {
+                                                        _isLoading = false;
+                                                      });
                                                     });
                                                   });
                                                 } catch (err) {
@@ -391,6 +399,9 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                                       fontSize: width / 25,
                                                       backgroundColor:
                                                           Colors.red);
+                                                  setState(() {
+                                                    _isLoading = false;
+                                                  });
                                                 }
                                               },
                                               child: Text(
