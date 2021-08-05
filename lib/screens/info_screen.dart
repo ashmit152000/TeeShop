@@ -15,6 +15,7 @@ class InfoScreen extends StatefulWidget {
 
 class _InfoScreenState extends State<InfoScreen> {
   bool showDesc = false;
+  bool showChart = false;
   var _isLoading = false;
   var width;
   var height;
@@ -188,7 +189,7 @@ class _InfoScreenState extends State<InfoScreen> {
                           showDesc ? Divider() : Container(),
                           AnimatedContainer(
                             duration: Duration(milliseconds: 300),
-                            height: showDesc ? 100 : 0,
+                            height: showDesc ? height / 4 : 0,
                             child: SingleChildScrollView(
                               child: Column(
                                 children: [
@@ -204,6 +205,54 @@ class _InfoScreenState extends State<InfoScreen> {
                                       'More Details',
                                       style: TextStyle(fontSize: width / 28),
                                     ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: height / 50,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      showChart = !showChart;
+                    });
+                  },
+                  child: Card(
+                    elevation: 8,
+                    child: Container(
+                      padding: EdgeInsets.all(width / 40),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                'Size Chart',
+                                style: TextStyle(
+                                  fontSize: width / 25,
+                                ),
+                              ),
+                              Icon(showChart
+                                  ? Icons.expand_less
+                                  : Icons.expand_more),
+                            ],
+                          ),
+                          showChart ? Divider() : Container(),
+                          AnimatedContainer(
+                            duration: Duration(milliseconds: 300),
+                            height: showChart ? height / 4 : 0,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  InteractiveViewer(
+                                    child: Image.asset(
+                                        'assets/images/sizechart.jpeg'),
                                   ),
                                 ],
                               ),
