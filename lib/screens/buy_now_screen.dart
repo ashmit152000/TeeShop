@@ -525,10 +525,8 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                                           ),
                                           TextButton(
                                             onPressed: () {
-                                              Navigator.of(context)
-                                                  .pushNamed(
-                                                      YourProfileScreen
-                                                          .routeName);
+                                              Navigator.of(context).pushNamed(
+                                                  YourProfileScreen.routeName);
                                             },
                                             child: Text(
                                               'Go To Profile',

@@ -342,7 +342,11 @@ class _InfoScreenState extends State<InfoScreen> {
                         _isLoading = true;
                       });
                       await Provider.of<Cart>(context, listen: false).addCart(
-                          context, _productData['data']['id'], height, width);
+                          context,
+                          _productData['data']['id'],
+                          height,
+                          width,
+                          imageSelectedRightNow);
                       setState(() {
                         _isLoading = false;
                       });
@@ -355,7 +359,8 @@ class _InfoScreenState extends State<InfoScreen> {
                       child: Center(
                         child: _isLoading
                             ? SizedBox(
-                                child: CircularProgressIndicator(),
+                                child: CircularProgressIndicator(
+                                    color: Colors.white),
                                 height: width / 10,
                                 width: width / 10,
                               )

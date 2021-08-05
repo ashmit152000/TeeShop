@@ -40,13 +40,15 @@ class Cart with ChangeNotifier {
     user_id = userId;
   }
 
-  Future<void> addCart(BuildContext context, product_id, height, width) async {
+  Future<void> addCart(
+      BuildContext context, product_id, height, width, image_url) async {
     try {
       var dio = Dio();
       var url = 'https://teeshopindia.in/cart';
       Map<String, dynamic> bodyModel = {
         "user_id": user_id,
-        "product_id": product_id
+        "product_id": product_id,
+        "image_url": image_url,
       };
       final response = await dio.post(url,
           data: bodyModel,

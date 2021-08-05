@@ -61,7 +61,7 @@ class _OrderCartScreenState extends State<OrderCartScreen> {
                     child: FadeInImage(
                       placeholder:
                           AssetImage('assets/images/product-placeholder.png'),
-                      image: NetworkImage(products[index]['url']),
+                      image: NetworkImage(cart[index]['image_url'].toString()),
                       fit: BoxFit.cover,
                     ),
                   ),
