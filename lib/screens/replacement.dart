@@ -94,7 +94,7 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
                     actions: [
                       Padding(
                         padding:
-                            EdgeInsets.only(right: width / 25, top: width / 25),
+                            EdgeInsets.only(right: width / 15, top: width / 30),
                         child: GestureDetector(
                           onTap: () {
                             Navigator.of(context)
@@ -109,7 +109,8 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: width / 35),
+                        padding:
+                            EdgeInsets.only(right: width / 30, top: width / 30),
                         child: IconButton(
                           icon: Icon(Icons.logout),
                           onPressed: () async {
