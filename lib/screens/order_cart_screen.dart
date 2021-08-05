@@ -3,7 +3,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:teeshop/providers/cart.dart';
 import 'package:teeshop/screens/info_screen.dart';
-import 'package:teeshop/widgets/app_drawer.dart';
 
 class OrderCartScreen extends StatefulWidget {
   static const routeName = '/cart';
@@ -51,9 +50,12 @@ class _OrderCartScreenState extends State<OrderCartScreen> {
               return GestureDetector(
                 onTap: () {
                   print("Pressed $index");
-                  Navigator.of(context).pushReplacementNamed(
-                      InfoScreen.routeName,
-                      arguments: {"data": products[index], "user": _userData});
+                  Navigator.of(context)
+                      .pushReplacementNamed(InfoScreen.routeName, arguments: {
+                    "data": products[index],
+                    "user": _userData,
+                    "image_url": cart[index]['image_url']
+                  });
                 },
                 child: GridTile(
                   child: ClipRRect(

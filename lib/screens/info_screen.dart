@@ -46,8 +46,8 @@ class _InfoScreenState extends State<InfoScreen> {
     super.didChangeDependencies();
     _productData =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    imageSelectedRightNow = _productData['data']['related_products'].length > 0
-        ? _productData['data']['related_products'][0]
+    imageSelectedRightNow = _productData['image_url'] != null
+        ? _productData['image_url']
         : _productData['data']['url'];
   }
 
