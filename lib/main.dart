@@ -91,7 +91,6 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     Firebase.initializeApp().whenComplete(() {
       print("completed");
-      setState(() {});
     });
   }
 
