@@ -30,6 +30,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
   var height;
   var width;
   var _isLoading = false;
+  bool showChart = false;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   void showBottomSheetView(BuildContext context, height, width) {
@@ -397,6 +398,55 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                                   ],
                                 ),
                               ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: height / 40,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              showChart = !showChart;
+                            });
+                          },
+                          child: Card(
+                            elevation: 8,
+                            child: Container(
+                              padding: EdgeInsets.all(width / 40),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Size Chart',
+                                        style: TextStyle(
+                                          fontSize: width / 25,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Icon(showChart
+                                          ? Icons.expand_less
+                                          : Icons.expand_more),
+                                    ],
+                                  ),
+                                  showChart ? Divider() : Container(),
+                                  AnimatedContainer(
+                                    duration: Duration(milliseconds: 300),
+                                    height: showChart ? height / 4 : 0,
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        children: [
+                                          InteractiveViewer(
+                                            child: Image.asset(
+                                                'assets/images/sizechart.jpeg'),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),

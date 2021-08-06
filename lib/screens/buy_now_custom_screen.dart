@@ -23,6 +23,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
   var total;
   var width;
   var height;
+  bool showChart = false;
   String? downLoadUrl = '';
   String dropdownValue = "";
   List<String> size = ["S", "M", "L", "XL", "XXL"];
@@ -497,6 +498,55 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                                   ],
                                 ),
                               ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: height / 40,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              showChart = !showChart;
+                            });
+                          },
+                          child: Card(
+                            elevation: 8,
+                            child: Container(
+                              padding: EdgeInsets.all(width / 40),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Size Chart',
+                                        style: TextStyle(
+                                          fontSize: width / 25,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Icon(showChart
+                                          ? Icons.expand_less
+                                          : Icons.expand_more),
+                                    ],
+                                  ),
+                                  showChart ? Divider() : Container(),
+                                  AnimatedContainer(
+                                    duration: Duration(milliseconds: 300),
+                                    height: showChart ? height / 4 : 0,
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        children: [
+                                          InteractiveViewer(
+                                            child: Image.asset(
+                                                'assets/images/sizechart.jpeg'),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
