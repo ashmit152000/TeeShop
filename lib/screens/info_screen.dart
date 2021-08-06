@@ -48,7 +48,9 @@ class _InfoScreenState extends State<InfoScreen> {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     imageSelectedRightNow = _productData['image_url'] != null
         ? _productData['image_url']
-        : _productData['data']['url'];
+        : _productData['data']['related_products'].length > 0
+            ? _productData['data']['related_products'][0]
+            : _productData['data']['url'];
   }
 
   @override
