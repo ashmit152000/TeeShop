@@ -34,12 +34,13 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
   var textRotation = 0.0;
   var text = 'TeeShop';
   var textColor = Colors.black;
-  var top;
-  var left;
+  var top = 50.0;
+  var left = 50.0;
   var pathImage;
   var topText;
   var leftText;
   var _productData;
+  bool textClicked = false;
 
   var _isLoading = false;
   var wallpaperCollection = [
@@ -133,7 +134,6 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
@@ -232,7 +232,18 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                               ),
                             ),
                           ),
-                          child: Container(
+                          child: GestureDetector(
+                            onVerticalDragUpdate: (dd) {
+                              setState(() {
+                                if (textClicked == false) {
+                                  top = dd.localPosition.dy;
+                                  left = dd.localPosition.dx;
+                                } else {
+                                  topText = dd.localPosition.dy;
+                                  leftText = dd.localPosition.dx;
+                                }
+                              });
+                            },
                             child: Stack(
                               fit: StackFit.loose,
                               clipBehavior: Clip.antiAlias,
@@ -240,22 +251,13 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                 if (_isLogoPresent &&
                                     _pickedImage == null &&
                                     selectedFile == null)
-                                  AnimatedPositioned(
-                                    duration: Duration(milliseconds: 1),
+                                  Positioned(
                                     top: top,
                                     left: left,
                                     child: GestureDetector(
-                                      onVerticalDragStart: (details) {
+                                      onTapDown: (dd) {
                                         setState(() {
-                                          top = top;
-                                          left = left;
-                                        });
-                                      },
-                                      onVerticalDragUpdate:
-                                          (DragUpdateDetails dd) {
-                                        setState(() {
-                                          top = dd.localPosition.dy;
-                                          left = dd.localPosition.dx;
+                                          textClicked = false;
                                         });
                                       },
                                       child: Transform.rotate(
@@ -273,10 +275,9 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                 if (_isLogoPresent &&
                                     _pickedImage != null &&
                                     selectedFile != null)
-                                  AnimatedPositioned(
+                                  Positioned(
                                     top: top,
                                     left: left,
-                                    duration: Duration(milliseconds: 1),
                                     child: GestureDetector(
                                       onVerticalDragUpdate: (dd) {
                                         setState(() {
@@ -294,15 +295,13 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                     ),
                                   ),
                                 if (_isTextPresent)
-                                  AnimatedPositioned(
+                                  Positioned(
                                     top: topText,
                                     left: leftText,
-                                    duration: Duration(milliseconds: 1),
                                     child: GestureDetector(
-                                      onVerticalDragUpdate: (dd) {
+                                      onTapDown: (dd) {
                                         setState(() {
-                                          topText = dd.localPosition.dy;
-                                          leftText = dd.localPosition.dx;
+                                          textClicked = true;
                                         });
                                       },
                                       child: Transform.rotate(
