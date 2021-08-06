@@ -279,10 +279,9 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                     top: top,
                                     left: left,
                                     child: GestureDetector(
-                                      onVerticalDragUpdate: (dd) {
+                                      onTapDown: (dd) {
                                         setState(() {
-                                          top = dd.localPosition.dy;
-                                          left = dd.localPosition.dx;
+                                          textClicked = false;
                                         });
                                       },
                                       child: Transform.rotate(

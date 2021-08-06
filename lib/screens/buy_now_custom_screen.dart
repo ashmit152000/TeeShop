@@ -9,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:teeshop/providers/orders.dart';
+import 'package:teeshop/providers/products.dart';
 import 'package:teeshop/screens/your_profile_screen.dart';
 
 class BuyNowCustom extends StatefulWidget {
@@ -649,7 +650,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                                               color: Colors.purple),
                                         ),
                                         content: Text(
-                                          'You haven\'t selected an address for delivery. Or your Phone Number is not verified',
+                                          'You haven\'t selected an address for delivery. Or your Phone Number is not verified. If you have added it or changed it hit reload.',
                                           style:
                                               TextStyle(fontSize: width / 25),
                                         ),
@@ -663,6 +664,27 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                                               style: TextStyle(
                                                   fontSize: width / 25),
                                             ),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                _isLoading = true;
+                                              });
+                                              Provider.of<Product>(context,
+                                                      listen: false)
+                                                  .products(context)
+                                                  .then((value) {
+                                                setState(() {
+                                                  address =
+                                                      value["user"]['address'];
+
+                                                  _isLoading = false;
+                                                });
+                                                print(args['product']['product']
+                                                    ['user']);
+                                              });
+                                            },
+                                            child: Text('Reload'),
                                           ),
                                           TextButton(
                                             onPressed: () {
