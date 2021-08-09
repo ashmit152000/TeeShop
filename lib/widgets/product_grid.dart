@@ -14,9 +14,6 @@ class ProductGrid extends StatefulWidget {
 }
 
 class _ProductGridState extends State<ProductGrid> {
-  var _productListOne = [];
-  var _userData = {};
-  var favList;
   var height;
   var width;
   var _isLoading = false;

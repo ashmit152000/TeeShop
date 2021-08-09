@@ -34,8 +34,8 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
   var textRotation = 0.0;
   var text = 'TeeShop';
   var textColor = Colors.black;
-  var top = 50.0;
-  var left = 50.0;
+  var top;
+  var left;
   var pathImage;
   var topText;
   var leftText;
@@ -73,10 +73,8 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
   var fontFamilySelector = "Roboto";
 
   _loadPicker(ImageSource source) async {
-    var status = await Permission.photos.status;
-
-    if (status.isGranted) {
-      final PickedFile? picked = await _picker.getImage(source: source);
+    if (await Permission.photos.request().isGranted) {
+      final XFile? picked = await _picker.pickImage(source: source);
       if (picked != null) {
         setState(() {
           _pickedImage = picked;
@@ -100,7 +98,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
               compressQuality: 100,
               maxWidth: 200,
               maxHeight: 200,
-              compressFormat: ImageCompressFormat.jpg,
+              compressFormat: ImageCompressFormat.png,
               androidUiSettings: AndroidUiSettings(
                 toolbarColor: Colors.purple,
                 toolbarTitle: 'TeeShop Cropper',
@@ -146,7 +144,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
     });
     _productData =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    print(_productData.toString());
+
     Image.network(_productData['product']['data']['related_products'][0])
         .image
         .resolve(new ImageConfiguration())
