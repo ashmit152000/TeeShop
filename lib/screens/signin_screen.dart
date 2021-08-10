@@ -377,6 +377,32 @@ class _SignInScreenState extends State<SignInScreen>
                                           ),
                                         ),
                                       ),
+                                    if (authMode == AuthMode.Signup)
+                                      InkWell(
+                                        onTap: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return AlertDialog(
+                                                  scrollable: true,
+                                                  title: Text(
+                                                    'Terms & Conditions',
+                                                    style: TextStyle(
+                                                        fontSize: width / 15,
+                                                        color: Colors.purple),
+                                                  ),
+                                                  content: Text(""),
+                                                );
+                                              });
+                                        },
+                                        child: Text(
+                                          'Terms and Conditions',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: width / 25,
+                                          ),
+                                        ),
+                                      ),
                                     SizedBox(
                                       height: height / 40,
                                     ),

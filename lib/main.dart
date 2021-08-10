@@ -59,7 +59,9 @@ class MyApp extends StatelessWidget {
         },
       ),
       providers: [
-        ChangeNotifierProvider<Auth>(create: (context) => Auth()),
+        ChangeNotifierProvider<Auth>(
+          create: (context) => Auth(),
+        ),
         ChangeNotifierProxyProvider<Auth, Product>(
           create: (context) => Product(),
           update: (context, auth, previousResponse) =>
@@ -96,10 +98,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.purple,
-      statusBarBrightness: Brightness.light,
-    ));
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.purple,
+        statusBarBrightness: Brightness.light,
+      ),
+    );
     return Scaffold(
       // drawer: AppDrawer(),
       body: Provider.of<Auth>(context).getToken()
