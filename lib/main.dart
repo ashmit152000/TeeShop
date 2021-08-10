@@ -104,6 +104,10 @@ class _MyHomePageState extends State<MyHomePage> {
         statusBarBrightness: Brightness.light,
       ),
     );
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return Scaffold(
       // drawer: AppDrawer(),
       body: Provider.of<Auth>(context).getToken()
