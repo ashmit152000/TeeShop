@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:teeshop/providers/orders.dart';
+import 'package:teeshop/providers/products.dart';
 import 'package:teeshop/screens/your_profile_screen.dart';
 
 class BuyNowScreen extends StatefulWidget {
@@ -572,6 +573,28 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                                               style: TextStyle(
                                                   fontSize: width / 25),
                                             ),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                _isLoading = true;
+                                              });
+                                              Provider.of<Product>(context,
+                                                  listen: false)
+                                                  .products(context)
+                                                  .then((value) {
+                                                setState(() {
+                                                  address =
+                                                  value["user"]['address'];
+                                                  _productData['product']['user']
+                                                  ['phone_verified'] = value["user"]["phone_verified"];
+
+                                                  _isLoading = false;
+                                                });
+
+                                              });
+                                            },
+                                            child: Text('Reload'),
                                           ),
                                           TextButton(
                                             onPressed: () {
