@@ -156,7 +156,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
     width = MediaQuery.of(context).size.width;
     address = _productData['product']['user']['address'] != null
         ? _productData['product']['user']['address']
-        : 'Edit your address';
+        : '';
   }
 
   @override
@@ -580,18 +580,20 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                                                 _isLoading = true;
                                               });
                                               Provider.of<Product>(context,
-                                                  listen: false)
+                                                      listen: false)
                                                   .products(context)
                                                   .then((value) {
                                                 setState(() {
                                                   address =
-                                                  value["user"]['address'];
-                                                  _productData['product']['user']
-                                                  ['phone_verified'] = value["user"]["phone_verified"];
+                                                      value["user"]['address'];
+                                                  _productData['product']
+                                                              ['user']
+                                                          ['phone_verified'] =
+                                                      value["user"]
+                                                          ["phone_verified"];
 
                                                   _isLoading = false;
                                                 });
-
                                               });
                                             },
                                             child: Text('Reload'),

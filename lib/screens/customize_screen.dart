@@ -692,6 +692,9 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
     Colors.teal,
     Colors.lime,
     Colors.black,
+    Colors.white,
+    Colors.amber,
+    Colors.cyan,
   ];
 
   Widget getGrid() {

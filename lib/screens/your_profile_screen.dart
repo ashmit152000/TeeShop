@@ -109,8 +109,10 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
           _isLoading = false;
         });
       });
-    }else{
-      Fluttertoast.showToast(msg: 'Either phone number is empty or invalid', backgroundColor: Colors.red);
+    } else {
+      Fluttertoast.showToast(
+          msg: 'Either phone number is empty or invalid',
+          backgroundColor: Colors.red);
       setState(() {
         _isLoading = false;
       });
@@ -310,7 +312,9 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                       style: ElevatedButton.styleFrom(primary: Colors.green),
                     ),
 
-                  if (type == 'phone' && userData['phone_verified'] == false)
+                  if (type == 'phone' &&
+                      userData['phone_verified'] == false &&
+                      userData['phone_number'] != null)
                     ElevatedButton(
                       onPressed: () async {
                         otp.text = '';
@@ -582,25 +586,25 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
 
   Future<bool> _onWillPop() async {
     return (await showDialog(
-      context: context,
-      builder: (context) => new AlertDialog(
-        title: new Text(
-          'Do you want to exit ?',
-          style: TextStyle(color: Colors.purple),
-        ),
-        content: new Text('We were enjoying your time with us.'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: new Text('No'),
+          context: context,
+          builder: (context) => new AlertDialog(
+            title: new Text(
+              'Do you want to exit ?',
+              style: TextStyle(color: Colors.purple),
+            ),
+            content: new Text('We were enjoying your time with us.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: new Text('No'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: new Text('Yes'),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: new Text('Yes'),
-          ),
-        ],
-      ),
-    )) ??
+        )) ??
         false;
   }
 
@@ -674,7 +678,8 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                   style: TextStyle(fontSize: width / 25),
                                   controller: addressController,
                                   decoration: InputDecoration(
-                                      hintText: 'Address', labelText: 'Address'),
+                                      hintText: 'Address',
+                                      labelText: 'Address'),
                                 ),
                               ),
                             ),
