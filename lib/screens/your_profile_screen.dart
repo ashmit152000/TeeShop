@@ -99,7 +99,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
           .editUser(context, height, width,
               id: userData['id'],
               fullName: fullNamePopController.text,
-              address: addressPopController.text)
+              address: addressPopController.text + "" + pincode.text)
           .then((value) {
         addressController.text = value['user']['address'];
 
