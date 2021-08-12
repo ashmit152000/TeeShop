@@ -576,30 +576,6 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                                           ),
                                           TextButton(
                                             onPressed: () {
-                                              setState(() {
-                                                _isLoading = true;
-                                              });
-                                              Provider.of<Product>(context,
-                                                      listen: false)
-                                                  .products(context)
-                                                  .then((value) {
-                                                setState(() {
-                                                  address =
-                                                      value["user"]['address'];
-                                                  _productData['product']
-                                                              ['user']
-                                                          ['phone_verified'] =
-                                                      value["user"]
-                                                          ["phone_verified"];
-
-                                                  _isLoading = false;
-                                                });
-                                              });
-                                            },
-                                            child: Text('Reload'),
-                                          ),
-                                          TextButton(
-                                            onPressed: () {
                                               Navigator.of(context).pushNamed(
                                                   YourProfileScreen.routeName);
                                             },

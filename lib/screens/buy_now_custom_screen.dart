@@ -667,29 +667,10 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                                           ),
                                           TextButton(
                                             onPressed: () {
-                                              setState(() {
-                                                _isLoading = true;
-                                              });
-                                              Provider.of<Product>(context,
-                                                      listen: false)
-                                                  .products(context)
-                                                  .then((value) {
-                                                setState(() {
-                                                  address =
-                                                      value["user"]['address'];
-
-                                                  _isLoading = false;
-                                                });
-                                                print(args['product']['product']
-                                                    ['user']);
-                                              });
-                                            },
-                                            child: Text('Reload'),
-                                          ),
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pushReplacementNamed(
-                                                  YourProfileScreen.routeName);
+                                              Navigator.of(context)
+                                                  .pushReplacementNamed(
+                                                      YourProfileScreen
+                                                          .routeName);
                                             },
                                             child: Text(
                                               'Go To Profile',
