@@ -62,22 +62,15 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
     });
   }
 
-  void editData(
-      {String? fullName,
-      String? address,
-      String? email,
-      String? phoneNumber}) async {
-    var isValid = emailUni.currentState!.validate();
-    var isPassValid = phoneUni.currentState!.validate();
-    var isDetailValid = info.currentState!.validate();
-    if (!isValid || !isPassValid || !isDetailValid) {
-      return;
-    }
-
+  void editEmail(String email) {
     setState(() {
       _isLoading = true;
     });
-    if (email != null) {
+    var isValid = emailUni.currentState!.validate();
+    if (!isValid) {
+      return;
+    }
+    if (email != '') {
       Provider.of<Auth>(context, listen: false)
           .editUser(
         context,
@@ -93,6 +86,37 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
         });
       });
     }
+  }
+
+  void editPhone(String phoneNumber) {
+    var isPassValid = phoneUni.currentState!.validate();
+    if (!isPassValid) {
+      return;
+    }
+    if (phoneNumber != '' && phoneNumber.length == 10) {
+      Provider.of<Auth>(context, listen: false)
+          .editUser(context, height, width,
+              id: userData['id'], phoneNumber: phonenumberController.text)
+          .then((value) {
+        phonenumberController.text = value['user']['phone_number'];
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    }
+  }
+
+  void editData(
+      {String? fullName, String? address, String? phoneNumber}) async {
+    var isDetailValid = info.currentState!.validate();
+
+    if (!isDetailValid) {
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
 
     if (fullName != null && address != null) {
       Provider.of<Auth>(context, listen: false)
@@ -104,18 +128,6 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
         addressController.text = value['user']['address'];
 
         fullNameController.text = value['user']['full_name'];
-        setState(() {
-          _isLoading = false;
-        });
-      });
-    }
-
-    if (phoneNumber != null && phoneNumber.length == 10) {
-      Provider.of<Auth>(context, listen: false)
-          .editUser(context, height, width,
-              id: userData['id'], phoneNumber: phonenumberController.text)
-          .then((value) {
-        phonenumberController.text = value['user']['phone_number'];
         setState(() {
           _isLoading = false;
         });
@@ -378,9 +390,8 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                             if (emailUni.currentState!
                                                 .validate()) {
                                               Navigator.of(context).pop();
-                                              editData(
-                                                  email:
-                                                      emailPopController.text);
+                                              editEmail(
+                                                  emailPopController.text);
                                             }
                                           },
                                           child: Text(
@@ -462,10 +473,8 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                             if (phoneUni.currentState!
                                                 .validate()) {
                                               Navigator.of(context).pop();
-                                              editData(
-                                                  phoneNumber:
-                                                      phoneNumberPopController
-                                                          .text);
+                                              editPhone(phoneNumberPopController
+                                                  .text);
                                             }
                                           },
                                           child: Text(
