@@ -537,11 +537,14 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
           appBar: AppBar(
             title: Text('My Profile'),
             actions: [
-              IconButton(
-                  onPressed: () {
-                    getDataWorking();
-                  },
-                  icon: Icon(Icons.replay_outlined))
+              Padding(
+                padding: EdgeInsets.only(right: width / 30),
+                child: TextButton(
+                    onPressed: () {
+                      getDataWorking();
+                    },
+                    child: Text('Refresh', style: TextStyle(fontSize: width / 25, color: Colors.white),),),
+              ),
             ],
           ),
           body: _isLoading
