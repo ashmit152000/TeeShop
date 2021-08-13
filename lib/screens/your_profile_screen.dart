@@ -81,6 +81,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
       )
           .then((value) {
         emailController.text = value['user']['email'];
+        getDataWorking();
         setState(() {
           _isLoading = false;
         });
@@ -99,9 +100,12 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
       });
       Provider.of<Auth>(context, listen: false)
           .editUser(context, height, width,
-              id: userData['id'], phoneNumber: phonenumberController.text)
+              id: userData['id'],
+              phoneNumber:
+                  "+91" + phoneNumberPopController.text.toString().trim())
           .then((value) {
         phonenumberController.text = value['user']['phone_number'];
+        getDataWorking();
         setState(() {
           _isLoading = false;
         });
@@ -540,10 +544,14 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
               Padding(
                 padding: EdgeInsets.only(right: width / 30),
                 child: TextButton(
-                    onPressed: () {
-                      getDataWorking();
-                    },
-                    child: Text('Refresh', style: TextStyle(fontSize: width / 25, color: Colors.white),),),
+                  onPressed: () {
+                    getDataWorking();
+                  },
+                  child: Text(
+                    'Refresh',
+                    style: TextStyle(fontSize: width / 25, color: Colors.white),
+                  ),
+                ),
               ),
             ],
           ),
