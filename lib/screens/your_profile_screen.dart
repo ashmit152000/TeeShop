@@ -63,14 +63,14 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
   }
 
   void editEmail(String email) {
-    setState(() {
-      _isLoading = true;
-    });
     var isValid = emailUni.currentState!.validate();
     if (!isValid) {
       return;
     }
     if (email != '') {
+      setState(() {
+        _isLoading = true;
+      });
       Provider.of<Auth>(context, listen: false)
           .editUser(
         context,
@@ -94,6 +94,9 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
       return;
     }
     if (phoneNumber != '' && phoneNumber.length == 10) {
+      setState(() {
+        _isLoading = true;
+      });
       Provider.of<Auth>(context, listen: false)
           .editUser(context, height, width,
               id: userData['id'], phoneNumber: phonenumberController.text)
@@ -114,11 +117,10 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
       return;
     }
 
-    setState(() {
-      _isLoading = true;
-    });
-
     if (fullName != null && address != null) {
+      setState(() {
+        _isLoading = true;
+      });
       Provider.of<Auth>(context, listen: false)
           .editUser(context, height, width,
               id: userData['id'],
@@ -136,9 +138,13 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
   }
 
   @override
-  void didChangeDependencies() {
+  void initState() {
+    super.initState();
     getDataWorking();
+  }
 
+  @override
+  void didChangeDependencies() {
     super.didChangeDependencies();
   }
 
@@ -146,8 +152,6 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
-          var phoneNumber = phonenumberController.text;
-          var email = emailController.text;
           return Container(
             padding: EdgeInsets.all(10),
             margin: EdgeInsets.only(top: 20),
@@ -376,13 +380,6 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                                 return ('Enter a valid email address');
                                               }
                                             },
-                                            onChanged: (value) {
-                                              if (value.isNotEmpty) {
-                                                emailController.text = value;
-                                              } else {
-                                                emailController.text = email;
-                                              }
-                                            },
                                           ),
                                         ),
                                         ElevatedButton(
@@ -456,14 +453,10 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                                   10) {
                                                 return 'Enter a valid phone number';
                                               }
-                                            },
-                                            onChanged: (value) {
-                                              if (value.isNotEmpty) {
-                                                phonenumberController.text =
-                                                    "+91" + value;
-                                              } else {
-                                                phonenumberController.text =
-                                                    phoneNumber;
+                                              if (value
+                                                  .toString()
+                                                  .contains('+91')) {
+                                                return 'Remove the country code.';
                                               }
                                             },
                                           ),
@@ -679,12 +672,6 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                                         return 'Enter your full name';
                                                       }
                                                     },
-                                                    onChanged: (value) {
-                                                      if (value.isEmpty) {
-                                                        value = userData[
-                                                            'full_name'];
-                                                      }
-                                                    },
                                                   ),
                                                   TextFormField(
                                                     controller:
@@ -701,12 +688,6 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                                                     validator: (value) {
                                                       if (value == '') {
                                                         return 'Enter your address';
-                                                      }
-                                                    },
-                                                    onChanged: (value) {
-                                                      if (value.isEmpty) {
-                                                        value =
-                                                            userData['address'];
                                                       }
                                                     },
                                                   ),
