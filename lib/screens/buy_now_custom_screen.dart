@@ -4,12 +4,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:teeshop/providers/orders.dart';
-import 'package:teeshop/providers/products.dart';
+
 import 'package:teeshop/screens/your_profile_screen.dart';
 
 class BuyNowCustom extends StatefulWidget {
@@ -31,22 +32,6 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
   var args;
   var _isLoading = false;
   late Razorpay _razorpay;
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    print(args['product']['product']['user'].toString());
-
-    print(args['_isIconPresent']);
-    print(args['_isTextPresent']);
-    // print("-------------------------------" +
-    //     args['pickedFile'] +
-    //     "---------------------------------");
-    // print("-------------------------------" +
-    //     args['selectedImage'].toString() +
-    //     "---------------------------------");
-    address = args['address'];
-  }
 
   @override
   void dispose() {
@@ -137,10 +122,6 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                                       "\n" +
                                       pincodeEdit.text;
                                 });
-                              } else {
-                                setState(() {
-                                  address = args['address'];
-                                });
                               }
                               if (addressEdit.text != '' &&
                                   pincodeEdit.text != '') {
@@ -160,9 +141,21 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
   }
 
   @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+  }
+
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    Future.delayed(Duration.zero, () {
+      args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+
+      address = args['address'];
+    });
     _razorpay = new Razorpay();
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, paySuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, handlerErrorFailure);

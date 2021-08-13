@@ -139,6 +139,16 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    new Future.delayed(Duration.zero, () {
+      _productData =
+          ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+
+      height = MediaQuery.of(context).size.height;
+      width = MediaQuery.of(context).size.width;
+      address = _productData['product']['user']['address'] != null
+          ? _productData['product']['user']['address']
+          : '';
+    });
     _razorpay = new Razorpay();
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, paySuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, handlerErrorFailure);
@@ -149,14 +159,12 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
+
     _productData =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    print(_productData);
+
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
-    address = _productData['product']['user']['address'] != null
-        ? _productData['product']['user']['address']
-        : '';
   }
 
   @override
