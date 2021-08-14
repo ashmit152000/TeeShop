@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:screenshot/screenshot.dart';
 
 class Order with ChangeNotifier {
   void _showErrorDialog(context, message, title, height, width) {
@@ -65,6 +66,7 @@ class Order with ChangeNotifier {
     double textY = 0.0,
     String pickedFile = '',
     int price = 0,
+    String screenshot = '',
   }) async {
     var url = 'https://teeshopindia.in/orders';
     Map<String, dynamic> bodyModel = {
@@ -90,7 +92,8 @@ class Order with ChangeNotifier {
       "textX": textX,
       "textY": textY,
       "pickedFile": pickedFile.toString(),
-      "price": price
+      "price": price,
+      "screenshot": screenshot,
     };
     try {
       var dio = Dio();

@@ -169,6 +169,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
             actions: [
               TextButton(
                 onPressed: () {
+                  print(top.toString());
                   Navigator.of(context)
                       .pushNamed(BuyNowCustom.routeName, arguments: {
                     "selectedImage":

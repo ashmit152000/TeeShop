@@ -2,9 +2,10 @@ import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -25,14 +26,16 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
   var total;
   var width;
   var height;
+  GlobalKey _containerKey = GlobalKey();
   bool showChart = false;
-  String? downLoadUrl = '';
+
   String dropdownValue = "";
   List<String> size = ["S", "M", "L", "XL", "XXL"];
   var args;
   var _isLoading = false;
   late Razorpay _razorpay;
-
+  ScreenshotController _screenshotController = ScreenshotController();
+  var ssPicked;
   @override
   void dispose() {
     // TODO: implement dispose
@@ -142,14 +145,12 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Future.delayed(Duration.zero, () {
       args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
@@ -160,6 +161,20 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, paySuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, handlerErrorFailure);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, handlerExternalWallet);
+  }
+
+  Future<String?> convertWidgetztoImage() async {
+    String? ss;
+    var valueSS;
+    setState(() {
+      _isLoading = true;
+    });
+    valueSS = await _screenshotController.capture();
+    ss = await uploadSS(valueSS);
+    setState(() {
+      _isLoading = false;
+    });
+    return ss;
   }
 
   void _onPayment(user, product) {
@@ -178,7 +193,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
   void openCheckout(userData, productData) {
     var options = {
       "key": "rzp_live_upLxYKABKr7bhM",
-      "amount": "${total * 100}",
+      "amount": "${1 * 100}",
       "name": "TeeShop",
       "description": "Payment for the mechandise",
       "prefill": {
@@ -220,50 +235,69 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
     }
   }
 
+  Future<String?> uploadSS(filePath) async {
+    try {
+      var snapShot = await firebase_storage.FirebaseStorage.instance
+          .ref()
+          .child('SS/${DateTime.now().toString()}')
+          .putData(filePath);
+      var gotUrl = await snapShot.ref.getDownloadURL();
+      return gotUrl;
+    } on FirebaseException catch (e) {
+      Fluttertoast.showToast(
+          msg:
+              'Something went wrong! Please try again Or contact the developer at ashmitteeshop@gmail.com',
+          backgroundColor: Colors.red);
+    }
+  }
+
   void paySuccess(PaymentSuccessResponse r) async {
+    String? ssUrl = '';
+    String? downLoadUrl = '';
     setState(() {
       _isLoading = true;
     });
+    ssUrl = await convertWidgetztoImage();
+
     try {
       if (args['pickedFile'] != null) {
         downLoadUrl = await uploadFile(args['pickedFile']);
         print('This is done');
       }
 
-      await Provider.of<Order>(context, listen: false).addOrder(
-        context,
-        height,
-        width,
-        product_id: args['product']['product']['data']['id'],
-        qty: quantity,
-        size: dropdownValue,
-        selectedImage: args['selectedImage'].toString(),
-        selectedColor: args['selectedColor'].toString(),
-        text: args['text'].toString(),
-        iconSize: args['iconSize'],
-        isIconPresent: args['_isIconPresent'],
-        isTextPresent: args['_isTextPresent'],
-        angle: args['angle'],
-        textSize: args['textSize'].ceil(),
-        textRotation: args['textRotation'],
-        textColor: args['textColor'].toString(),
-        address: args['address'].toString(),
-        fontFamily: args['fontFamily'].toString(),
-        iconX: args['iconX'],
-        iconY: args['iconY'],
-        textX: args['textX'],
-        textY: args['textY'],
-        pickedFile: downLoadUrl.toString() != ''
-            ? downLoadUrl.toString()
-            : 'File couldn\'t be uploaded contact user',
-        urlOne: args["shirtShade"].toString(),
-        price: args['product']['product']['data']['price'],
-      );
-      setState(() {
-        _isLoading = false;
+      Provider.of<Order>(context, listen: false)
+          .addOrder(context, height, width,
+              product_id: args['product']['product']['data']['id'],
+              qty: quantity,
+              size: dropdownValue,
+              selectedImage: args['selectedImage'].toString(),
+              selectedColor: args['selectedColor'].toString(),
+              text: args['text'].toString(),
+              iconSize: args['iconSize'],
+              isIconPresent: args['_isIconPresent'],
+              isTextPresent: args['_isTextPresent'],
+              angle: args['angle'],
+              textSize: args['textSize'].ceil(),
+              textRotation: args['textRotation'],
+              textColor: args['textColor'].toString(),
+              address: args['address'].toString(),
+              fontFamily: args['fontFamily'].toString(),
+              iconX: args['iconX'],
+              iconY: args['iconY'],
+              textX: args['textX'],
+              textY: args['textY'],
+              pickedFile:
+                  downLoadUrl.toString() != '' ? downLoadUrl.toString() : '',
+              urlOne: args["shirtShade"].toString(),
+              price: args['product']['product']['data']['price'],
+              screenshot: ssUrl.toString())
+          .then((value) {
+        Fluttertoast.showToast(
+            msg: "Order placed successfully!", backgroundColor: Colors.green);
+        setState(() {
+          _isLoading = false;
+        });
       });
-      Fluttertoast.showToast(
-          msg: "Order placed successfully!", backgroundColor: Colors.green);
     } catch (error) {
       print("------------------" +
           error.toString() +
@@ -276,6 +310,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
     total = args['price'] * quantity;
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -298,66 +333,69 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        Container(
-                          width: double.infinity,
-                          height: MediaQuery.of(context).size.height / 1.5,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage(
-                                args["shirtShade"],
+                        Screenshot(
+                          controller: _screenshotController,
+                          child: Container(
+                            width: double.infinity,
+                            height: MediaQuery.of(context).size.height / 1.5,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                  args["shirtShade"],
+                                ),
+                                fit: BoxFit.cover,
                               ),
-                              fit: BoxFit.cover,
                             ),
-                          ),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              if (args["selectedImage"] != null &&
-                                  args["_isIconPresent"] != false &&
-                                  args['pickedFile'] == null)
-                                Positioned(
-                                  top: args['iconY'] - 10,
-                                  left: args['iconX'] - 10,
-                                  child: Transform.rotate(
-                                    angle: args["angle"],
-                                    child: SvgPicture.asset(
-                                      args['selectedImage'],
-                                      height: args["iconSize"].toDouble(),
-                                      colorBlendMode: BlendMode.srcATop,
-                                      allowDrawingOutsideViewBox: false,
-                                      color: args['selectedColor'],
-                                    ),
-                                  ),
-                                ),
-                              if (args["_isIconPresent"] != false &&
-                                  args['pickedFile'] != null)
-                                Positioned(
-                                  top: args['iconY'] - 10,
-                                  left: args['iconX'] - 10,
-                                  child: Transform.rotate(
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                if (args["selectedImage"] != null &&
+                                    args["_isIconPresent"] != false &&
+                                    args['pickedFile'] == null)
+                                  Positioned(
+                                    top: args['iconY'] - 10,
+                                    left: args['iconX'] - 10,
+                                    child: Transform.rotate(
                                       angle: args["angle"],
-                                      child: Image.file(
+                                      child: SvgPicture.asset(
                                         args['selectedImage'],
-                                        height: args['iconSize'],
-                                      )),
-                                ),
-                              if (args["text"] != null &&
-                                  args["_isTextPresent"] != false)
-                                Positioned(
-                                  top: args['textY'] - 10,
-                                  left: args['textX'] - 10,
-                                  child: Transform.rotate(
-                                    angle: args["textRotation"],
-                                    child: Text(
-                                      args["text"],
-                                      style: TextStyle(
-                                          fontSize: args["textSize"],
-                                          fontFamily: args["fontFamily"],
-                                          color: args["textColor"]),
+                                        height: args["iconSize"].toDouble(),
+                                        colorBlendMode: BlendMode.srcATop,
+                                        allowDrawingOutsideViewBox: false,
+                                        color: args['selectedColor'],
+                                      ),
                                     ),
                                   ),
-                                ),
-                            ],
+                                if (args["_isIconPresent"] != false &&
+                                    args['pickedFile'] != null)
+                                  Positioned(
+                                    top: args['iconY'] - 10,
+                                    left: args['iconX'] - 10,
+                                    child: Transform.rotate(
+                                        angle: args["angle"],
+                                        child: Image.file(
+                                          args['selectedImage'],
+                                          height: args['iconSize'],
+                                        )),
+                                  ),
+                                if (args["text"] != null &&
+                                    args["_isTextPresent"] != false)
+                                  Positioned(
+                                    top: args['textY'] - 10,
+                                    left: args['textX'] - 10,
+                                    child: Transform.rotate(
+                                      angle: args["textRotation"],
+                                      child: Text(
+                                        args["text"],
+                                        style: TextStyle(
+                                            fontSize: args["textSize"],
+                                            fontFamily: args["fontFamily"],
+                                            color: args["textColor"]),
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
                           ),
                         ),
                         if (!args['product']['product']['data']['customizable'])

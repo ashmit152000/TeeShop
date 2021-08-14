@@ -134,6 +134,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
         addressController.text = value['user']['address'];
 
         fullNameController.text = value['user']['full_name'];
+        getDataWorking();
         setState(() {
           _isLoading = false;
         });
