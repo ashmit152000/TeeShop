@@ -102,6 +102,14 @@ class _OrderScreenState extends State<OrderScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Image.network(
+                                (orders[index]['screenshot'] == '' ||
+                                        orders[index]['screenshot'] == null)
+                                    ? orders[index]['url']
+                                    : orders[index]['screenshot'],
+                                height: 100,
+                                width: 100,
+                              ),
+                              Image.network(
                                 orders[index]['url'],
                                 height: 100,
                                 width: 100,

@@ -223,14 +223,6 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                         child: Container(
                           height: MediaQuery.of(context).size.height / 1.5,
                           width: double.infinity,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(
-                                _productData['selectedImage'].toString(),
-                              ),
-                            ),
-                          ),
                           child: GestureDetector(
                             onVerticalDragUpdate: (dd) {
                               setState(() {
@@ -247,6 +239,14 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                               fit: StackFit.loose,
                               clipBehavior: Clip.antiAlias,
                               children: [
+                                Container(
+                                  width: double.infinity,
+                                  height: height / 1.5,
+                                  child: Image.network(
+                                    _productData['selectedImage'].toString(),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                                 if (_isLogoPresent &&
                                     _pickedImage == null &&
                                     selectedFile == null)
@@ -785,6 +785,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                   wallpaperCollection[index]['clicked'] = true;
                   _pickedImage = null;
                   selectedFile = null;
+                  pathImage = null;
                 });
               },
               child: ClipRRect(

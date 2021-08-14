@@ -11,6 +11,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:teeshop/providers/orders.dart';
+import 'package:teeshop/screens/replacement.dart';
 
 import 'package:teeshop/screens/your_profile_screen.dart';
 
@@ -252,57 +253,79 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
   }
 
   void paySuccess(PaymentSuccessResponse r) async {
-    String? ssUrl = '';
     String? downLoadUrl = '';
     setState(() {
       _isLoading = true;
     });
-    ssUrl = await convertWidgetztoImage();
+    convertWidgetztoImage().then((value) async {
+      try {
+        if (args['pickedFile'] != null) {
+          downLoadUrl = await uploadFile(args['pickedFile']);
+        }
+        await Provider.of<Order>(context, listen: false).addOrder(
+            context, height, width,
+            product_id: args['product']['product']['data']['id'],
+            qty: quantity,
+            size: dropdownValue,
+            selectedImage: args['selectedImage'].toString(),
+            selectedColor: args['selectedColor'].toString(),
+            text: args['text'].toString(),
+            iconSize: args['iconSize'],
+            isIconPresent: args['_isIconPresent'],
+            isTextPresent: args['_isTextPresent'],
+            angle: args['angle'],
+            textSize: args['textSize'].ceil(),
+            textRotation: args['textRotation'],
+            textColor: args['textColor'].toString(),
+            address: args['address'].toString(),
+            fontFamily: args['fontFamily'].toString(),
+            iconX: args['iconX'],
+            iconY: args['iconY'],
+            textX: args['textX'],
+            textY: args['textY'],
+            pickedFile:
+                downLoadUrl.toString() != '' ? downLoadUrl.toString() : '',
+            urlOne: args["shirtShade"].toString(),
+            price: args['product']['product']['data']['price'],
+            screenshot: value.toString());
 
-    try {
-      if (args['pickedFile'] != null) {
-        downLoadUrl = await uploadFile(args['pickedFile']);
-        print('This is done');
-      }
-
-      Provider.of<Order>(context, listen: false)
-          .addOrder(context, height, width,
-              product_id: args['product']['product']['data']['id'],
-              qty: quantity,
-              size: dropdownValue,
-              selectedImage: args['selectedImage'].toString(),
-              selectedColor: args['selectedColor'].toString(),
-              text: args['text'].toString(),
-              iconSize: args['iconSize'],
-              isIconPresent: args['_isIconPresent'],
-              isTextPresent: args['_isTextPresent'],
-              angle: args['angle'],
-              textSize: args['textSize'].ceil(),
-              textRotation: args['textRotation'],
-              textColor: args['textColor'].toString(),
-              address: args['address'].toString(),
-              fontFamily: args['fontFamily'].toString(),
-              iconX: args['iconX'],
-              iconY: args['iconY'],
-              textX: args['textX'],
-              textY: args['textY'],
-              pickedFile:
-                  downLoadUrl.toString() != '' ? downLoadUrl.toString() : '',
-              urlOne: args["shirtShade"].toString(),
-              price: args['product']['product']['data']['price'],
-              screenshot: ssUrl.toString())
-          .then((value) {
-        Fluttertoast.showToast(
-            msg: "Order placed successfully!", backgroundColor: Colors.green);
         setState(() {
           _isLoading = false;
         });
-      });
-    } catch (error) {
-      print("------------------" +
-          error.toString() +
-          "----------------------------");
-    }
+
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                  title: Text(
+                    'Order Placed Successfully',
+                    style:
+                        TextStyle(fontSize: width / 25, color: Colors.purple),
+                  ),
+                  content: Text(
+                    'Your order was placed successfully. Expected delivery time is 10-15 days',
+                    style: TextStyle(fontSize: width / 25, color: Colors.black),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushReplacementNamed(ReplacementScreen.routeName);
+                      },
+                      child: Text(
+                        'OK',
+                        style: TextStyle(
+                            color: Colors.purple, fontSize: width / 25),
+                      ),
+                    ),
+                  ]);
+            });
+      } catch (error) {
+        print("------------------" +
+            error.toString() +
+            "----------------------------");
+      }
+    });
   }
 
   @override
@@ -336,65 +359,69 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                         Screenshot(
                           controller: _screenshotController,
                           child: Container(
-                            width: double.infinity,
-                            height: MediaQuery.of(context).size.height / 1.5,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(
-                                  args["shirtShade"],
-                                ),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                if (args["selectedImage"] != null &&
-                                    args["_isIconPresent"] != false &&
-                                    args['pickedFile'] == null)
-                                  Positioned(
-                                    top: args['iconY'] - 10,
-                                    left: args['iconX'] - 10,
-                                    child: Transform.rotate(
-                                      angle: args["angle"],
-                                      child: SvgPicture.asset(
-                                        args['selectedImage'],
-                                        height: args["iconSize"].toDouble(),
-                                        colorBlendMode: BlendMode.srcATop,
-                                        allowDrawingOutsideViewBox: false,
-                                        color: args['selectedColor'],
-                                      ),
+                            child: Container(
+                              width: double.infinity,
+                              height: MediaQuery.of(context).size.height / 1.5,
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Container(
+                                    width: double.infinity,
+                                    height: MediaQuery.of(context).size.height /
+                                        1.5,
+                                    child: Image.network(
+                                      args["shirtShade"].toString(),
+                                      fit: BoxFit.cover,
                                     ),
                                   ),
-                                if (args["_isIconPresent"] != false &&
-                                    args['pickedFile'] != null)
-                                  Positioned(
-                                    top: args['iconY'] - 10,
-                                    left: args['iconX'] - 10,
-                                    child: Transform.rotate(
+                                  if (args["selectedImage"] != null &&
+                                      args["_isIconPresent"] != false &&
+                                      args['pickedFile'] == null)
+                                    Positioned(
+                                      top: args['iconY'] - 10,
+                                      left: args['iconX'] - 10,
+                                      child: Transform.rotate(
                                         angle: args["angle"],
-                                        child: Image.file(
+                                        child: SvgPicture.asset(
                                           args['selectedImage'],
-                                          height: args['iconSize'],
-                                        )),
-                                  ),
-                                if (args["text"] != null &&
-                                    args["_isTextPresent"] != false)
-                                  Positioned(
-                                    top: args['textY'] - 10,
-                                    left: args['textX'] - 10,
-                                    child: Transform.rotate(
-                                      angle: args["textRotation"],
-                                      child: Text(
-                                        args["text"],
-                                        style: TextStyle(
-                                            fontSize: args["textSize"],
-                                            fontFamily: args["fontFamily"],
-                                            color: args["textColor"]),
+                                          height: args["iconSize"].toDouble(),
+                                          colorBlendMode: BlendMode.srcATop,
+                                          allowDrawingOutsideViewBox: false,
+                                          color: args['selectedColor'],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                              ],
+                                  if (args["_isIconPresent"] != false &&
+                                      args['pickedFile'] != null &&
+                                      args['selectedImage'] != null)
+                                    Positioned(
+                                      top: args['iconY'] - 10,
+                                      left: args['iconX'] - 10,
+                                      child: Transform.rotate(
+                                          angle: args["angle"],
+                                          child: Image.file(
+                                            File(args['pickedFile']),
+                                            height: args['iconSize'],
+                                          )),
+                                    ),
+                                  if (args["text"] != null &&
+                                      args["_isTextPresent"] != false)
+                                    Positioned(
+                                      top: args['textY'] - 10,
+                                      left: args['textX'] - 10,
+                                      child: Transform.rotate(
+                                        angle: args["textRotation"],
+                                        child: Text(
+                                          args["text"],
+                                          style: TextStyle(
+                                              fontSize: args["textSize"],
+                                              fontFamily: args["fontFamily"],
+                                              color: args["textColor"]),
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
