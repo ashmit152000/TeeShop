@@ -215,184 +215,276 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                 ),
               )
             : Container(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(width / 30),
-                        child: Container(
-                          height: MediaQuery.of(context).size.height / 1.5,
-                          width: double.infinity,
-                          child: GestureDetector(
-                            onVerticalDragUpdate: (dd) {
-                              setState(() {
-                                if (textClicked == false) {
-                                  top = dd.localPosition.dy;
-                                  left = dd.localPosition.dx;
-                                } else {
-                                  topText = dd.localPosition.dy;
-                                  leftText = dd.localPosition.dx;
-                                }
-                              });
-                            },
-                            child: Card(
-                              elevation: 8,
-                              child: Stack(
-                                fit: StackFit.loose,
-                                clipBehavior: Clip.antiAlias,
-                                children: [
-                                  Container(
-                                    width: double.infinity,
-                                    height: height / 1.5,
-                                    child: Image.network(
-                                      _productData['selectedImage'].toString(),
-                                      fit: BoxFit.cover,
+                child: RawScrollbar(
+                  thickness: width / 60,
+                  thumbColor: Colors.purple,
+                  isAlwaysShown: true,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(width / 25),
+                          child: Container(
+                            height: MediaQuery.of(context).size.height / 1.5,
+                            width: double.infinity,
+                            child: GestureDetector(
+                              onVerticalDragUpdate: (dd) {
+                                setState(() {
+                                  if (textClicked == false) {
+                                    top = dd.localPosition.dy;
+                                    left = dd.localPosition.dx;
+                                  } else {
+                                    topText = dd.localPosition.dy;
+                                    leftText = dd.localPosition.dx;
+                                  }
+                                });
+                              },
+                              child: Card(
+                                elevation: 8,
+                                child: Stack(
+                                  fit: StackFit.loose,
+                                  clipBehavior: Clip.antiAlias,
+                                  children: [
+                                    Container(
+                                      width: double.infinity,
+                                      height: height / 1.5,
+                                      child: Image.network(
+                                        _productData['selectedImage']
+                                            .toString(),
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
-                                  ),
-                                  if (_isLogoPresent &&
-                                      _pickedImage == null &&
-                                      selectedFile == null)
-                                    Positioned(
-                                      top: top,
-                                      left: left,
-                                      child: GestureDetector(
-                                        onTapDown: (dd) {
-                                          setState(() {
-                                            textClicked = false;
-                                          });
-                                        },
-                                        child: Transform.rotate(
-                                          angle: (pi / 4) * angle,
-                                          child: SvgPicture.asset(
-                                            selectedImage,
-                                            height: iconSize.toDouble(),
-                                            colorBlendMode: BlendMode.srcATop,
-                                            allowDrawingOutsideViewBox: false,
-                                            color: selectedColor,
+                                    if (_isLogoPresent &&
+                                        _pickedImage == null &&
+                                        selectedFile == null)
+                                      Positioned(
+                                        top: top,
+                                        left: left,
+                                        child: GestureDetector(
+                                          onTapDown: (dd) {
+                                            setState(() {
+                                              textClicked = false;
+                                            });
+                                          },
+                                          onDoubleTap: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return AlertDialog(
+                                                    title: Text(
+                                                      'Change Icon',
+                                                      style: TextStyle(
+                                                          fontSize: width / 25,
+                                                          color: Colors.purple),
+                                                    ),
+                                                    content: StatefulBuilder(
+                                                      builder: (context,
+                                                              setState) =>
+                                                          Container(
+                                                              color:
+                                                                  Colors.black,
+                                                              height:
+                                                                  height / 1.5,
+                                                              width:
+                                                                  width / 1.5,
+                                                              child: wallpapers(
+                                                                  fromDialog:
+                                                                      true)),
+                                                    ),
+                                                    actions: [
+                                                      TextButton(
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          child: Text(
+                                                            'OK',
+                                                            style: TextStyle(
+                                                                fontSize:
+                                                                    width / 25,
+                                                                color: Colors
+                                                                    .purple),
+                                                          ))
+                                                    ],
+                                                  );
+                                                });
+                                          },
+                                          child: Transform.rotate(
+                                            angle: (pi / 4) * angle,
+                                            child: SvgPicture.asset(
+                                              selectedImage,
+                                              height: iconSize.toDouble(),
+                                              colorBlendMode: BlendMode.srcATop,
+                                              allowDrawingOutsideViewBox: false,
+                                              color: selectedColor,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  if (_isLogoPresent &&
-                                      _pickedImage != null &&
-                                      selectedFile != null)
-                                    Positioned(
-                                      top: top,
-                                      left: left,
-                                      child: GestureDetector(
-                                        onTapDown: (dd) {
-                                          setState(() {
-                                            textClicked = false;
-                                          });
-                                        },
-                                        child: Transform.rotate(
-                                          angle: (pi / 4) * angle,
-                                          child: Image.file(
-                                            selectedFile,
-                                            height: iconSize.toDouble(),
+                                    if (_isLogoPresent &&
+                                        _pickedImage != null &&
+                                        selectedFile != null)
+                                      Positioned(
+                                        top: top,
+                                        left: left,
+                                        child: GestureDetector(
+                                          onTapDown: (dd) {
+                                            setState(() {
+                                              textClicked = false;
+                                            });
+                                          },
+                                          child: Transform.rotate(
+                                            angle: (pi / 4) * angle,
+                                            child: Image.file(
+                                              selectedFile,
+                                              height: iconSize.toDouble(),
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  if (_isTextPresent)
-                                    Positioned(
-                                      top: topText,
-                                      left: leftText,
-                                      child: GestureDetector(
-                                        onTapDown: (dd) {
-                                          setState(() {
-                                            textClicked = true;
-                                          });
-                                        },
-                                        child: Transform.rotate(
-                                          angle: (pi / 4) * textRotation,
-                                          child: Text(
-                                            text.toString(),
-                                            style: TextStyle(
-                                                fontSize: textSize,
-                                                fontFamily: fontFamilySelector,
-                                                color: textColor),
+                                    if (_isTextPresent)
+                                      Positioned(
+                                        top: topText,
+                                        left: leftText,
+                                        child: GestureDetector(
+                                          onDoubleTap: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return AlertDialog(
+                                                    title: Text(
+                                                      'Change Text',
+                                                      style: TextStyle(
+                                                          fontSize: width / 25,
+                                                          color: Colors.purple),
+                                                    ),
+                                                    content: Container(
+                                                      child: TextFormField(
+                                                        controller:
+                                                            textPrintController,
+                                                        onChanged: (val) {
+                                                          setState(() {
+                                                            text = val;
+                                                          });
+                                                        },
+                                                      ),
+                                                    ),
+                                                    actions: [
+                                                      TextButton(
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          child: Text(
+                                                            'OK',
+                                                            style: TextStyle(
+                                                                fontSize:
+                                                                    width / 25,
+                                                                color: Colors
+                                                                    .purple),
+                                                          ))
+                                                    ],
+                                                  );
+                                                });
+                                          },
+                                          onTapDown: (dd) {
+                                            setState(() {
+                                              textClicked = true;
+                                            });
+                                          },
+                                          child: Transform.rotate(
+                                            angle: (pi / 4) * textRotation,
+                                            child: Text(
+                                              text.toString(),
+                                              style: TextStyle(
+                                                  fontSize: textSize,
+                                                  fontFamily:
+                                                      fontFamilySelector,
+                                                  color: textColor),
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      Container(
-                        height: MediaQuery.of(context).size.height / 2,
-                        width: double.infinity,
-                        color: Colors.black,
-                        child: DefaultTabController(
-                          length: 4,
-                          child: NestedScrollView(
-                            headerSliverBuilder: (context, value) {
-                              return [
-                                PreferredSize(
-                                  child: SliverAppBar(
-                                    automaticallyImplyLeading: false,
-                                    title: TabBar(
-                                      isScrollable: true,
-                                      tabs: [
-                                        Tab(
-                                          child: Text(
-                                            'ICONS',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: width / 25),
+                        Container(
+                          height: MediaQuery.of(context).size.height / 2,
+                          width: double.infinity,
+                          color: Colors.black,
+                          child: DefaultTabController(
+                            length: 4,
+                            child: NestedScrollView(
+                              headerSliverBuilder: (context, value) {
+                                return [
+                                  PreferredSize(
+                                    child: SliverAppBar(
+                                      automaticallyImplyLeading: false,
+                                      title: TabBar(
+                                        isScrollable: true,
+                                        tabs: [
+                                          Tab(
+                                            child: Text(
+                                              'ICONS',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: width / 25),
+                                            ),
                                           ),
-                                        ),
-                                        Tab(
-                                          child: Text(
-                                            'CUSTOMIZE ICON',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: width / 25),
+                                          Tab(
+                                            child: Text(
+                                              'CUSTOMIZE ICON',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: width / 25),
+                                            ),
                                           ),
-                                        ),
-                                        Tab(
-                                          child: Text(
-                                            'TEXT',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: width / 25),
+                                          Tab(
+                                            child: Text(
+                                              'TEXT',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: width / 25),
+                                            ),
                                           ),
-                                        ),
-                                        Tab(
-                                          child: Text(
-                                            'CUSTOMIZE TEXT',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: width / 25),
+                                          Tab(
+                                            child: Text(
+                                              'CUSTOMIZE TEXT',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: width / 25),
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
+                                      backgroundColor: Colors.black,
                                     ),
-                                    backgroundColor: Colors.black,
-                                  ),
-                                  preferredSize: Size.fromHeight(0),
-                                )
-                              ];
-                            },
-                            body: TabBarView(
-                              children: [
-                                wallpapers(),
-                                Padding(
-                                    padding: EdgeInsets.all(10),
-                                    child: customize()),
-                                textPrint(),
-                                Padding(
-                                    padding: EdgeInsets.all(10),
-                                    child: customizeText()),
-                              ],
+                                    preferredSize: Size.fromHeight(0),
+                                  )
+                                ];
+                              },
+                              body: TabBarView(
+                                children: [
+                                  wallpapers(),
+                                  Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: customize()),
+                                  textPrint(),
+                                  Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: customizeText()),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -663,12 +755,11 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                           ),
                           customWidths: CustomSliderWidths(handlerSize: 0),
                         ),
-                        initialValue: angle,
+                        initialValue: textRotation,
                         onChange: (newVal) {
                           setState(() {
                             textRotation = newVal;
                           });
-                          print(angle);
                         }),
                   ],
                 )
@@ -749,8 +840,8 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
     );
   }
 
-  Widget wallpapers() {
-    return Column(children: [
+  Widget wallpapers({fromDialog = false}) {
+    return Column(mainAxisSize: MainAxisSize.min, children: [
       Text(
         'WANT ICON ? ',
         style: TextStyle(
@@ -790,6 +881,9 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                   selectedFile = null;
                   pathImage = null;
                 });
+                if (fromDialog) {
+                  Navigator.of(context).pop();
+                }
               },
               child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(0)),

@@ -351,7 +351,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
               )
             : Builder(
                 builder: (context) => Container(
-                  padding: EdgeInsets.all(width / 30),
+                  padding: EdgeInsets.all(width / 25),
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
@@ -429,7 +429,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                             height: 10,
                           ),
                         Card(
-                          elevation: 8,
+                          elevation: 5,
                           child: Container(
                             padding: EdgeInsets.all(10),
                             child: Row(
@@ -511,7 +511,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                         ),
                         SizedBox(height: height / 40),
                         Card(
-                          elevation: 8,
+                          elevation: 5,
                           child: Container(
                             padding: EdgeInsets.all(10),
                             child: Column(
@@ -569,7 +569,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                             });
                           },
                           child: Card(
-                            elevation: 8,
+                            elevation: 5,
                             child: Container(
                               padding: EdgeInsets.all(width / 40),
                               child: Column(
@@ -612,7 +612,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                           height: height / 40,
                         ),
                         Card(
-                          elevation: 8,
+                          elevation: 5,
                           child: Container(
                             padding: EdgeInsets.all(10),
                             child: Column(
@@ -640,7 +640,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                         ),
                         SizedBox(height: height / 40),
                         Card(
-                          elevation: 8,
+                          elevation: 5,
                           child: Container(
                             padding: EdgeInsets.all(10),
                             child: Column(

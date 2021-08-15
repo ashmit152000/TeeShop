@@ -35,12 +35,16 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.purple,
           primaryColor: Colors.purple,
           accentColor: Colors.purpleAccent,
+          highlightColor: Colors.purple,
           textTheme: TextTheme(
             headline6: TextStyle(color: Colors.white),
           ),
           appBarTheme: Theme.of(context)
               .appBarTheme
               .copyWith(brightness: Brightness.light),
+          scrollbarTheme: Theme.of(context).scrollbarTheme.copyWith(
+                trackColor: (MaterialStateProperty.all(Colors.amber)),
+              ),
         ),
         home: MyHomePage(),
         routes: {
