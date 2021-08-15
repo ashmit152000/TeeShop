@@ -216,9 +216,10 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
               )
             : Container(
                 child: RawScrollbar(
-                  thickness: width / 60,
-                  thumbColor: Colors.purple,
+                  thickness: width / 40,
+                  radius: Radius.circular(width / 40),
                   isAlwaysShown: true,
+                  thumbColor: Colors.deepPurple,
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
