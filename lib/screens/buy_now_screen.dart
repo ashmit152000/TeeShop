@@ -531,8 +531,15 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                                         style: TextStyle(fontSize: width / 25),
                                       ),
                                       onPressed: () {
-                                        showBottomSheetView(
-                                            context, height, width);
+                                        if (dropdownValue == "") {
+                                          Fluttertoast.showToast(
+                                              msg: 'First select your size',
+                                              fontSize: width / 25,
+                                              backgroundColor: Colors.yellow);
+                                        } else {
+                                          showBottomSheetView(
+                                              context, height, width);
+                                        }
                                       },
                                     ),
                                   ],

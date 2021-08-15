@@ -155,7 +155,6 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
     super.initState();
     Future.delayed(Duration.zero, () {
       args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-
       address = args['address'];
     });
     _razorpay = new Razorpay();
@@ -352,7 +351,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
               )
             : Builder(
                 builder: (context) => Container(
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(width / 30),
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
@@ -378,8 +377,8 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                                       args["_isIconPresent"] != false &&
                                       args['pickedFile'] == null)
                                     Positioned(
-                                      top: args['iconY'] + width / 30,
-                                      left: args['iconX'] + width / 30,
+                                      top: args['iconY'],
+                                      left: args['iconX'],
                                       child: Transform.rotate(
                                         angle: args["angle"],
                                         child: SvgPicture.asset(
@@ -395,8 +394,8 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                                       args['pickedFile'] != null &&
                                       args['selectedImage'] != null)
                                     Positioned(
-                                      top: args['iconY'] + width / 30,
-                                      left: args['iconX'] + width / 30,
+                                      top: args['iconY'],
+                                      left: args['iconX'],
                                       child: Transform.rotate(
                                           angle: args["angle"],
                                           child: Image.file(
@@ -407,8 +406,8 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                                   if (args["text"] != null &&
                                       args["_isTextPresent"] != false)
                                     Positioned(
-                                      top: args['textY'] + width / 30,
-                                      left: args['textX'] + width / 30,
+                                      top: args['textY'],
+                                      left: args['textX'],
                                       child: Transform.rotate(
                                         angle: args["textRotation"],
                                         child: Text(
@@ -673,7 +672,14 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                                         style: TextStyle(fontSize: width / 25),
                                       ),
                                       onPressed: () {
-                                        showBottomSheetView(context);
+                                        if (dropdownValue == '') {
+                                          Fluttertoast.showToast(
+                                              msg: 'First select your size',
+                                              fontSize: width / 25,
+                                              backgroundColor: Colors.yellow);
+                                        } else {
+                                          showBottomSheetView(context);
+                                        }
                                       },
                                     ),
                                   ],

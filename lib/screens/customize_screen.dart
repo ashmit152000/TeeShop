@@ -219,7 +219,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.all(width / 20),
+                        padding: EdgeInsets.all(width / 30),
                         child: Container(
                           height: MediaQuery.of(context).size.height / 1.5,
                           width: double.infinity,
