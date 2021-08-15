@@ -219,7 +219,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.all(0),
+                        padding: EdgeInsets.all(width / 20),
                         child: Container(
                           height: MediaQuery.of(context).size.height / 1.5,
                           width: double.infinity,
@@ -235,86 +235,89 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                 }
                               });
                             },
-                            child: Stack(
-                              fit: StackFit.loose,
-                              clipBehavior: Clip.antiAlias,
-                              children: [
-                                Container(
-                                  width: double.infinity,
-                                  height: height / 1.5,
-                                  child: Image.network(
-                                    _productData['selectedImage'].toString(),
-                                    fit: BoxFit.cover,
+                            child: Card(
+                              elevation: 8,
+                              child: Stack(
+                                fit: StackFit.loose,
+                                clipBehavior: Clip.antiAlias,
+                                children: [
+                                  Container(
+                                    width: double.infinity,
+                                    height: height / 1.5,
+                                    child: Image.network(
+                                      _productData['selectedImage'].toString(),
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
-                                ),
-                                if (_isLogoPresent &&
-                                    _pickedImage == null &&
-                                    selectedFile == null)
-                                  Positioned(
-                                    top: top,
-                                    left: left,
-                                    child: GestureDetector(
-                                      onTapDown: (dd) {
-                                        setState(() {
-                                          textClicked = false;
-                                        });
-                                      },
-                                      child: Transform.rotate(
-                                        angle: (pi / 4) * angle,
-                                        child: SvgPicture.asset(
-                                          selectedImage,
-                                          height: iconSize.toDouble(),
-                                          colorBlendMode: BlendMode.srcATop,
-                                          allowDrawingOutsideViewBox: false,
-                                          color: selectedColor,
+                                  if (_isLogoPresent &&
+                                      _pickedImage == null &&
+                                      selectedFile == null)
+                                    Positioned(
+                                      top: top,
+                                      left: left,
+                                      child: GestureDetector(
+                                        onTapDown: (dd) {
+                                          setState(() {
+                                            textClicked = false;
+                                          });
+                                        },
+                                        child: Transform.rotate(
+                                          angle: (pi / 4) * angle,
+                                          child: SvgPicture.asset(
+                                            selectedImage,
+                                            height: iconSize.toDouble(),
+                                            colorBlendMode: BlendMode.srcATop,
+                                            allowDrawingOutsideViewBox: false,
+                                            color: selectedColor,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                if (_isLogoPresent &&
-                                    _pickedImage != null &&
-                                    selectedFile != null)
-                                  Positioned(
-                                    top: top,
-                                    left: left,
-                                    child: GestureDetector(
-                                      onTapDown: (dd) {
-                                        setState(() {
-                                          textClicked = false;
-                                        });
-                                      },
-                                      child: Transform.rotate(
-                                        angle: (pi / 4) * angle,
-                                        child: Image.file(
-                                          selectedFile,
-                                          height: iconSize.toDouble(),
+                                  if (_isLogoPresent &&
+                                      _pickedImage != null &&
+                                      selectedFile != null)
+                                    Positioned(
+                                      top: top,
+                                      left: left,
+                                      child: GestureDetector(
+                                        onTapDown: (dd) {
+                                          setState(() {
+                                            textClicked = false;
+                                          });
+                                        },
+                                        child: Transform.rotate(
+                                          angle: (pi / 4) * angle,
+                                          child: Image.file(
+                                            selectedFile,
+                                            height: iconSize.toDouble(),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                if (_isTextPresent)
-                                  Positioned(
-                                    top: topText,
-                                    left: leftText,
-                                    child: GestureDetector(
-                                      onTapDown: (dd) {
-                                        setState(() {
-                                          textClicked = true;
-                                        });
-                                      },
-                                      child: Transform.rotate(
-                                        angle: (pi / 4) * textRotation,
-                                        child: Text(
-                                          text.toString(),
-                                          style: TextStyle(
-                                              fontSize: textSize,
-                                              fontFamily: fontFamilySelector,
-                                              color: textColor),
+                                  if (_isTextPresent)
+                                    Positioned(
+                                      top: topText,
+                                      left: leftText,
+                                      child: GestureDetector(
+                                        onTapDown: (dd) {
+                                          setState(() {
+                                            textClicked = true;
+                                          });
+                                        },
+                                        child: Transform.rotate(
+                                          angle: (pi / 4) * textRotation,
+                                          child: Text(
+                                            text.toString(),
+                                            style: TextStyle(
+                                                fontSize: textSize,
+                                                fontFamily: fontFamilySelector,
+                                                color: textColor),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),

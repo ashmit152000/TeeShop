@@ -196,7 +196,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
       "key": "rzp_live_upLxYKABKr7bhM",
       "amount": "${total * 100}",
       "name": "TeeShop",
-      "description": "Payment for the mechandise",
+      "description": "Payment for the merchandise",
       "prefill": {
         "email": args['product']['product']['user']['email'],
         "size": "$dropdownValue",
@@ -378,8 +378,8 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                                       args["_isIconPresent"] != false &&
                                       args['pickedFile'] == null)
                                     Positioned(
-                                      top: args['iconY'] - 10,
-                                      left: args['iconX'] - 10,
+                                      top: args['iconY'] + width / 30,
+                                      left: args['iconX'] + width / 30,
                                       child: Transform.rotate(
                                         angle: args["angle"],
                                         child: SvgPicture.asset(
@@ -395,8 +395,8 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                                       args['pickedFile'] != null &&
                                       args['selectedImage'] != null)
                                     Positioned(
-                                      top: args['iconY'] - 10,
-                                      left: args['iconX'] - 10,
+                                      top: args['iconY'] + width / 30,
+                                      left: args['iconX'] + width / 30,
                                       child: Transform.rotate(
                                           angle: args["angle"],
                                           child: Image.file(
@@ -407,8 +407,8 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                                   if (args["text"] != null &&
                                       args["_isTextPresent"] != false)
                                     Positioned(
-                                      top: args['textY'] - 10,
-                                      left: args['textX'] - 10,
+                                      top: args['textY'] + width / 30,
+                                      left: args['textX'] + width / 30,
                                       child: Transform.rotate(
                                         angle: args["textRotation"],
                                         child: Text(
