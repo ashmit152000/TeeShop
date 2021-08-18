@@ -41,6 +41,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
   var leftText;
   var _productData;
   bool textClicked = false;
+  String optionsChangeString = "Icon";
 
   var _isLoading = false;
   var wallpaperCollection = [
@@ -120,6 +121,8 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
     }
   }
 
+  List<String> optionsChange = ["Icon", "Text"];
+
   @override
   void initState() {
     super.initState();
@@ -161,6 +164,319 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        drawer: Drawer(
+          child: Container(
+            child: ListView(
+              children: [
+                Container(
+                  padding: EdgeInsets.only(left: 10, top: 20),
+                  height: MediaQuery.of(context).size.height * 0.2,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [Color(0xFF5f0a87), Color(0xFF703ED1)],
+                    ),
+                  ),
+                  child: Text(
+                    'CUSTOMIZE',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: width / 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                ListTile(
+                  title: Container(
+                    child: DropdownButtonFormField<String>(
+                        dropdownColor: Colors.deepPurpleAccent,
+                        decoration: InputDecoration(
+                          labelText: "Change Options",
+                          labelStyle: TextStyle(fontSize: width / 25),
+                        ),
+                        onChanged: (newValue) {
+                          setState(() {
+                            optionsChangeString = newValue.toString();
+                          });
+                        },
+                        items: optionsChange
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value,
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: width / 25),
+                              ));
+                        }).toList()),
+                  ),
+                ),
+                if (optionsChangeString == 'Icon')
+                  ListTile(
+                    title: Text(
+                      "CUSTOMIZE ICON",
+                      style: TextStyle(
+                        fontSize: width / 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                if (optionsChangeString == 'Icon')
+                  SizedBox(
+                    height: 10,
+                  ),
+                if (optionsChangeString == 'Icon') Divider(),
+                if (optionsChangeString == 'Icon')
+                  ListTile(
+                    title: Text(
+                      "Icon Size",
+                      style: TextStyle(
+                        fontSize: width / 25,
+                      ),
+                    ),
+                  ),
+                if (optionsChangeString == 'Icon')
+                  Container(
+                    width: width / 2.5,
+                    child: Slider(
+                        min: 20,
+                        max: width / 3,
+                        value: iconSize,
+                        inactiveColor: Colors.grey,
+                        onChanged: (newVal) {
+                          setState(() {
+                            iconSize = newVal;
+                          });
+                        }),
+                  ),
+                if (optionsChangeString == 'Icon') Divider(),
+                if (optionsChangeString == 'Icon')
+                  SizedBox(
+                    height: 10,
+                  ),
+                if (optionsChangeString == 'Icon')
+                  ListTile(
+                    title: Text(
+                      "Color",
+                      style: TextStyle(
+                        fontSize: width / 25,
+                      ),
+                    ),
+                  ),
+                if (optionsChangeString == 'Icon')
+                  ListTile(
+                    title: GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return getGrid();
+                            });
+                      },
+                      child: Container(
+                        child: Center(
+                          child: Text(
+                            'Click to change color',
+                            style: TextStyle(fontSize: width / 25),
+                          ),
+                        ),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black),
+                            color: selectedColor),
+                        height: width / 10,
+                        width: width / 40,
+                      ),
+                    ),
+                  ),
+                if (optionsChangeString == 'Icon') Divider(),
+                if (optionsChangeString == 'Icon')
+                  ListTile(
+                    title: Text(
+                      "Rotation",
+                      style: TextStyle(
+                        fontSize: width / 25,
+                      ),
+                    ),
+                  ),
+                if (optionsChangeString == 'Icon')
+                  SleekCircularSlider(
+                      min: 0,
+                      max: 8,
+                      appearance: CircularSliderAppearance(
+                        size: width / 5,
+                        infoProperties: InfoProperties(
+                          mainLabelStyle: TextStyle(color: Colors.white),
+                        ),
+                        customWidths: CustomSliderWidths(handlerSize: 0),
+                      ),
+                      initialValue: angle,
+                      onChange: (newVal) {
+                        setState(() {
+                          angle = newVal;
+                        });
+                        print(angle);
+                      }),
+                if (optionsChangeString == 'Icon') Divider(),
+                if (optionsChangeString == 'Icon')
+                  SizedBox(
+                    height: height / 40,
+                  ),
+                if (optionsChangeString == 'Text')
+                  ListTile(
+                    title: Text(
+                      "CUSTOMIZE TEXT",
+                      style: TextStyle(
+                        fontSize: width / 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                if (optionsChangeString == 'Text')
+                  SizedBox(
+                    height: height / 40,
+                  ),
+                if (optionsChangeString == 'Text') Divider(),
+                if (optionsChangeString == 'Text')
+                  ListTile(
+                    title: Text(
+                      'Text size: ',
+                      style:
+                          TextStyle(color: Colors.black, fontSize: width / 25),
+                    ),
+                  ),
+                if (optionsChangeString == 'Text')
+                  Container(
+                    width: width / 2.5,
+                    child: Slider(
+                        min: 5,
+                        max: width / 10,
+                        value: textSize,
+                        inactiveColor: Colors.grey,
+                        onChanged: (newVal) {
+                          setState(() {
+                            textSize = newVal;
+                          });
+                        }),
+                  ),
+                if (optionsChangeString == 'Text')
+                  SizedBox(
+                    height: height / 40,
+                  ),
+                if (optionsChangeString == 'Text') Divider(),
+                if (optionsChangeString == 'Text')
+                  ListTile(
+                    title: Text(
+                      'Color: ',
+                      style:
+                          TextStyle(color: Colors.black, fontSize: width / 25),
+                    ),
+                  ),
+                if (optionsChangeString == 'Text')
+                  SizedBox(
+                    width: width / 25,
+                  ),
+                if (optionsChangeString == 'Text')
+                  ListTile(
+                    title: GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return getGridText();
+                            });
+                      },
+                      child: Container(
+                        child: Center(
+                          child: Text(
+                            'Click to change color',
+                            style: TextStyle(
+                                fontSize: width / 25, color: Colors.white),
+                          ),
+                        ),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white),
+                            color: textColor),
+                        height: width / 10,
+                        width: width / 10,
+                      ),
+                    ),
+                  ),
+                if (optionsChangeString == 'Text')
+                  SizedBox(height: height / 40),
+                if (optionsChangeString == 'Text') Divider(),
+                if (optionsChangeString == 'Text')
+                  ListTile(
+                    title: Text(
+                      'Font family: ',
+                      style: TextStyle(fontSize: width / 25),
+                    ),
+                  ),
+                if (optionsChangeString == 'Text')
+                  ListTile(
+                    title: Container(
+                      child: DropdownButtonFormField<String>(
+                          dropdownColor: Colors.deepPurpleAccent,
+                          decoration: InputDecoration(
+                            labelText: "Choose Font",
+                            labelStyle: TextStyle(fontSize: width / 25),
+                          ),
+                          onChanged: (newValue) {
+                            setState(() {
+                              fontFamilySelector = newValue.toString();
+                            });
+                          },
+                          items: fontFamilyName
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: width / 25),
+                                ));
+                          }).toList()),
+                    ),
+                  ),
+                if (optionsChangeString == 'Text')
+                  SizedBox(
+                    height: height / 40,
+                  ),
+                if (optionsChangeString == 'Text') Divider(),
+                if (optionsChangeString == 'Text')
+                  ListTile(
+                    title: Text(
+                      'Rotate: ',
+                      style: TextStyle(fontSize: width / 25),
+                    ),
+                  ),
+                if (optionsChangeString == 'Text')
+                  SleekCircularSlider(
+                      min: 0,
+                      max: 8,
+                      appearance: CircularSliderAppearance(
+                        size: width / 5,
+                        infoProperties: InfoProperties(
+                          mainLabelStyle: TextStyle(color: Colors.white),
+                        ),
+                        customWidths: CustomSliderWidths(handlerSize: 0),
+                      ),
+                      initialValue: textRotation,
+                      onChange: (newVal) {
+                        setState(() {
+                          textRotation = newVal;
+                        });
+                      }),
+                SizedBox(
+                  height: height / 40,
+                ),
+              ],
+            ),
+          ),
+        ),
         appBar: AppBar(
             title: Text(
               'CUSTOMIZE',
@@ -717,7 +1033,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                     Expanded(
                       child: Container(
                         child: DropdownButtonFormField<String>(
-                            dropdownColor: Colors.purple,
+                            dropdownColor: Colors.deepPurpleAccent,
                             decoration: InputDecoration(
                               labelText: "Choose Font",
                               labelStyle: TextStyle(
@@ -736,7 +1052,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                                     value,
                                     style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: width / 40),
+                                        fontSize: width / 25),
                                   ));
                             }).toList()),
                       ),

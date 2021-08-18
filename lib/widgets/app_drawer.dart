@@ -55,7 +55,7 @@ class _AppDrawerState extends State<AppDrawer> {
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pop();
-                Navigator.of(context).pushReplacementNamed('/');
+                // Navigator.of(context).pushReplacementNamed('/');
               },
               child: ListTile(
                 leading: Icon(
