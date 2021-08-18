@@ -61,7 +61,19 @@ class _InfoScreenState extends State<InfoScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('TeeShop'),
+          title: Text(
+            'TeeshopIndia',
+            style: TextStyle(fontSize: width / 25),
+          ),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Color(0xFF5f0a87), Color(0xFF703ED1)],
+              ),
+            ),
+          ),
         ),
         body: Container(
           padding: EdgeInsets.all(10),
@@ -284,7 +296,7 @@ class _InfoScreenState extends State<InfoScreen> {
                         decoration: BoxDecoration(
                             gradient: LinearGradient(colors: [
                           Color(0xFF5f0a87),
-                          Color(0xFFa4508b)
+                          Color(0xFF703ED1)
                         ])),
                         child: Center(
                           child: Text(
@@ -318,7 +330,7 @@ class _InfoScreenState extends State<InfoScreen> {
                         decoration: BoxDecoration(
                             gradient: LinearGradient(colors: [
                           Color(0xFF5f0a87),
-                          Color(0xFFa4508b)
+                          Color(0xFF703ED1)
                         ])),
                         child: Center(
                           child: Text(
@@ -357,7 +369,7 @@ class _InfoScreenState extends State<InfoScreen> {
                       padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
                           gradient: LinearGradient(
-                              colors: [Color(0xFF5f0a87), Color(0xFFa4508b)])),
+                              colors: [Color(0xFF5f0a87), Color(0xFF703ED1)])),
                       child: Center(
                         child: _isLoading
                             ? SizedBox(

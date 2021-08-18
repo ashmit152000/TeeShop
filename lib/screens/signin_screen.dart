@@ -159,7 +159,8 @@ class _SignInScreenState extends State<SignInScreen>
                 child: AlertDialog(
                   title: Text(
                     'Loading...',
-                    style: TextStyle(color: Colors.purple),
+                    style: TextStyle(
+                        color: Colors.deepPurple, fontSize: width / 25),
                   ),
                 ),
               )

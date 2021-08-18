@@ -173,7 +173,8 @@ class _OrderScreenState extends State<OrderScreen> {
                 padding: EdgeInsets.all(10),
                 child: Text(
                   'No orders yet!!',
-                  style: TextStyle(color: Colors.purple, fontSize: width / 25),
+                  style:
+                      TextStyle(color: Colors.deepPurple, fontSize: width / 25),
                 ),
               ),
             ),
@@ -186,8 +187,17 @@ class _OrderScreenState extends State<OrderScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Orders',
+            'ORDERS',
             style: TextStyle(fontSize: width / 25),
+          ),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Color(0xFF5f0a87), Color(0xFF703ED1)],
+              ),
+            ),
           ),
         ),
         body: _isLoading

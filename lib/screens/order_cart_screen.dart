@@ -107,7 +107,8 @@ class _OrderCartScreenState extends State<OrderCartScreen> {
                 padding: EdgeInsets.all(10),
                 child: Text(
                   'No items yet!!',
-                  style: TextStyle(color: Colors.purple, fontSize: 20),
+                  style:
+                      TextStyle(color: Colors.deepPurple, fontSize: width / 25),
                 ),
               ),
             ),
@@ -121,7 +122,19 @@ class _OrderCartScreenState extends State<OrderCartScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Cart'),
+          title: Text(
+            'CART',
+            style: TextStyle(fontSize: width / 25),
+          ),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Color(0xFF5f0a87), Color(0xFF703ED1)],
+              ),
+            ),
+          ),
         ),
         body: Container(
           child: _isLoading != true

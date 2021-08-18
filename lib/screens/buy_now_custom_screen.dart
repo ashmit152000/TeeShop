@@ -110,6 +110,8 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                primary: Colors.deepPurple),
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
@@ -340,6 +342,15 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
             "BUY",
             style: TextStyle(fontSize: width / 25),
           ),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Color(0xFF5f0a87), Color(0xFF703ED1)],
+              ),
+            ),
+          ),
         ),
         body: _isLoading
             ? Center(
@@ -457,7 +468,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                                           ),
                                         ),
                                         Container(
-                                          color: Colors.purple,
+                                          color: Colors.deepPurple,
                                           child: Row(
                                             children: [
                                               IconButton(
@@ -752,7 +763,7 @@ class _BuyNowCustomState extends State<BuyNowCustom> {
                               decoration: BoxDecoration(
                                   gradient: LinearGradient(colors: [
                                 Color(0xFF5f0a87),
-                                Color(0xFFa4508b)
+                                Color(0xFF703ED1)
                               ])),
                               child: Center(
                                 child: Text(

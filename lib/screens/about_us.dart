@@ -5,9 +5,22 @@ class AboutUs extends StatelessWidget {
   static const routeName = '/about-us';
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text('About Us'),
+        title: Text(
+          'About Us',
+          style: TextStyle(fontSize: width / 25),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Color(0xFF5f0a87), Color(0xFF703ED1)],
+            ),
+          ),
+        ),
       ),
       body: Container(
         alignment: Alignment.center,

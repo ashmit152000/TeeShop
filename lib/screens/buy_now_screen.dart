@@ -126,6 +126,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                             child: Text('Done',
                                 style: TextStyle(
                                   fontSize: width / 25,
+                                  color: Colors.white,
                                 )),
                           ),
                         ])
@@ -249,7 +250,19 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('BUY'),
+          title: Text(
+            'BUY',
+            style: TextStyle(fontSize: width / 25),
+          ),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Color(0xFF5f0a87), Color(0xFF703ED1)],
+              ),
+            ),
+          ),
         ),
         body: _isLoading
             ? Center(
@@ -317,7 +330,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                                               width: width / 25,
                                             ),
                                             Container(
-                                              color: Colors.purple,
+                                              color: Colors.deepPurple,
                                               child: Row(
                                                 children: [
                                                   IconButton(
@@ -571,7 +584,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                                           'Profile Issue',
                                           style: TextStyle(
                                               fontSize: width / 20,
-                                              color: Colors.purple),
+                                              color: Colors.deepPurple),
                                         ),
                                         content: Text(
                                           'You haven\'t selected an address for delivery. Or your Phone Number is not verified',
@@ -610,7 +623,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                               decoration: BoxDecoration(
                                   gradient: LinearGradient(colors: [
                                 Color(0xFF5f0a87),
-                                Color(0xFFa4508b)
+                                Color(0xFF703ED1)
                               ])),
                               child: Center(
                                 child: Text(

@@ -57,7 +57,7 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
           builder: (context) => new AlertDialog(
             title: new Text(
               'Do you want to exit ?',
-              style: TextStyle(color: Colors.purple),
+              style: TextStyle(color: Colors.deepPurple),
             ),
             content: new Text('We were enjoying your time with us.'),
             actions: <Widget>[
@@ -87,6 +87,15 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
                   drawer: AppDrawer(userData: _userData),
                   drawerEnableOpenDragGesture: false,
                   appBar: AppBar(
+                    flexibleSpace: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [Color(0xFF5f0a87), Color(0xFF703ED1)],
+                        ),
+                      ),
+                    ),
                     title: Text(
                       'TeeshopIndia',
                       style: TextStyle(fontSize: width / 25),
@@ -120,7 +129,8 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
                                   return AlertDialog(
                                     title: Text(
                                       'Do you want to logout ?',
-                                      style: TextStyle(color: Colors.purple),
+                                      style:
+                                          TextStyle(color: Colors.deepPurple),
                                     ),
                                     content: Text(
                                         'We were enjoying your time with us. Join us soon'),

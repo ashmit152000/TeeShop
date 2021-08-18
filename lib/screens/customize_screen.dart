@@ -163,8 +163,17 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
       child: Scaffold(
         appBar: AppBar(
             title: Text(
-              'Customise',
+              'CUSTOMIZE',
               style: TextStyle(fontSize: width / 25),
+            ),
+            flexibleSpace: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [Color(0xFF5f0a87), Color(0xFF703ED1)],
+                ),
+              ),
             ),
             actions: [
               TextButton(
@@ -217,7 +226,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
             : Container(
                 child: RawScrollbar(
                   thickness: width / 40,
-                  radius: Radius.circular(width / 40),
+                  radius: Radius.circular(width / 10),
                   isAlwaysShown: true,
                   thumbColor: Colors.deepPurple,
                   child: SingleChildScrollView(
@@ -490,6 +499,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                 ),
               ),
         floatingActionButton: FloatingActionButton.extended(
+          backgroundColor: Colors.deepPurple,
           label: Text(
             'Upload Icon',
             style: TextStyle(fontSize: width / 25),

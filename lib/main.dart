@@ -32,13 +32,13 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'TeeshopIndia',
         theme: ThemeData(
-          primarySwatch: Colors.purple,
-          primaryColor: Colors.purple,
-          accentColor: Colors.purpleAccent,
-          highlightColor: Colors.purple,
+          primarySwatch: Colors.deepPurple,
+          primaryColor: Colors.deepPurple,
+          accentColor: Colors.deepPurpleAccent,
+          highlightColor: Colors.deepPurple,
           textTheme: TextTheme(
             headline6: TextStyle(color: Colors.white),
-          ),
+          ), 
           appBarTheme: Theme.of(context)
               .appBarTheme
               .copyWith(brightness: Brightness.light),
@@ -101,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        statusBarColor: Colors.purple,
+        statusBarColor: Color(0xFF5f0a87),
         statusBarBrightness: Brightness.light,
       ),
     );

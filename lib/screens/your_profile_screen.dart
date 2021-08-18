@@ -511,7 +511,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
           builder: (context) => new AlertDialog(
             title: new Text(
               'Do you want to exit ?',
-              style: TextStyle(color: Colors.purple),
+              style: TextStyle(color: Colors.deepPurple),
             ),
             content: new Text('We were enjoying your time with us.'),
             actions: <Widget>[
@@ -540,7 +540,19 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
           drawer: AppDrawer(userData: userData),
           drawerEnableOpenDragGesture: false,
           appBar: AppBar(
-            title: Text('My Profile'),
+            title: Text(
+              'My Profile',
+              style: TextStyle(fontSize: width / 25),
+            ),
+            flexibleSpace: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [Color(0xFF5f0a87), Color(0xFF703ED1)],
+                ),
+              ),
+            ),
             actions: [
               Padding(
                 padding: EdgeInsets.only(right: width / 30),
@@ -753,7 +765,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                           child: Card(
                             child: Container(
                               padding: EdgeInsets.all(10),
-                              color: Colors.purple,
+                              color: Colors.deepPurple,
                               child: Center(
                                 child: Text(
                                   'Change Fullname and address',
@@ -831,7 +843,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                           child: Card(
                             child: Container(
                               padding: EdgeInsets.all(10),
-                              color: Colors.purple,
+                              color: Colors.deepPurple,
                               child: Center(
                                 child: Text(
                                   'Click to update/verify Email',
@@ -909,7 +921,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                           child: Card(
                             child: Container(
                               padding: EdgeInsets.all(10),
-                              color: Colors.purple,
+                              color: Colors.deepPurple,
                               child: Center(
                                 child: Text(
                                   'Click to change/verify Phone number',

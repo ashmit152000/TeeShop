@@ -34,7 +34,13 @@ class _AppDrawerState extends State<AppDrawer> {
             Container(
               padding: EdgeInsets.only(left: 10, top: 20),
               height: MediaQuery.of(context).size.height * 0.2,
-              color: Theme.of(context).primaryColor,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [Color(0xFF5f0a87), Color(0xFF703ED1)],
+                ),
+              ),
               child: Text(
                 'TeeshopIndia',
                 style: TextStyle(
