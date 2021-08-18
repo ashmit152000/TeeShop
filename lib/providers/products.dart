@@ -11,14 +11,14 @@ class Product with ChangeNotifier {
     user_id = userId;
   }
 
-  void _showErrorDialog(context, message) {
+  void _showErrorDialog(context, message, height, width) {
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             title: Text(
               'Error!!',
-              style: TextStyle(color: Colors.purple),
+              style: TextStyle(color: Colors.deepPurple,fontSize: width / 25,),
             ),
             content: Text(message),
             actions: [
@@ -26,7 +26,7 @@ class Product with ChangeNotifier {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('OK'))
+                  child: Text('OK',style: TextStyle(fontSize: width / 25),),)
             ],
           );
         });
@@ -36,7 +36,7 @@ class Product with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Map<String, dynamic>> products(BuildContext context) async {
+  Future<Map<String, dynamic>> products(height, width, BuildContext context) async {
     var url = Uri.parse('https://teeshopindia.in/products/${user_id}');
     var response = await http.get(
       url,
@@ -44,7 +44,7 @@ class Product with ChangeNotifier {
     final responseData = json.decode(response.body);
     print(responseData);
     if (responseData['status'] == 401) {
-      _showErrorDialog(context, responseData['message'].toString());
+      _showErrorDialog(context, responseData['message'].toString(),  height, width);
     }
 
     return responseData;

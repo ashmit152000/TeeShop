@@ -55,7 +55,7 @@ class Auth with ChangeNotifier {
           return AlertDialog(
             title: Text(
               'Error!!',
-              style: TextStyle(color: Colors.purple, fontSize: width / 25),
+              style: TextStyle(color: Colors.deepPurple, fontSize: width / 25),
             ),
             content: Text(message),
             actions: [

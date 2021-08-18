@@ -13,7 +13,7 @@ class Order with ChangeNotifier {
           return AlertDialog(
             title: Text(
               title,
-              style: TextStyle(color: Colors.purple, fontSize: width / 20),
+              style: TextStyle(color: Colors.deepPurple, fontSize: width / 20),
             ),
             content: Text(
               message,

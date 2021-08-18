@@ -38,7 +38,7 @@ class _ReplacementScreenState extends State<ReplacementScreen> {
     });
 
     Provider.of<Product>(context, listen: false)
-        .products(context)
+        .products(height, width,context)
         .then((value) {
       setState(() {
         _productListOne = List.from(value["products"]);

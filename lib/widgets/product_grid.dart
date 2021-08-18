@@ -27,7 +27,7 @@ class _ProductGridState extends State<ProductGrid> {
 
   Future<void> getData() async {
     Provider.of<Product>(context, listen: false)
-        .products(context)
+        .products(height, width,context)
         .then((value) {
       setState(() {
         widget._productListOne = List.from(value["products"]);

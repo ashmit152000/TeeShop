@@ -228,7 +228,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                   thickness: width / 40,
                   radius: Radius.circular(width / 10),
                   isAlwaysShown: true,
-                  thumbColor: Colors.deepPurple,
+                  thumbColor: Colors.blueGrey,
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
