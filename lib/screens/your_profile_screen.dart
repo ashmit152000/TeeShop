@@ -209,7 +209,7 @@ class _YourProfileScreenState extends State<YourProfileScreen> {
                             fontSize: width / 25);
                       },
                       child: Text('Send Verification'),
-                      style: ElevatedButton.styleFrom(primary: Colors.green),
+                      style: ElevatedButton.styleFrom(color: primary: Colors.green),
                     ),
 
                   if (type == 'phone' &&
